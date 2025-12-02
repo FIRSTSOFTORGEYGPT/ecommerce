@@ -292,10 +292,12 @@ class UserController extends CoreController
             $permissions[] = isset($request->permission->value) ? $request->permission->value : $request->permission;
             $role = Role::STORE_OWNER;
         }
+        // Mark user as verified by default on registration
         $user = $this->repository->create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'name'              => $request->name,
+            'email'             => $request->email,
+            'password'          => Hash::make($request->password),
+            'email_verified_at' => now(),
         ]);
 
         $user->givePermissionTo($permissions);
@@ -615,11 +617,16 @@ class UserController extends CoreController
                     $email = $request->email;
                     if ($name && $email) {
                         $userExist = User::where('email',  $email)->exists();
-                        $user = User::firstOrCreate([
-                            'email'     => $email
-                        ], [
-                            'name'    => $name,
-                        ]);
+                        $user = User::firstOrCreate(
+                            [
+                                'email' => $email,
+                            ],
+                            [
+                                'name'              => $name,
+                                // Mark phone-based signups as verified by default
+                                'email_verified_at' => now(),
+                            ]
+                        );
                         $user->givePermissionTo(Permission::CUSTOMER);
                         $user->assignRole(Role::CUSTOMER);
 
