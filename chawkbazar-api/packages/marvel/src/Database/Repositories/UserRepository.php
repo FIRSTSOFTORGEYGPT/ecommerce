@@ -58,9 +58,11 @@ class UserRepository extends BaseRepository
     {
         try {
             $user = $this->create([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => Hash::make($request->password),
+                'name'              => $request->name,
+                'email'             => $request->email,
+                'password'          => Hash::make($request->password),
+                // Ensure newly created users via repository are verified by default
+                'email_verified_at' => now(),
             ]);
             $user->givePermissionTo(UserPermission::CUSTOMER);
             if (isset($request['address']) && count($request['address'])) {

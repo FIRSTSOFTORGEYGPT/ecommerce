@@ -31,7 +31,13 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_active', 'shop_id'
+        'name',
+        'email',
+        'password',
+        'is_active',
+        'shop_id',
+        // Allow setting verification timestamp explicitly on creation/update
+        'email_verified_at',
     ];
 
     /**
