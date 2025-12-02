@@ -348,3 +348,17 @@
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
+
+/* NProgress customization */
+#nprogress .bar {
+  background: #000000; /* black color */
+  height: 4px; /* thicker than default */
+}
+
+#nprogress .peg {
+  box-shadow: none;
+}
+
+#nprogress .spinner {
+  display: none !important;
+}

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useUI } from '@contexts/ui.context';
 import usePrice from '@lib/use-price';
 import { Product } from '@type/index';
@@ -42,7 +43,8 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
     classes = 'col-span-2 lg:col-span-1';
   }
 
-  const { openModal, setModalView, setModalData } = useUI();
+  const router = useRouter();
+  const { openModal } = useUI();
   const settings = useSettings();
 
   const { price, basePrice, discount } = usePrice({
@@ -58,15 +60,14 @@ const ProductOverlayCard: React.FC<ProductProps> = ({
     amount: product.max_price as number,
   });
 
-  function handlePopupView() {
-    setModalData(product.slug);
-    setModalView('PRODUCT_VIEW');
-    return openModal();
+  function handleCardClick() {
+    if (!product?.slug) return;
+    router.push(`/products/${product.slug}`);
   }
 
   return (
     <div
-      onClick={handlePopupView}
+      onClick={handleCardClick}
       className={`${classes} cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden`}
     >
       <div

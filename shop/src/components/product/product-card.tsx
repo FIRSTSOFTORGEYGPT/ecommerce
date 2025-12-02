@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import Image from 'next/image';
 import type { FC } from 'react';
+import { useRouter } from 'next/router';
 import { useUI } from '@contexts/ui.context';
 import usePrice from '@lib/use-price';
 import { Product } from '@type/index';
@@ -31,7 +32,8 @@ const ProductCard: FC<ProductProps> = ({
   variant = 'list',
   imgLoading,
 }) => {
-  const { openModal, setModalView, setModalData } = useUI();
+  const router = useRouter();
+  const { openModal } = useUI();
   const { name, image, min_price, max_price, product_type, description } =
     product ?? {};
 
@@ -48,10 +50,9 @@ const ProductCard: FC<ProductProps> = ({
     amount: max_price!,
   });
 
-  function handlePopupView() {
-    setModalData(product.slug);
-    setModalView('PRODUCT_VIEW');
-    return openModal();
+  function handleCardClick() {
+    if (!product?.slug) return;
+    router.push(`/products/${product.slug}`);
   }
 
   return (
@@ -70,7 +71,7 @@ const ProductCard: FC<ProductProps> = ({
         },
         className
       )}
-      onClick={handlePopupView}
+      onClick={handleCardClick}
       // role="button"
       title={name}
     >

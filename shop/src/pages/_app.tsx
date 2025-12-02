@@ -5,6 +5,7 @@ import { ManagedUIContext } from '@contexts/ui.context';
 import ManagedModal from '@components/common/modal/managed-modal';
 import ManagedDrawer from '@components/ui/drawer/managed-drawer';
 import React, { useEffect, useState } from 'react';
+import NProgress from 'nprogress';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { ToastContainer } from 'react-toastify';
@@ -19,6 +20,7 @@ import '@fontsource/open-sans/700.css';
 import '@fontsource/satisfy';
 // external
 import 'react-toastify/dist/ReactToastify.css';
+import 'nprogress/nprogress.css';
 // base css file
 import '@styles/scrollbar.css';
 import '@styles/swiper-carousel.css';
@@ -78,6 +80,27 @@ function CustomApp({
   useEffect(() => {
     document.documentElement.dir = dir;
   }, [dir]);
+
+  useEffect(() => {
+    NProgress.configure({ showSpinner: false });
+
+    const handleStart = () => {
+      NProgress.start();
+    };
+    const handleDone = () => {
+      NProgress.done();
+    };
+
+    router.events.on('routeChangeStart', handleStart);
+    router.events.on('routeChangeComplete', handleDone);
+    router.events.on('routeChangeError', handleDone);
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart);
+      router.events.off('routeChangeComplete', handleDone);
+      router.events.off('routeChangeError', handleDone);
+    };
+  }, [router.events]);
 
   return (
     <AnimatePresence initial={false} onExitComplete={handleExitComplete}>
