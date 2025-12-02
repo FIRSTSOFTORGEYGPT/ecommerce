@@ -23,7 +23,6 @@ class SettingsController extends CoreController
         $this->repository = $repository;
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +31,7 @@ class SettingsController extends CoreController
      */
     public function index(Request $request)
     {
-        $language = $request->language ? $request->language : DEFAULT_LANGUAGE;
+        $language = $request->language ?? DEFAULT_LANGUAGE;
 
         $data = Cache::rememberForever(
             'cached_settings_' . $language,
@@ -41,26 +40,28 @@ class SettingsController extends CoreController
             }
         );
 
-        // Format maintenance start and until data
-        $maintenanceStart = Carbon::parse($data['options']['maintenance']['start'])->format('F j, Y h:i A');
-        $maintenanceUntil = Carbon::parse($data['options']['maintenance']['until'])->format('F j, Y h:i A');
+        // Safely handle maintenance data
+        $maintenanceStart = $maintenanceUntil = null;
+
+        if (!empty($data['options']['maintenance']) && is_array($data['options']['maintenance'])) {
+            $maintenanceStart = isset($data['options']['maintenance']['start'])
+                ? Carbon::parse($data['options']['maintenance']['start'])->format('F j, Y h:i A')
+                : null;
+
+            $maintenanceUntil = isset($data['options']['maintenance']['until'])
+                ? Carbon::parse($data['options']['maintenance']['until'])->format('F j, Y h:i A')
+                : null;
+        }
 
         $formattedMaintenance = [
             "start" => $maintenanceStart,
             "until" => $maintenanceUntil,
         ];
 
-        // Add formatted maintenance data to the existing data
         $data['maintenance'] = $formattedMaintenance;
 
         return $data;
     }
-
-    // public function fetchSettings(Request $request)
-    // {
-    //     $language = $request->language ? $request->language : DEFAULT_LANGUAGE;
-    //     return $this->repository->getData($language);
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -71,7 +72,8 @@ class SettingsController extends CoreController
      */
     public function store(SettingsRequest $request)
     {
-        $language = $request->language ? $request->language : DEFAULT_LANGUAGE;
+        $language = $request->language ?? DEFAULT_LANGUAGE;
+
         $request->merge([
             'options' => [
                 ...$request->options,
@@ -80,18 +82,22 @@ class SettingsController extends CoreController
             ]
         ]);
 
-        $data = $this->repository->where('language', $request->language)->first();
+        $data = $this->repository->where('language', $language)->first();
 
         if ($data) {
             if (Cache::has('cached_settings_' . $language)) {
                 Cache::forget('cached_settings_' . $language);
             }
-            $settings =  tap($data)->update($request->only(['options']));
+            $settings = tap($data)->update($request->only(['options']));
         } else {
-            // Cache::flush();
-            $settings =  $this->repository->create(['options' => $request['options'], 'language' => $language]);
+            $settings = $this->repository->create([
+                'options' => $request['options'],
+                'language' => $language
+            ]);
         }
+
         event(new Maintenance($language));
+
         return $settings;
     }
 
@@ -121,6 +127,7 @@ class SettingsController extends CoreController
     public function update(SettingsRequest $request, $id)
     {
         $settings = $this->repository->first();
+
         if (isset($settings->id)) {
             return $this->repository->update($request->only(['options']), $settings->id);
         } else {
