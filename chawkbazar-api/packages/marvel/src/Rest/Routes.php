@@ -18,6 +18,7 @@ use Marvel\Http\Controllers\CategoryController;
 use Marvel\Http\Controllers\CheckoutController;
 use Marvel\Http\Controllers\ConversationController;
 use Marvel\Http\Controllers\CouponController;
+use Marvel\Http\Controllers\CmsPageController;
 use Marvel\Http\Controllers\DeliveryTimeController;
 use Marvel\Http\Controllers\DownloadController;
 use Marvel\Http\Controllers\FaqsController;
@@ -190,6 +191,9 @@ Route::apiResource('terms-and-conditions', TermsAndConditionsController::class, 
     'only' => ['index', 'show'],
 ]);
 
+Route::get('cms-pages', [CmsPageController::class, 'index']);
+Route::get('cms-pages/{slug}', [CmsPageController::class, 'show']);
+
 Route::apiResource('flash-sale', FlashSaleController::class, [
     'only' => ['index', 'show'],
 ]);
@@ -206,6 +210,15 @@ Route::post('shop-maintenance-event', [ShopController::class, 'shopMaintenanceEv
  * Authorized Route for Customers only
  * ******************************************
  */
+
+Route::group(
+    ['middleware' => ['permission:' . Permission::EDITOR . '|' . Permission::SUPER_ADMIN, 'auth:sanctum', 'email.verified']],
+    function () {
+        Route::post('cms-pages', [CmsPageController::class, 'store']);
+        Route::put('cms-pages/{id}', [CmsPageController::class, 'update']);
+        Route::delete('cms-pages/{id}', [CmsPageController::class, 'destroy']);
+    }
+);
 
 Route::group(['middleware' => ['can:' . Permission::CUSTOMER, 'auth:sanctum', 'email.verified']], function () {
     Route::post('/update-email', [UserController::class, 'updateUserEmail']);
