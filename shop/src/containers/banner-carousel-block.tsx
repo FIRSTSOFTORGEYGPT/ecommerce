@@ -1,6 +1,8 @@
 import BannerCard from '@components/common/banner-card';
 import Carousel from '@components/ui/carousel/carousel';
-import { SwiperSlide } from 'swiper/react';
+import { SwiperSlide as SwiperSlideReact } from 'swiper/react';
+
+const SwiperSlide = SwiperSlideReact as any;
 import { ROUTES } from '@lib/routes';
 import { StaticBanner } from '@type/index';
 
