@@ -7,6 +7,9 @@ import { StaticBanner } from '@type/index';
 interface BannerProps {
   data: StaticBanner[];
   className?: string;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
 }
 
 const breakpoints = {
@@ -18,6 +21,9 @@ const breakpoints = {
 const BannerSliderBlock: React.FC<BannerProps> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   data,
+  autoplay = true,
+  autoplaySpeed = 4000,
+  loop = true,
 }) => {
   return (
     <div className={`${className} mx-auto max-w-[1920px] overflow-hidden`}>
@@ -25,7 +31,8 @@ const BannerSliderBlock: React.FC<BannerProps> = ({
         <Carousel
           breakpoints={breakpoints}
           centeredSlides={true}
-          autoplay={{ delay: 4000 }}
+          autoplay={autoplay ? { delay: autoplaySpeed } : false}
+          loop={loop}
           pagination={{
             clickable: true,
           }}

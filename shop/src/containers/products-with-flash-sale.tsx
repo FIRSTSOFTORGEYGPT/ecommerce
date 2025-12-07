@@ -13,13 +13,19 @@ import React from 'react';
 interface Props {
   className?: string;
   carouselBreakpoint?: {} | any;
+
+  // Essential Settings
   limit?: number;
+  sidebarPosition?: 'left' | 'right';
+  gridGap?: 'none' | 'small' | 'medium' | 'large';
 }
 
 const ProductsWithFlashSale: React.FC<Props> = ({
   className = 'mb-12 md:mb-14 xl:mb-7',
   carouselBreakpoint,
   limit = 10,
+  sidebarPosition = 'right',
+  gridGap = 'medium',
 }) => {
   const { t } = useTranslation();
   const { width } = useWindowSize();
@@ -39,11 +45,20 @@ const ProductsWithFlashSale: React.FC<Props> = ({
       limit,
       tags: flashSaleSettings?.slug,
     });
+
+  // Gap classes
+  const gapClasses: Record<string, string> = {
+    none: 'gap-0',
+    small: 'gap-3 md:gap-5',
+    medium: 'gap-5 md:gap-14 xl:gap-7',
+    large: 'gap-7 md:gap-16 xl:gap-10',
+  };
+
   return (
     <div
-      className={`grid grid-cols-1 gap-5 md:gap-14 xl:gap-7 xl:grid-cols-7 2xl:grid-cols-9 ${className}`}
+      className={`grid grid-cols-1 ${gapClasses[gridGap]} xl:grid-cols-7 2xl:grid-cols-9 ${className}`}
     >
-      <div className="px-4 pt-6 pb-5 border border-gray-300 rounded-lg xl:col-span-5 2xl:col-span-7 md:pt-7 lg:pt-9 xl:pt-7 2xl:pt-9 md:px-5 lg:px-7 lg:pb-7">
+      <div className={`px-4 pt-6 pb-5 border border-gray-300 rounded-lg xl:col-span-5 2xl:col-span-7 md:pt-7 lg:pt-9 xl:pt-7 2xl:pt-9 md:px-5 lg:px-7 lg:pb-7 ${sidebarPosition === 'left' ? 'xl:order-2' : ''}`}>
         <SectionHeader
           sectionHeading="text-top-products"
           categorySlug="/search"
@@ -71,7 +86,7 @@ const ProductsWithFlashSale: React.FC<Props> = ({
             carouselBreakpoint={carouselBreakpoint}
             products={flashSellProduct}
             loading={flashSellProductLoading}
-            className="col-span-full xl:col-span-2 row-span-full xl:row-auto lg:mb-1 xl:mb-0"
+            className={`col-span-full xl:col-span-2 row-span-full xl:row-auto lg:mb-1 xl:mb-0 ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
           />
         ) : (
           <SellWithProgress
@@ -79,7 +94,7 @@ const ProductsWithFlashSale: React.FC<Props> = ({
             products={flashSellProduct}
             loading={flashSellProductLoading}
             productVariant="gridSlim"
-            className="col-span-full xl:col-span-2 row-span-full xl:row-auto"
+            className={`col-span-full xl:col-span-2 row-span-full xl:row-auto ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
           />
         )
       ) : (

@@ -16,7 +16,11 @@ import { StaticBanner } from '@type/index';
 interface Props {
   data: StaticBanner[];
   className?: string;
-  paginationPosition?: 'left' | 'center';
+  paginationPosition?: 'left' | 'center' | 'right';
+  categoryLimit?: number;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
 }
 
 const categoryResponsive = {
@@ -42,6 +46,10 @@ const HeroWithCategory: React.FC<Props> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   data,
   paginationPosition = 'center',
+  categoryLimit = 10,
+  autoplay = true,
+  autoplaySpeed = 5000,
+  loop = true,
 }) => {
   const { t } = useTranslation();
   const {
@@ -49,7 +57,7 @@ const HeroWithCategory: React.FC<Props> = ({
     isLoading: loading,
     error,
   } = useCategories({
-    limit: 10,
+    limit: categoryLimit,
     parent: null,
   });
 
@@ -75,17 +83,17 @@ const HeroWithCategory: React.FC<Props> = ({
             >
               {loading && !categories?.data?.length
                 ? Array.from({ length: 8 }).map((_, idx) => (
-                    <SwiperSlide key={`category-list-${idx}`}>
-                      <CategoryListCardLoader
-                        uniqueKey={`category-list-${idx}`}
-                      />
-                    </SwiperSlide>
-                  ))
+                  <SwiperSlide key={`category-list-${idx}`}>
+                    <CategoryListCardLoader
+                      uniqueKey={`category-list-${idx}`}
+                    />
+                  </SwiperSlide>
+                ))
                 : categories?.data?.map((category) => (
-                    <SwiperSlide key={`category--key${category.id}`}>
-                      <CategoryListCard category={category} />
-                    </SwiperSlide>
-                  ))}
+                  <SwiperSlide key={`category--key${category.id}`}>
+                    <CategoryListCard category={category} />
+                  </SwiperSlide>
+                ))}
             </Carousel>
           </div>
           <div className="hidden grid-cols-1 gap-3 2xl:grid ltr:2xl:-mr-14 rtl:2xl:-ml-14">
@@ -110,7 +118,8 @@ const HeroWithCategory: React.FC<Props> = ({
           pagination={{
             clickable: true,
           }}
-          autoplay={{ delay: 4000 }}
+          autoplay={autoplay ? { delay: autoplaySpeed } : false}
+          loop={loop}
           className={`-mx-0 pagination-${paginationPosition}`}
           buttonClassName="hidden"
         >
