@@ -33,6 +33,9 @@ interface Props {
   paginationPosition?: 'left' | 'right' | 'center' | 'none';
   buttonClassName?: string;
   buttonPosition?: 'inside' | 'outside';
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
 }
 
 const HeroSlider: React.FC<Props> = ({
@@ -43,6 +46,9 @@ const HeroSlider: React.FC<Props> = ({
   paginationPosition = 'center',
   buttonClassName = 'hidden',
   buttonPosition = 'outside',
+  autoplay = true,
+  autoplaySpeed = 5000,
+  loop = true,
 }) => {
   return (
     <div
@@ -55,12 +61,10 @@ const HeroSlider: React.FC<Props> = ({
       )}
     >
       <Carousel
-        autoplay={{
-          delay: 5000,
-        }}
-        className={`mx-0 ${
-          variant === 'fullWidth' ? 'carousel-full-width' : ''
-        } pagination-${paginationPosition}`}
+        autoplay={autoplay ? { delay: autoplaySpeed } : false}
+        loop={loop}
+        className={`mx-0 ${variant === 'fullWidth' ? 'carousel-full-width' : ''
+          } pagination-${paginationPosition}`}
         buttonClassName={cn(buttonClassName)}
         pagination={{
           clickable: true,

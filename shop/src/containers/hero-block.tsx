@@ -16,16 +16,25 @@ const breakpoints = {
 
 type Props = {
   data: StaticBanner[];
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
 };
 
-const HeroBlock: React.FC<Props> = ({ data }) => {
+const HeroBlock: React.FC<Props> = ({
+  data,
+  autoplay = true,
+  autoplaySpeed = 5000,
+  loop = true,
+}) => {
   const { width } = useWindowSize();
   return (
     <div className="heroBannerOne relative max-w-[1920px] mb-5 md:mb-12 lg:mb-14 2xl:mb-16 mx-auto overflow-hidden px-4 md:px-8 2xl:px-0">
       <Carousel
         breakpoints={breakpoints}
         centeredSlides={width < 1500 ? false : true}
-        autoplay={{ delay: 5000 }}
+        autoplay={autoplay ? { delay: autoplaySpeed } : false}
+        loop={loop}
         className="mx-0"
         buttonClassName="hidden"
         pagination={{

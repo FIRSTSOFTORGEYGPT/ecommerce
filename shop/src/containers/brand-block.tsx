@@ -16,38 +16,30 @@ import { filterBrandImages, filterBrands } from '@lib/filter-brands';
 interface BrandProps {
   sectionHeading: string;
   className?: string;
+  limit?: number;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
+  showArrows?: boolean;
 }
 
 const breakpoints = {
-  '1720': {
-    slidesPerView: 8,
-    spaceBetween: 28,
-  },
-  '1400': {
-    slidesPerView: 7,
-    spaceBetween: 28,
-  },
-  '1025': {
-    slidesPerView: 6,
-    spaceBetween: 28,
-  },
-  '768': {
-    slidesPerView: 5,
-    spaceBetween: 20,
-  },
-  '500 ': {
-    slidesPerView: 4,
-    spaceBetween: 20,
-  },
-  '0': {
-    slidesPerView: 3,
-    spaceBetween: 12,
-  },
+  '1720': { slidesPerView: 8, spaceBetween: 20 },
+  '1400': { slidesPerView: 7, spaceBetween: 20 },
+  '1025': { slidesPerView: 6, spaceBetween: 20 },
+  '768': { slidesPerView: 5, spaceBetween: 16 },
+  '500': { slidesPerView: 4, spaceBetween: 16 },
+  '0': { slidesPerView: 3, spaceBetween: 12 },
 };
 
 const BrandBlock: React.FC<BrandProps> = ({
   className = 'mb-11 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0',
   sectionHeading,
+  limit = 16,
+  autoplay = true,
+  autoplaySpeed = 3000,
+  loop = true,
+  showArrows = true,
 }) => {
   const { t } = useTranslation();
   const {
@@ -55,14 +47,14 @@ const BrandBlock: React.FC<BrandProps> = ({
     isLoading: loading,
     error,
   } = useBrands({
-    limit: 16,
+    limit,
   });
 
   if (!loading && isEmpty(brands?.data)) {
     return <NotFoundItem text={t('text-no-brands-found')} />;
   }
 
-  // Filter brands for grid layout
+  // Filter brands for slider layout
   const sliderBrand: Type[] = filterBrands(brands?.data, 'slider-layout');
 
   return (
@@ -74,35 +66,34 @@ const BrandBlock: React.FC<BrandProps> = ({
       ) : (
         <Carousel
           breakpoints={breakpoints}
-          loop={false}
-          autoplay={{ delay: 3500 }}
-          buttonClassName="-mt-8 md:-mt-12"
+          loop={loop}
+          autoplay={autoplay ? { delay: autoplaySpeed } : false}
+          buttonClassName={showArrows ? "-mt-8 md:-mt-12" : "hidden"}
           prevActivateId="brandsSlidePrev"
           nextActivateId="brandsSlideNext"
         >
           {loading && !brands?.data
             ? Array.from({ length: 7 }).map((_, idx) => (
-                <SwiperSlide key={idx}>
-                  <CardRoundedLoader uniqueKey={`category-${idx}`} />
-                </SwiperSlide>
-              ))
+              <SwiperSlide key={idx}>
+                <CardRoundedLoader uniqueKey={`brand-${idx}`} />
+              </SwiperSlide>
+            ))
             : sliderBrand?.map((brand) => (
-                <SwiperSlide key={`brand--key${brand.id}`}>
-                  <Card
-                    item={brand}
-                    variant="rounded"
-                    // size="medium"
-                    href={{
-                      pathname: ROUTES.SEARCH,
-                      query: { brand: brand.slug },
-                    }}
-                    image={
-                      filterBrandImages(brand?.images, 'slider-layout')
-                        ?.image?.[0]
-                    }
-                  />
-                </SwiperSlide>
-              ))}
+              <SwiperSlide key={`brand--key${brand.id}`}>
+                <Card
+                  item={brand}
+                  variant="rounded"
+                  href={{
+                    pathname: ROUTES.SEARCH,
+                    query: { brand: brand.slug },
+                  }}
+                  image={
+                    filterBrandImages(brand?.images, 'slider-layout')
+                      ?.image?.[0]
+                  }
+                />
+              </SwiperSlide>
+            ))}
         </Carousel>
       )}
     </div>

@@ -1,111 +1,186 @@
-import type { Config } from "@measured/puck";
-import BannerCarouselBlock from "../containers/banner-carousel-block";
-import Footer from "../components/layout/footer/footer";
+/**
+ * Main Puck Configuration
+ * 
+ * Imports and registers all component configs
+ */
 
+import type { Config } from "@measured/puck";
+import {
+  // Phase 2: Core Components
+  BannerCarouselBlockConfig,
+  BannerCarouselBlockProps,
+  HeroBlockConfig,
+  HeroBlockProps,
+  ProductsBlockConfig,
+  ProductsBlockProps,
+  CategoryBlockConfig,
+  CategoryBlockProps,
+  TestimonialCarouselConfig,
+  TestimonialCarouselProps,
+  FooterConfig,
+  FooterProps,
+  // Phase 3: Additional Components
+  BannerBlockConfig,
+  BannerBlockProps,
+  BannerGridBlockConfig,
+  BannerGridBlockProps,
+  BannerSliderBlockConfig,
+  BannerSliderBlockProps,
+  BrandBlockConfig,
+  BrandBlockProps,
+  BrandGridBlockConfig,
+  BrandGridBlockProps,
+  FeatureBlockConfig,
+  FeatureBlockProps,
+  ProductsFeaturedConfig,
+  ProductsFeaturedProps,
+  ContactInfoConfig,
+  ContactInfoProps,
+  // Phase 4: Advanced Components
+  HeroSliderConfig,
+  HeroSliderProps,
+  HeroWithCategoryConfig,
+  HeroWithCategoryProps,
+  HeroWithCategoryFlashConfig,
+  HeroWithCategoryFlashProps,
+  BannerWithProductsConfig,
+  BannerWithProductsProps,
+  ProductFlashSaleBlockConfig,
+  ProductFlashSaleBlockProps,
+  ProductsWithFlashSaleConfig,
+  ProductsWithFlashSaleProps,
+  SaleBannerWithProductsConfig,
+  SaleBannerWithProductsProps,
+  // Additional Containers
+  ExclusiveBlockConfig,
+  ExclusiveBlockProps,
+  CollectionBlockConfig,
+  CollectionBlockProps,
+  ProductsTopBlockConfig,
+  ProductsTopBlockProps,
+  CategoryGridBlockConfig,
+  CategoryGridBlockProps,
+} from "./configs";
+
+// Props type mapping for all components
 type Props = {
-  HeadingBlock: { title: string };
-  test: { title: string };
-  BannerCarouselBlock: {
-    banners: {
-      title: string;
-      slug: string;
-      desktop_image_url: string;
-      mobile_image_url: string;
-    }[];
-    showNavigation: boolean;
-  };
-  Footer: {};
+  // Phase 2
+  BannerCarouselBlock: BannerCarouselBlockProps;
+  HeroBlock: HeroBlockProps;
+  ProductsBlock: ProductsBlockProps;
+  CategoryBlock: CategoryBlockProps;
+  TestimonialCarousel: TestimonialCarouselProps;
+  Footer: FooterProps;
+  // Phase 3
+  BannerBlock: BannerBlockProps;
+  BannerGridBlock: BannerGridBlockProps;
+  BannerSliderBlock: BannerSliderBlockProps;
+  BrandBlock: BrandBlockProps;
+  BrandGridBlock: BrandGridBlockProps;
+  FeatureBlock: FeatureBlockProps;
+  ProductsFeatured: ProductsFeaturedProps;
+  ContactInfo: ContactInfoProps;
+  // Phase 4
+  HeroSlider: HeroSliderProps;
+  HeroWithCategory: HeroWithCategoryProps;
+  HeroWithCategoryFlash: HeroWithCategoryFlashProps;
+  BannerWithProducts: BannerWithProductsProps;
+  ProductFlashSaleBlock: ProductFlashSaleBlockProps;
+  ProductsWithFlashSale: ProductsWithFlashSaleProps;
+  SaleBannerWithProducts: SaleBannerWithProductsProps;
+  // Additional
+  ExclusiveBlock: ExclusiveBlockProps;
+  CollectionBlock: CollectionBlockProps;
+  ProductsTopBlock: ProductsTopBlockProps;
+  CategoryGridBlock: CategoryGridBlockProps;
 };
 
 export const config: Config<Props> = {
+  categories: {
+    heroes: {
+      title: "Hero Sections",
+      components: [
+        "HeroBlock",
+        "HeroSlider",
+        "HeroWithCategory",
+        "HeroWithCategoryFlash",
+      ],
+    },
+    banners: {
+      title: "Banners",
+      components: [
+        "BannerCarouselBlock",
+        "BannerBlock",
+        "BannerGridBlock",
+        "BannerSliderBlock",
+        "BannerWithProducts",
+      ],
+    },
+    products: {
+      title: "Product Displays",
+      components: [
+        "ProductsBlock",
+        "ProductsFeatured",
+        "ProductsTopBlock",
+        "ProductFlashSaleBlock",
+        "ProductsWithFlashSale",
+        "SaleBannerWithProducts",
+      ],
+    },
+    categories: {
+      title: "Categories & Brands",
+      components: [
+        "CategoryBlock",
+        "CategoryGridBlock",
+        "BrandBlock",
+        "BrandGridBlock",
+      ],
+    },
+    content: {
+      title: "Content Blocks",
+      components: [
+        "TestimonialCarousel",
+        "CollectionBlock",
+        "ExclusiveBlock",
+        "FeatureBlock",
+        "ContactInfo",
+      ],
+    },
+    layout: {
+      title: "Layout",
+      components: ["Footer"],
+    },
+  },
   components: {
-    HeadingBlock: {
-      fields: {
-        title: { type: "text" },
-      },
-      defaultProps: {
-        title: "Heading",
-      },
-      render: ({ title }) => (
-        <div style={{ padding: 64 }}>
-          <h1>{title}</h1>
-        </div>
-      ),
-    },
-    test: {
-      fields: {
-        title: { type: "textarea" },
-      },
-      defaultProps: {
-        title: "this is title",
-      },
-      render: ({ title }) => (
-        <div style={{ backgroundColor: "red" }}>
-          <p>{title}</p>
-        </div>
-      ),
-    },
-    BannerCarouselBlock: {
-      fields: {
-        banners: {
-          type: "array",
-          getItemSummary: (item) => item.title || "Banner",
-          arrayFields: {
-            title: { type: "text" },
-            slug: { type: "text" },
-            desktop_image_url: { type: "text" },
-            mobile_image_url: { type: "text" },
-          },
-        },
-        showNavigation: {
-          type: "radio",
-          options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
-          ],
-        },
-      },
-      defaultProps: {
-        banners: [
-          {
-            title: "Banner 1",
-            slug: "banner-1",
-            desktop_image_url: "/assets/images/placeholders/1800x450.svg",
-            mobile_image_url: "/assets/images/placeholders/450x180.svg",
-          },
-        ],
-        showNavigation: true,
-      },
-      render: ({ banners, showNavigation }) => {
-        const mappedBanners = banners.map((b, i) => ({
-          id: i,
-          title: b.title,
-          slug: b.slug,
-          image: {
-            mobile: {
-              url: b.mobile_image_url,
-              width: 450,
-              height: 180,
-            },
-            desktop: {
-              url: b.desktop_image_url,
-              width: 1800,
-              height: 450,
-            },
-          },
-        }));
-        return (
-          <BannerCarouselBlock
-            banners={mappedBanners}
-            showNavigation={showNavigation}
-          />
-        );
-      },
-    },
-    Footer: {
-      fields: {},
-      render: () => <Footer />,
-    },
+    // Phase 2: Core Components
+    BannerCarouselBlock: BannerCarouselBlockConfig,
+    HeroBlock: HeroBlockConfig,
+    ProductsBlock: ProductsBlockConfig,
+    CategoryBlock: CategoryBlockConfig,
+    TestimonialCarousel: TestimonialCarouselConfig,
+    Footer: FooterConfig,
+    // Phase 3: Additional Components
+    BannerBlock: BannerBlockConfig,
+    BannerGridBlock: BannerGridBlockConfig,
+    BannerSliderBlock: BannerSliderBlockConfig,
+    BrandBlock: BrandBlockConfig,
+    BrandGridBlock: BrandGridBlockConfig,
+    FeatureBlock: FeatureBlockConfig,
+    ProductsFeatured: ProductsFeaturedConfig,
+    ContactInfo: ContactInfoConfig,
+    // Phase 4: Advanced Components
+    HeroSlider: HeroSliderConfig,
+    HeroWithCategory: HeroWithCategoryConfig,
+    HeroWithCategoryFlash: HeroWithCategoryFlashConfig,
+    BannerWithProducts: BannerWithProductsConfig,
+    ProductFlashSaleBlock: ProductFlashSaleBlockConfig,
+    ProductsWithFlashSale: ProductsWithFlashSaleConfig,
+    SaleBannerWithProducts: SaleBannerWithProductsConfig,
+    // Additional Containers
+    ExclusiveBlock: ExclusiveBlockConfig,
+    CollectionBlock: CollectionBlockConfig,
+    ProductsTopBlock: ProductsTopBlockConfig,
+    CategoryGridBlock: CategoryGridBlockConfig,
   },
 };
 

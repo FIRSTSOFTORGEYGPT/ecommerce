@@ -17,6 +17,9 @@ interface Props {
   effectPosition?: 'imageOnly' | 'fullBody';
   href: LinkProps['href'];
   image?: Attachment | null;
+  showProductCount?: boolean;
+  showLabel?: boolean;
+  cardSize?: 'small' | 'medium' | 'large';
 }
 
 const Card: React.FC<Props> = ({
@@ -27,18 +30,24 @@ const Card: React.FC<Props> = ({
   effectPosition = 'imageOnly',
   href,
   image,
+  showProductCount = false,
+  showLabel = true,
+  cardSize,
 }) => {
   const { name, products_count } = item ?? {};
 
-  let size = 'small';
-  if (variant === 'circle' || variant === 'elegant') {
-    size = 'small';
-  } else if (variant === 'rounded') {
-    size = 'medium';
-  } else if (variant === 'modern') {
-    size = 'big';
-  } else {
-    size = 'small';
+  // Use cardSize if provided, otherwise determine from variant
+  let size = cardSize === 'large' ? 'big' : cardSize || 'small';
+  if (!cardSize) {
+    if (variant === 'circle' || variant === 'elegant') {
+      size = 'small';
+    } else if (variant === 'rounded') {
+      size = 'medium';
+    } else if (variant === 'modern') {
+      size = 'big';
+    } else {
+      size = 'small';
+    }
   }
 
   const placeholderImage = `/assets/placeholder/card-${size}.svg`;
@@ -47,26 +56,22 @@ const Card: React.FC<Props> = ({
   return (
     <Link
       href={href}
-      className={`group flex justify-center ${
-        variant === 'elegant'
-          ? 'text-left rounded-lg px-6 lg:px-8 pt-7 lg:pt-10 pb-5 lg:pb-8 bg-gray-200'
-          : 'text-center'
-      } flex-col relative ${
-        variant === 'modern'
+      className={`group flex justify-center ${variant === 'elegant'
+        ? 'text-left rounded-lg px-6 lg:px-8 pt-7 lg:pt-10 pb-5 lg:pb-8 bg-gray-200'
+        : 'text-center'
+        } flex-col relative ${variant === 'modern'
           ? 'lg:h-60 md:h-48 h-44 w-full bg-gray-200 rounded-md'
           : ''
-      }`}
+        }`}
     >
       <div
-        className={`relative inline-flex w-full  ${
-          (['rounded', 'modern', 'elegant'].includes(variant) &&
-            'rounded-md') ||
+        className={`relative inline-flex w-full  ${(['rounded', 'modern', 'elegant'].includes(variant) &&
+          'rounded-md') ||
           (variant === 'circle' && 'rounded-full')
-        } ${
-          variant !== 'modern'
+          } ${variant !== 'modern'
             ? ' mb-3.5 md:mb-4 lg:mb-5 xl:mb-6'
             : ' xl:mb-8 md:mb-4'
-        }`}
+          }`}
       >
         <div
           className={classNames('flex relative', {
@@ -81,27 +86,24 @@ const Card: React.FC<Props> = ({
             alt={name || t('text-card-thumbnail')}
             fill
             quality={100}
-            className={`${
-              (['rounded'].includes(variant)
-                ? 'rounded-md object-cover'
-                : '') ||
+            className={`${(['rounded'].includes(variant)
+              ? 'rounded-md object-cover'
+              : '') ||
               (variant === 'circle' && 'rounded-full')
-            } ${
-              ['elegant', 'modern'].includes(variant)
+              } ${['elegant', 'modern'].includes(variant)
                 ? 'object-contain'
                 : 'object-cover bg-gray-300'
-            }`}
+              }`}
             sizes="(max-width: 768px) 100vw"
           />
         </div>
         {effectActive === true && effectPosition === 'imageOnly' && (
           <>
             <div
-              className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${
-                (['rounded', 'modern', 'elegant'].includes(variant) &&
-                  'rounded-md') ||
+              className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${(['rounded', 'modern', 'elegant'].includes(variant) &&
+                'rounded-md') ||
                 (variant === 'circle' && 'rounded-full')
-              }`}
+                }`}
             />
             <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full">
               <FaLink className="text-base text-white transition-all duration-300 ease-in-out transform scale-0 opacity-0 sm:text-xl lg:text-2xl xl:text-3xl group-hover:opacity-100 group-hover:scale-100" />
@@ -109,7 +111,7 @@ const Card: React.FC<Props> = ({
           </>
         )}
       </div>
-      {variant === 'modern' ? (
+      {showLabel && (variant === 'modern' ? (
         <Text
           variant="heading"
           className="absolute inset-x-0 z-10 text-sm font-semibold text-center capitalize text-heading md:text-base xl:text-lg bottom-4 sm:bottom-5 md:bottom-6 xl:bottom-8"
@@ -120,25 +122,22 @@ const Card: React.FC<Props> = ({
         <Text variant="heading" className="capitalize">
           {name}
         </Text>
-      )}
-      {variant === 'elegant' ? (
+      ))}
+      {(variant === 'elegant' || showProductCount) && (
         <Text className="text-body text-sm sm:leading-6 leading-7 pb-0.5 truncate">
           {products_count}{' '}
           {products_count > 1 || products_count === 0
             ? t('text-products')
             : t('text-product')}
         </Text>
-      ) : (
-        ''
       )}
       {effectActive === true && effectPosition === 'fullBody' && (
         <>
           <div
-            className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${
-              (['rounded', 'modern', 'elegant'].includes(variant) &&
-                'rounded-md') ||
+            className={`absolute top-0 left-0 bg-black w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-30 ${(['rounded', 'modern', 'elegant'].includes(variant) &&
+              'rounded-md') ||
               (variant === 'circle' && 'rounded-full')
-            }`}
+              }`}
           />
           <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full">
             <FaLink className="text-base text-white transition-all duration-300 ease-in-out transform scale-0 opacity-0 sm:text-xl lg:text-2xl xl:text-3xl group-hover:opacity-100 group-hover:scale-100" />
