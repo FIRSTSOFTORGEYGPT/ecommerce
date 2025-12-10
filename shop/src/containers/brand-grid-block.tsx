@@ -13,15 +13,19 @@ import { filterBrands } from '@lib/filter-brands';
 interface BrandProps {
   sectionHeading: string;
   className?: string;
+
+  // Essential Settings
   limit?: number;
   variant?: '6column' | '4column';
+  gridGap?: 'none' | 'small' | 'medium' | 'large';
 }
 
 const BrandGridBlock: React.FC<BrandProps> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   sectionHeading,
   variant = '4column',
-  limit,
+  limit = 8,
+  gridGap = 'medium',
 }) => {
   const { t } = useTranslation();
   const {
@@ -38,18 +42,20 @@ const BrandGridBlock: React.FC<BrandProps> = ({
 
   // Filter brands for grid layout
   const gridBrands: Type[] = filterBrands(brands?.data, 'grid-layout');
-  let items: any = [];
-
-  if (limit) {
-    items = gridBrands?.slice(0, limit);
-  } else {
-    items = gridBrands;
-  }
+  const items = limit ? gridBrands?.slice(0, limit) : gridBrands;
 
   const columnClasses =
     variant === '4column'
       ? 'grid-cols-2 sm:grid-cols-4'
       : 'grid-cols-2 sm:grid-cols-4 2xl:grid-cols-6';
+
+  // Grid gap classes
+  const gapClasses: Record<string, string> = {
+    none: 'gap-0',
+    small: 'gap-2 md:gap-2.5',
+    medium: 'gap-2.5 md:gap-3 lg:gap-5 xl:gap-7',
+    large: 'gap-4 md:gap-5 lg:gap-7 xl:gap-10',
+  };
 
   return (
     <div className={className}>
@@ -57,16 +63,14 @@ const BrandGridBlock: React.FC<BrandProps> = ({
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div
-          className={`grid ${columnClasses} gap-2.5 md:gap-3 lg:gap-5 xl:gap-7`}
-        >
+        <div className={`grid ${columnClasses} ${gapClasses[gridGap]}`}>
           {loading
-            ? Array.from({ length: items?.length ?? 0 }).map((_, idx) => (
-                <BrandCardLoader key={idx} uniqueKey={`top-brand-${idx}`} />
-              ))
+            ? Array.from({ length: limit }).map((_, idx) => (
+              <BrandCardLoader key={idx} uniqueKey={`top-brand-${idx}`} />
+            ))
             : items?.map((brand: Type) => (
-                <BrandCard key={`brand--key${brand.id}`} brand={brand} />
-              ))}
+              <BrandCard key={`brand--key${brand.id}`} brand={brand} />
+            ))}
         </div>
       )}
     </div>

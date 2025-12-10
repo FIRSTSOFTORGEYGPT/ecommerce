@@ -17,98 +17,40 @@ import { getCategoryTypeImage } from '@lib/get-category-type-image';
 interface CategoriesProps {
   sectionHeading: string;
   className?: string;
+  limit?: number;
   variant?: 'rounded' | 'circle' | 'modern' | 'elegant';
-  effectPosition?: 'imageOnly' | 'fullBody';
-  type?: 'image' | 'vector';
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
+  showArrows?: boolean;
 }
 
-const breakpoints = {
-  '1720': {
-    slidesPerView: 8,
-    spaceBetween: 28,
-  },
-  '1400': {
-    slidesPerView: 7,
-    spaceBetween: 28,
-  },
-  '1025': {
-    slidesPerView: 6,
-    spaceBetween: 28,
-  },
-  '768': {
-    slidesPerView: 5,
-    spaceBetween: 20,
-  },
-  '500 ': {
-    slidesPerView: 4,
-    spaceBetween: 20,
-  },
-  '0': {
-    slidesPerView: 3,
-    spaceBetween: 12,
-  },
-};
-
-const breakpointsCircle = {
-  '1720': {
-    slidesPerView: 8,
-    spaceBetween: 48,
-  },
-  '1400': {
-    slidesPerView: 7,
-    spaceBetween: 32,
-  },
-  '1025': {
-    slidesPerView: 6,
-    spaceBetween: 28,
-  },
-  '768': {
-    slidesPerView: 5,
-    spaceBetween: 20,
-  },
-  '500 ': {
-    slidesPerView: 4,
-    spaceBetween: 20,
-  },
-  '0': {
-    slidesPerView: 3,
-    spaceBetween: 12,
-  },
+const defaultBreakpoints = {
+  '1720': { slidesPerView: 8, spaceBetween: 28 },
+  '1400': { slidesPerView: 7, spaceBetween: 28 },
+  '1025': { slidesPerView: 6, spaceBetween: 28 },
+  '768': { slidesPerView: 5, spaceBetween: 20 },
+  '500': { slidesPerView: 4, spaceBetween: 20 },
+  '0': { slidesPerView: 3, spaceBetween: 12 },
 };
 
 const modernBreakpoints = {
-  '1780': {
-    slidesPerView: 6,
-    spaceBetween: 12,
-  },
-  '1280': {
-    slidesPerView: 5,
-    spaceBetween: 12,
-  },
-  // "1025": {
-  // 	slidesPerView: 5,
-  // 	spaceBetween: 12,
-  // },
-  '768': {
-    slidesPerView: 4,
-    spaceBetween: 12,
-  },
-  '480': {
-    slidesPerView: 3,
-    spaceBetween: 12,
-  },
-  '0': {
-    slidesPerView: 2,
-    spaceBetween: 12,
-  },
+  '1780': { slidesPerView: 6, spaceBetween: 12 },
+  '1280': { slidesPerView: 5, spaceBetween: 12 },
+  '768': { slidesPerView: 4, spaceBetween: 12 },
+  '480': { slidesPerView: 3, spaceBetween: 12 },
+  '0': { slidesPerView: 2, spaceBetween: 12 },
 };
 
 const CategoryBlock: React.FC<CategoriesProps> = ({
   className = 'mb-10 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0',
   sectionHeading,
+  limit = 10,
   variant = 'circle',
-  effectPosition = 'imageOnly',
-  type,
+  autoplay = true,
+  autoplaySpeed = 3500,
+  loop = true,
+  showArrows = true,
 }) => {
   const { t } = useTranslation();
 
@@ -117,7 +59,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
     isLoading: loading,
     error,
   } = useCategories({
-    limit: 10,
+    limit,
     parent: null,
   });
 
@@ -125,19 +67,9 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
     return <NotFoundItem text={t('text-no-categories-found')} />;
   }
 
-  let sliderBreakpoints = {};
-  if (variant === 'rounded') {
-    sliderBreakpoints = breakpoints;
-  } else if (variant === 'modern' || variant === 'elegant') {
-    sliderBreakpoints = modernBreakpoints;
-  } else {
-    sliderBreakpoints = breakpointsCircle;
-  }
-  // Create an array of string
-  let stringArray = Object?.keys(sliderBreakpoints);
-  let numberArray = stringArray?.map(Number);
-  let max = Math?.max(...numberArray);
-  let maxValue = max?.toString();
+  // Select breakpoints based on variant
+  const breakpoints = variant === 'modern' || variant === 'elegant' ? modernBreakpoints : defaultBreakpoints;
+
   return (
     <div className={className}>
       <SectionHeader sectionHeading={sectionHeading} />
@@ -145,49 +77,45 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
         <Alert message={error?.message} />
       ) : (
         <Carousel
-          breakpoints={sliderBreakpoints}
-          buttonClassName="-mt-8 md:-mt-10"
-          autoplay={{ delay: 3500 }}
-          loop={
-            sliderBreakpoints[maxValue]?.slidesPerView <=
-            categories?.data?.length
-          }
+          breakpoints={breakpoints}
+          buttonClassName={showArrows ? "-mt-8 md:-mt-10" : "hidden"}
+          autoplay={autoplay ? { delay: autoplaySpeed } : false}
+          loop={loop}
           prevActivateId="categoriesSlidePrev"
           nextActivateId="categoriesSlideNext"
         >
           {loading && !categories?.data
-            ? Array.from({ length: 10 }).map((_, idx) => {
-                if (variant === 'rounded') {
-                  return (
-                    <SwiperSlide key={`card-rounded-${idx}`}>
-                      <CardRoundedLoader uniqueKey={`card-rounded-${idx}`} />
-                    </SwiperSlide>
-                  );
-                } else if (variant === 'modern') {
-                  return (
-                    <SwiperSlide key={`card-rounded-${idx}`}>
-                      <CardIconLoader uniqueKey={`card-rounded-${idx}`} />
-                    </SwiperSlide>
-                  );
-                }
+            ? Array.from({ length: limit }).map((_, idx) => {
+              if (variant === 'rounded') {
                 return (
-                  <SwiperSlide key={`card-circle-${idx}`}>
-                    <CardLoader uniqueKey={`card-circle-${idx}`} />
+                  <SwiperSlide key={`card-rounded-${idx}`}>
+                    <CardRoundedLoader uniqueKey={`card-rounded-${idx}`} />
                   </SwiperSlide>
                 );
-              })
-            : categories?.data?.map((category) => (
-                <SwiperSlide key={`category--key-${category.id}`}>
-                  <Card
-                    item={category}
-                    href={`${ROUTES.CATEGORY}/${category.slug}`}
-                    variant={variant}
-                    effectActive={true}
-                    effectPosition={effectPosition}
-                    image={getCategoryTypeImage(category, type)}
-                  />
+              } else if (variant === 'modern') {
+                return (
+                  <SwiperSlide key={`card-icon-${idx}`}>
+                    <CardIconLoader uniqueKey={`card-icon-${idx}`} />
+                  </SwiperSlide>
+                );
+              }
+              return (
+                <SwiperSlide key={`card-circle-${idx}`}>
+                  <CardLoader uniqueKey={`card-circle-${idx}`} />
                 </SwiperSlide>
-              ))}
+              );
+            })
+            : categories?.data?.map((category: any) => (
+              <SwiperSlide key={`category--key-${category.id}`}>
+                <Card
+                  item={category}
+                  href={`${ROUTES.CATEGORY}/${category.slug}`}
+                  variant={variant}
+                  effectActive={true}
+                  image={getCategoryTypeImage(category, 'image')}
+                />
+              </SwiperSlide>
+            ))}
         </Carousel>
       )}
     </div>

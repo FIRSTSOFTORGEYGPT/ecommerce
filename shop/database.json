@@ -91,6 +91,82 @@
         ],
         "zones": {}
       }
+    },
+    {
+      "path": "/products/the-horse-original",
+      "data": {
+        "root": {
+          "props": {}
+        },
+        "content": [],
+        "zones": {}
+      }
+    },
+    {
+      "path": "/trendy",
+      "data": {
+        "root": {
+          "props": {}
+        },
+        "content": [
+          {
+            "type": "BannerSliderBlock",
+            "props": {
+              "banners": [
+                {
+                  "title": "Promotion Slide",
+                  "slug": "promotion",
+                  "desktop_image_url": "/assets/images/placeholders/1440x570.svg",
+                  "mobile_image_url": "/assets/images/placeholders/450x180.svg",
+                  "alt_text": "Promotion slide"
+                }
+              ],
+              "marginBottom": "xlarge",
+              "className": "",
+              "id": "BannerSliderBlock-09ae8e35-d2be-487e-ae5b-f6c7b4375c0d"
+            }
+          },
+          {
+            "type": "ProductFlashSaleBlock",
+            "props": {
+              "sectionHeading": "Flash Sale",
+              "variant": "slider",
+              "limit": 10,
+              "marginBottom": "large",
+              "className": "",
+              "id": "ProductFlashSaleBlock-19e2a5ef-3272-4b82-90ea-256a3bf027ce"
+            }
+          },
+          {
+            "type": "BrandGridBlock",
+            "props": {
+              "sectionHeading": "Our Brands",
+              "variant": "6column",
+              "limit": 10,
+              "marginBottom": "xlarge",
+              "className": "bg-red-900",
+              "id": "BrandGridBlock-fcd2e776-dc98-4bfe-851f-9039ce85d294"
+            }
+          },
+          {
+            "type": "ExclusiveBlock",
+            "props": {
+              "marginBottom": "large",
+              "className": "",
+              "id": "ExclusiveBlock-ac5bf837-9ef6-44c3-825a-60f3526ff6be"
+            }
+          },
+          {
+            "type": "FeatureBlock",
+            "props": {
+              "marginBottom": "large",
+              "className": "",
+              "id": "FeatureBlock-8150ed8f-97a9-4b81-81d3-49b8508ad292"
+            }
+          }
+        ],
+        "zones": {}
+      }
     }
   ]
 }

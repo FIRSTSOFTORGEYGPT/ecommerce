@@ -1,6 +1,8 @@
 import BannerCard from '@components/common/banner-card';
 import Carousel from '@components/ui/carousel/carousel';
-import { SwiperSlide } from 'swiper/react';
+import { SwiperSlide as SwiperSlideReact } from 'swiper/react';
+
+const SwiperSlide = SwiperSlideReact as any;
 import { ROUTES } from '@lib/routes';
 import { StaticBanner } from '@type/index';
 
@@ -22,6 +24,9 @@ const breakpoints = {
 interface BannerProps {
   banners: StaticBanner[];
   showNavigation?: boolean;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  loop?: boolean;
   className?: string;
 }
 
@@ -29,13 +34,17 @@ const BannerCarouselBlock: React.FC<BannerProps> = ({
   className = 'mb-12 md:mb-12 lg:mb-14 pb-0.5 xl:pb-1.5',
   banners,
   showNavigation = true,
+  autoplay = true,
+  autoplaySpeed = 5000,
+  loop = true,
 }) => {
   return (
     <div className={className}>
       <Carousel
         showNavigation={showNavigation}
         breakpoints={breakpoints}
-        autoplay={{ delay: 5000 }}
+        autoplay={autoplay ? { delay: autoplaySpeed } : false}
+        loop={loop}
         prevActivateId="bannerCarouselPrev"
         nextActivateId="bannerCarouselNext"
       >

@@ -10,19 +10,35 @@ import isEmpty from "lodash/isEmpty";
 import NotFoundItem from "@components/404/not-found-item";
 
 interface ProductsProps {
+  // Content Settings
   sectionHeading: string;
   categorySlug?: string;
   className?: string;
-  variant?: "flat" | "left" | "center" | "combined" | "fashion";
+
+  // Essential Settings
   limit?: number;
+  variant?: "flat" | "left" | "center" | "combined" | "fashion";
+  gridColumns?: number;
+  gridGap?: 'none' | 'small' | 'medium' | 'large';
 }
+
+// Static column classes - Tailwind needs full class names at build time
+const columnClasses: Record<number, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 md:grid-cols-3',
+  4: 'grid-cols-2 md:grid-cols-4',
+  5: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-5',
+  6: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-6',
+};
 
 const ProductsFeatured: React.FC<ProductsProps> = ({
   sectionHeading,
   categorySlug,
   className = "mb-12 md:mb-14 xl:mb-16",
-  variant = "left",
   limit = 5,
+  variant = 'left',
+  gridColumns = 4,
+  gridGap = 'medium',
 }) => {
   const { t } = useTranslation();
 
@@ -41,6 +57,14 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
     return <NotFoundItem text={t("text-no-featured-products-found")} />;
   }
 
+  // Grid gap classes
+  const gapClasses: Record<string, string> = {
+    none: 'gap-0',
+    small: 'gap-2 md:gap-3',
+    medium: 'gap-3 md:gap-5 xl:gap-7',
+    large: 'gap-5 md:gap-7 xl:gap-10',
+  };
+
   return (
     <div className={className}>
       <SectionHeader
@@ -50,7 +74,7 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
 
       {error && <Alert message={error.message} />}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-3 md:gap-5 xl:gap-7">
+      <div className={`grid ${columnClasses[gridColumns] || columnClasses[4]} ${gapClasses[gridGap]}`}>
         {loading ? (
           <Spinner showText={false} />
         ) : (
