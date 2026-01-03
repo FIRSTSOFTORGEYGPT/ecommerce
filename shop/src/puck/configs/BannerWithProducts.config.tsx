@@ -7,7 +7,7 @@ import BannerWithProducts from "../../containers/banner-with-products";
 
 export interface BannerWithProductsProps {
     sectionHeading: string;
-    banners: {
+    data: {
         title: string;
         slug: string;
         desktop_image_url: string;
@@ -24,7 +24,7 @@ export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> 
             type: "text",
             label: "Section Heading",
         },
-        banners: {
+        data: {
             type: "array",
             label: "Banners",
             getItemSummary: (item) => item.title || "Banner",
@@ -52,7 +52,7 @@ export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> 
     },
     defaultProps: {
         sectionHeading: "On Sale Now",
-        banners: [{
+        data: [{
             title: "Sale Banner",
             slug: "sale",
             desktop_image_url: "/assets/images/banner/banner-sale-offer.jpg",
@@ -61,8 +61,8 @@ export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> 
         variant: "default",
         limit: 9,
     },
-    render: ({ banners, sectionHeading, variant, limit }) => {
-        const mappedBanners = banners.map((b, i) => ({
+    render: ({ data, sectionHeading, variant, limit }) => {
+        const mappedBanners = (data || []).map((b, i) => ({
             id: i + 1,
             title: b.title,
             slug: b.slug,

@@ -13,6 +13,8 @@ export interface BannerGridBlockProps {
         desktop_image_url: string;
         mobile_image_url: string;
     }[];
+    gridColumns: number;
+    gridGap: "none" | "small" | "medium" | "large";
 }
 
 export const BannerGridBlockConfig: ComponentConfig<BannerGridBlockProps> = {
@@ -37,6 +39,26 @@ export const BannerGridBlockConfig: ComponentConfig<BannerGridBlockProps> = {
                 mobile_image_url: { type: "text", label: "Mobile Image" },
             },
         },
+        gridColumns: {
+            type: "select",
+            label: "Grid Columns (Desktop)",
+            options: [
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+                { label: "5 Columns", value: 5 },
+            ],
+        },
+        gridGap: {
+            type: "select",
+            label: "Grid Gap",
+            options: [
+                { label: "None", value: "none" },
+                { label: "Small", value: "small" },
+                { label: "Medium", value: "medium" },
+                { label: "Large", value: "large" },
+            ],
+        },
     },
     defaultProps: {
         banners: [
@@ -44,8 +66,10 @@ export const BannerGridBlockConfig: ComponentConfig<BannerGridBlockProps> = {
             { title: "Left", slug: "left", type: "normal", desktop_image_url: "/assets/images/banner/banner-1.jpg", mobile_image_url: "/assets/images/banner/banner-1.jpg" },
             { title: "Right", slug: "right", type: "normal", desktop_image_url: "/assets/images/banner/banner-2.jpg", mobile_image_url: "/assets/images/banner/banner-2.jpg" },
         ],
+        gridColumns: 2,
+        gridGap: "medium",
     },
-    render: ({ banners }) => {
+    render: ({ banners, gridColumns, gridGap }) => {
         const mappedBanners = banners.map((b, i) => ({
             id: i + 1,
             title: b.title,
@@ -57,6 +81,6 @@ export const BannerGridBlockConfig: ComponentConfig<BannerGridBlockProps> = {
             },
         }));
 
-        return <BannerGridBlock data={mappedBanners} />;
+        return <BannerGridBlock data={mappedBanners} gridColumns={gridColumns} gridGap={gridGap} />;
     },
 };

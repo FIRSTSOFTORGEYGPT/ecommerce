@@ -60,6 +60,19 @@ import {
   ProductsTopBlockProps,
   CategoryGridBlockConfig,
   CategoryGridBlockProps,
+  // Homepage Components
+  DownloadAppsConfig,
+  DownloadAppsProps,
+  SupportConfig,
+  SupportProps,
+  InstagramConfig,
+  InstagramProps,
+  SubscriptionConfig,
+  SubscriptionProps,
+  NewArrivalsProductFeedConfig,
+  NewArrivalsProductFeedProps,
+  SingleBannerBlockConfig,
+  SingleBannerBlockProps,
 } from "./configs";
 
 // Props type mapping for all components
@@ -93,9 +106,23 @@ type Props = {
   CollectionBlock: CollectionBlockProps;
   ProductsTopBlock: ProductsTopBlockProps;
   CategoryGridBlock: CategoryGridBlockProps;
+  // Homepage
+  DownloadApps: DownloadAppsProps;
+  Support: SupportProps;
+  Instagram: InstagramProps;
+  Subscription: SubscriptionProps;
+  NewArrivalsProductFeed: NewArrivalsProductFeedProps;
+  SingleBannerBlock: SingleBannerBlockProps;
 };
 
 export const config: Config<Props> = {
+  root: {
+    fields: {
+      title: { type: "text", label: "Page Title" },
+      slug: { type: "text", label: "Page Slug" },
+      pageId: { type: "number", label: "Page ID" },
+    },
+  },
   categories: {
     heroes: {
       title: "Hero Sections",
@@ -150,6 +177,17 @@ export const config: Config<Props> = {
       title: "Layout",
       components: ["Footer"],
     },
+    homepage: {
+      title: "Homepage",
+      components: [
+        "DownloadApps",
+        "Support",
+        "Instagram",
+        "Subscription",
+        "NewArrivalsProductFeed",
+        "SingleBannerBlock",
+      ],
+    },
   },
   components: {
     // Phase 2: Core Components
@@ -181,6 +219,13 @@ export const config: Config<Props> = {
     CollectionBlock: CollectionBlockConfig,
     ProductsTopBlock: ProductsTopBlockConfig,
     CategoryGridBlock: CategoryGridBlockConfig,
+    // Homepage
+    DownloadApps: DownloadAppsConfig,
+    Support: SupportConfig,
+    Instagram: InstagramConfig,
+    Subscription: SubscriptionConfig,
+    NewArrivalsProductFeed: NewArrivalsProductFeedConfig,
+    SingleBannerBlock: SingleBannerBlockConfig,
   },
 };
 

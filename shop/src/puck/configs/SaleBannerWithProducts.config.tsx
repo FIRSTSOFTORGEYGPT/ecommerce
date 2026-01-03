@@ -15,6 +15,11 @@ export interface SaleBannerWithProductsProps {
     }[];
     variant: "default" | "center" | "left" | "fashion";
     limit: number;
+
+    // Dynamic Data Source
+    filterType: "tag" | "category";
+    tagSlug?: string;
+    categorySlug?: string;
 }
 
 export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProductsProps> = {
@@ -51,6 +56,25 @@ export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProduct
             min: 2,
             max: 8,
         },
+        // Dynamic Data Source
+        filterType: {
+            type: "select",
+            label: "Filter Products By",
+            options: [
+                { label: "Tag", value: "tag" },
+                { label: "Category", value: "category" },
+            ],
+        },
+        tagSlug: {
+            type: "select",
+            label: "Product Tag",
+            options: [],
+        },
+        categorySlug: {
+            type: "select",
+            label: "Product Category",
+            options: [],
+        },
     },
     defaultProps: {
         sectionHeading: "On Sale",
@@ -62,8 +86,11 @@ export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProduct
         }],
         variant: "default",
         limit: 4,
+        filterType: "tag",
+        tagSlug: "",
+        categorySlug: "",
     },
-    render: ({ sectionHeading, banners, variant, limit }) => {
+    render: ({ sectionHeading, banners, variant, limit, filterType, tagSlug, categorySlug }) => {
         const mappedBanners = banners.map((b, i) => ({
             id: i + 1,
             title: b.title,
@@ -77,6 +104,9 @@ export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProduct
                 variant={variant}
                 limit={limit}
                 bannerData={mappedBanners}
+                filterType={filterType}
+                tagSlug={tagSlug}
+                categorySlug={categorySlug}
             />
         );
     },

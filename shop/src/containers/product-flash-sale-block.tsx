@@ -2,7 +2,6 @@ import SectionHeader from "@components/common/section-header";
 import ProductCard from "@components/product/product-card";
 import ProductCardGridLoader from "@components/ui/loaders/product-card-grid-loader";
 import { useProducts } from "@framework/products";
-import { siteSettings } from "@settings/site.settings";
 import Alert from "@components/ui/alert";
 import { Product } from "@type/index";
 
@@ -10,6 +9,11 @@ interface ProductsFlashSaleProps {
   // Content Settings
   sectionHeading: string;
   className?: string;
+
+  // Dynamic Data Source
+  filterType?: 'tag' | 'category';
+  tagSlug?: string;
+  categorySlug?: string;
 
   // Essential Settings
   limit?: number;
@@ -32,17 +36,20 @@ const ProductsFlashSaleBlock: React.FC<ProductsFlashSaleProps> = ({
   limit = 10,
   gridColumns = 5,
   gridGap = 'medium',
+  filterType = 'tag',
+  tagSlug,
+  categorySlug,
 }) => {
-  const flashSaleSettings = siteSettings?.homePageBlocks?.flashSale;
+  // Construct dynamic query options
+  const queryOptions: any = { limit };
+  if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+  if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
 
   const {
     data: products,
     isLoading: loading,
     error,
-  } = useProducts({
-    limit,
-    tags: flashSaleSettings?.slug,
-  });
+  } = useProducts(queryOptions);
 
   // Grid gap classes
   const gapClasses: Record<string, string> = {

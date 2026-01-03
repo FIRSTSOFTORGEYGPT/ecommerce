@@ -4,7 +4,6 @@ import { useProducts } from "@framework/products";
 import Alert from "@components/ui/alert";
 import { Product } from "@type/index";
 import Spinner from "@components/ui/loaders/spinner/spinner";
-import { siteSettings } from "@settings/site.settings";
 import { useTranslation } from "next-i18next";
 import isEmpty from "lodash/isEmpty";
 import NotFoundItem from "@components/404/not-found-item";
@@ -14,6 +13,10 @@ interface ProductsProps {
   sectionHeading: string;
   categorySlug?: string;
   className?: string;
+
+  // Dynamic Data Source
+  filterType?: 'tag' | 'category';
+  tagSlug?: string; // Overrides existing categorySlug prop usage for consistency
 
   // Essential Settings
   limit?: number;
@@ -39,19 +42,23 @@ const ProductsFeatured: React.FC<ProductsProps> = ({
   variant = 'left',
   gridColumns = 4,
   gridGap = 'medium',
+  filterType = 'tag',
+  tagSlug,
 }) => {
   const { t } = useTranslation();
 
-  const featuredProductsSettings =
-    siteSettings?.homePageBlocks?.featuredProducts;
+  // Construct dynamic query options
+  const queryOptions: any = { limit };
+  if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+  // Use either the explicit categorySlug from prop or the new dynamic one (naming collision to resolve)
+  // For now, let's assume the new `categorySlug` prop passed from Puck is what we want if filterType is category
+  if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
+
   const {
     data: products,
     isLoading: loading,
     error,
-  } = useProducts({
-    limit,
-    tags: featuredProductsSettings?.slug,
-  });
+  } = useProducts(queryOptions);
 
   if (!loading && isEmpty(products)) {
     return <NotFoundItem text={t("text-no-featured-products-found")} />;

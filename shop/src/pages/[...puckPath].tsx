@@ -2,7 +2,7 @@ import type { Data } from "@measured/puck";
 import { Render } from "@measured/puck";
 import config from "../puck/puck.config";
 import { getPage } from "../lib/get-page";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 interface PageProps {
     data: Data | null;
@@ -29,27 +29,30 @@ export default function PuckPage({ data, path }: PageProps) {
     return <Render config={config} data={data} />;
 }
 
-export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { params } = context;
     const puckPath = params?.puckPath as string[] | undefined;
+
+    // Exclude system paths
+    if (puckPath && (puckPath[0] === '_next' || puckPath[0] === 'api')) {
+        return { notFound: true };
+    }
+
     const path = `/${(puckPath || []).join("/")}`;
 
-    const data = getPage(path);
+    // getPage is async now
+    const data = await getPage(path);
+
+    if (!data) {
+        return {
+            notFound: true,
+        };
+    }
 
     return {
         props: {
             data,
             path,
         },
-        // Enable Incremental Static Regeneration
-        revalidate: 10, // Revalidate every 10 seconds
-    };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    // Return empty paths initially, pages will be generated on-demand
-    return {
-        paths: [],
-        fallback: "blocking", // Generate pages on-demand
     };
 };

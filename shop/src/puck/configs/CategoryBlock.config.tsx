@@ -8,6 +8,7 @@ import CategoryBlock from "../../containers/category-block";
 export interface CategoryBlockProps {
     sectionHeading: string;
     limit: number;
+    visibleItems: number;
     variant: "rounded" | "circle" | "modern" | "elegant";
     autoplay: boolean;
     autoplaySpeed: string;
@@ -27,6 +28,17 @@ export const CategoryBlockConfig: ComponentConfig<CategoryBlockProps> = {
             label: "Number of Categories",
             min: 4,
             max: 16,
+        },
+        visibleItems: {
+            type: "select",
+            label: "Visible Items (Desktop)",
+            options: [
+                { label: "4 Items", value: 4 },
+                { label: "5 Items", value: 5 },
+                { label: "6 Items", value: 6 },
+                { label: "7 Items", value: 7 },
+                { label: "8 Items", value: 8 },
+            ],
         },
         variant: {
             type: "select",
@@ -62,6 +74,7 @@ export const CategoryBlockConfig: ComponentConfig<CategoryBlockProps> = {
     defaultProps: {
         sectionHeading: "Shop by Category",
         limit: 10,
+        visibleItems: 6,
         variant: "circle",
         autoplay: true,
         autoplaySpeed: "3500",

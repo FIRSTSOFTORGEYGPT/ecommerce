@@ -1,37 +1,52 @@
 import type { Data } from "@measured/puck";
-import fs from "fs";
-import path from "path";
+import { HttpClient } from "@framework/utils/request";
+import { API_ENDPOINTS } from "@framework/utils/endpoints";
 
-const databasePath = path.resolve(process.cwd(), "database.json");
-
-type DatabaseEntry = {
-    path: string;
+type CmsPageResponse = {
+    id: number;
+    slug: string;
+    title: string;
     data: Data;
-};
-
-type Database = {
-    pages: DatabaseEntry[];
+    content: any[];
+    meta: any;
 };
 
 /**
- * Get page data from the database by path
- * This function is used both server-side and client-side
+ * Get page data from the backend API
+ * This function handles the fetching of Puck data from the CMS Pages endpoint.
  */
-export function getPage(pagePath: string): Data | null {
+export async function getPage(pagePath: string): Promise<Data | null> {
     try {
-        // Check if we're on the server
-        if (typeof window === "undefined") {
-            if (!fs.existsSync(databasePath)) {
-                return null;
-            }
-            const content = fs.readFileSync(databasePath, "utf-8");
-            const database: Database = JSON.parse(content);
-            const page = database.pages.find((p) => p.path === pagePath);
-            return page?.data || null;
+        // Convert path to slug (e.g., "/homepage" -> "homepage", "/" -> "homepage")
+        const slug = pagePath === "/" ? "homepage" : pagePath.replace(/^\//, "");
+
+        const response = await HttpClient.get<CmsPageResponse>(
+            `${API_ENDPOINTS.CMS_PAGES}/${slug}`
+        );
+
+        if (!response) {
+            console.warn(`getPage: No response for slug ${slug}`);
+            return null;
         }
-        return null;
+
+        // Map API response to Puck Data structure
+        // The backend returns 'content' array at the root, and 'data' might be empty or partial.
+        // We construct the Puck 'Data' object manually.
+        const puckData: Data = {
+            root: {
+                props: {
+                    pageId: response.id,
+                    title: response.title || "Page",
+                    slug: response.slug
+                } as any
+            },
+            content: response.content || [],
+            zones: response.data?.zones || {},
+        };
+
+        return puckData;
     } catch (error) {
-        console.error("Error reading page:", error);
+        console.error(`Error fetching page for path ${pagePath}:`, error);
         return null;
     }
 }

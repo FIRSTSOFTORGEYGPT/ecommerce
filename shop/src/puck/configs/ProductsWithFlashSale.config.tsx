@@ -10,6 +10,11 @@ export interface ProductsWithFlashSaleProps {
     limit: number;
     sidebarPosition: "left" | "right";
     gridGap: "none" | "small" | "medium" | "large";
+
+    // Dynamic Data Source
+    filterType: "tag" | "category";
+    tagSlug?: string;
+    categorySlug?: string;
 }
 
 export const ProductsWithFlashSaleConfig: ComponentConfig<ProductsWithFlashSaleProps> = {
@@ -29,6 +34,25 @@ export const ProductsWithFlashSaleConfig: ComponentConfig<ProductsWithFlashSaleP
                 { label: "Right", value: "right" },
             ],
         },
+        // Dynamic Data Source
+        filterType: {
+            type: "select",
+            label: "Filter Flash Sale By",
+            options: [
+                { label: "Tag", value: "tag" },
+                { label: "Category", value: "category" },
+            ],
+        },
+        tagSlug: {
+            type: "select",
+            label: "Select Tag",
+            options: [],
+        },
+        categorySlug: {
+            type: "select",
+            label: "Select Category",
+            options: [],
+        },
         gridGap: {
             type: "select",
             label: "Grid Gap",
@@ -44,6 +68,9 @@ export const ProductsWithFlashSaleConfig: ComponentConfig<ProductsWithFlashSaleP
         limit: 10,
         sidebarPosition: "right",
         gridGap: "medium",
+        filterType: "tag",
+        tagSlug: "",
+        categorySlug: "",
     },
     render: (props) => <ProductsWithFlashSale {...props} />,
 };
