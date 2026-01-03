@@ -16,15 +16,24 @@ interface BrandProps {
 
   // Essential Settings
   limit?: number;
-  variant?: '6column' | '4column';
+  gridColumns?: number;
   gridGap?: 'none' | 'small' | 'medium' | 'large';
 }
+
+// Static column classes
+const columnClasses: Record<number, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+  5: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+  6: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6',
+};
 
 const BrandGridBlock: React.FC<BrandProps> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   sectionHeading,
-  variant = '4column',
-  limit = 8,
+  limit = 12,
+  gridColumns = 6,
   gridGap = 'medium',
 }) => {
   const { t } = useTranslation();
@@ -36,18 +45,13 @@ const BrandGridBlock: React.FC<BrandProps> = ({
     limit: 16,
   });
 
-  if (!loading && isEmpty(brands?.data)) {
+  if (!loading && isEmpty(brands)) {
     return <NotFoundItem text={t('text-no-brands-found')} />;
   }
 
   // Filter brands for grid layout
-  const gridBrands: Type[] = filterBrands(brands?.data, 'grid-layout');
+  const gridBrands: Type[] = filterBrands(brands, 'grid-layout');
   const items = limit ? gridBrands?.slice(0, limit) : gridBrands;
-
-  const columnClasses =
-    variant === '4column'
-      ? 'grid-cols-2 sm:grid-cols-4'
-      : 'grid-cols-2 sm:grid-cols-4 2xl:grid-cols-6';
 
   // Grid gap classes
   const gapClasses: Record<string, string> = {
@@ -63,7 +67,7 @@ const BrandGridBlock: React.FC<BrandProps> = ({
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div className={`grid ${columnClasses} ${gapClasses[gridGap]}`}>
+        <div className={`grid ${columnClasses[gridColumns] || columnClasses[6]} ${gapClasses[gridGap]}`}>
           {loading
             ? Array.from({ length: limit }).map((_, idx) => (
               <BrandCardLoader key={idx} uniqueKey={`top-brand-${idx}`} />

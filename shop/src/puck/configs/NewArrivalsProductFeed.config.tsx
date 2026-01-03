@@ -1,31 +1,22 @@
-/**
- * ProductsFeatured Puck Configuration - Essential Settings Only
- */
-
 import type { ComponentConfig } from "@measured/puck";
-import ProductsFeatured from "../../containers/products-featured";
+import NewArrivalsProductFeed from "../../components/product/feeds/new-arrivals-product-feed";
 
-export interface ProductsFeaturedProps {
-    // Content Settings
-    sectionHeading: string;
+export interface NewArrivalsProductFeedProps {
+    className?: string;
     filterType: "tag" | "category";
     tagSlug?: string;
     categorySlug?: string;
-
-    // Essential Settings
     limit: number;
-    variant: "flat" | "left" | "center" | "combined" | "fashion";
     gridColumns: number;
     gridGap: "none" | "small" | "medium" | "large";
 }
 
-export const ProductsFeaturedConfig: ComponentConfig<ProductsFeaturedProps> = {
-    label: "Products Featured",
+export const NewArrivalsProductFeedConfig: ComponentConfig<NewArrivalsProductFeedProps> = {
+    label: "New Arrivals Feed",
     fields: {
-        sectionHeading: {
+        className: {
             type: "text",
-            label: "Section Heading",
-            placeholder: "e.g., Featured Products",
+            label: "Class Name",
         },
         // Dynamic Data Source
         filterType: {
@@ -36,34 +27,21 @@ export const ProductsFeaturedConfig: ComponentConfig<ProductsFeaturedProps> = {
                 { label: "Category", value: "category" },
             ],
         },
-        // Dynamic Data Source: Tag
         tagSlug: {
             type: "select",
             label: "Select Tag",
-            options: [], // Populated dynamically in client.tsx
+            options: [],
         },
-        // Dynamic Data Source: Category
         categorySlug: {
             type: "select",
             label: "Select Category",
-            options: [], // Populated dynamically in client.tsx
+            options: [],
         },
         limit: {
             type: "number",
-            label: "Number of Products",
-            min: 2,
-            max: 12,
-        },
-        variant: {
-            type: "select",
-            label: "Layout Variant",
-            options: [
-                { label: "Flat", value: "flat" },
-                { label: "Left (Big First)", value: "left" },
-                { label: "Center (Big Middle)", value: "center" },
-                { label: "Combined", value: "combined" },
-                { label: "Fashion", value: "fashion" },
-            ],
+            label: "Total Products",
+            min: 4,
+            max: 20,
         },
         gridColumns: {
             type: "select",
@@ -88,14 +66,12 @@ export const ProductsFeaturedConfig: ComponentConfig<ProductsFeaturedProps> = {
         },
     },
     defaultProps: {
-        sectionHeading: "Featured Products",
         filterType: "tag",
         tagSlug: "",
         categorySlug: "",
-        limit: 8,
-        variant: "left",
-        gridColumns: 4,
+        limit: 10,
+        gridColumns: 5,
         gridGap: "medium",
     },
-    render: (props) => <ProductsFeatured {...props} />,
+    render: (props) => <NewArrivalsProductFeed {...props} />,
 };

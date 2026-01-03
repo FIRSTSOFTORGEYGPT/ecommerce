@@ -11,7 +11,7 @@ export interface BrandGridBlockProps {
 
     // Essential Settings
     limit: number;
-    variant: "6column" | "4column";
+    gridColumns: number;
     gridGap: "none" | "small" | "medium" | "large";
 }
 
@@ -25,16 +25,19 @@ export const BrandGridBlockConfig: ComponentConfig<BrandGridBlockProps> = {
         },
         limit: {
             type: "number",
-            label: "Number of Brands",
-            min: 4,
-            max: 16,
+            label: "Total Brands",
+            min: 2,
+            max: 12,
         },
-        variant: {
+        gridColumns: {
             type: "select",
-            label: "Layout Variant",
+            label: "Grid Columns (Desktop)",
             options: [
-                { label: "4 Columns", value: "4column" },
-                { label: "6 Columns", value: "6column" },
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+                { label: "5 Columns", value: 5 },
+                { label: "6 Columns", value: 6 },
             ],
         },
         gridGap: {
@@ -50,8 +53,8 @@ export const BrandGridBlockConfig: ComponentConfig<BrandGridBlockProps> = {
     },
     defaultProps: {
         sectionHeading: "Popular Brands",
-        limit: 8,
-        variant: "4column",
+        limit: 12,
+        gridColumns: 6,
         gridGap: "medium",
     },
     render: (props) => <BrandGridBlock {...props} />,

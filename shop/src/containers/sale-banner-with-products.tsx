@@ -8,7 +8,6 @@ import Alert from '@components/ui/alert';
 import { ROUTES } from '@lib/routes';
 import { Product } from '@type/index';
 
-import { siteSettings } from '@settings/site.settings';
 import cn from 'classnames';
 
 interface ProductsProps {
@@ -17,27 +16,30 @@ interface ProductsProps {
   className?: string;
   variant?: 'default' | 'center' | 'left' | 'fashion';
   productVariant?: 'grid' | 'gridSlim' | 'list' | 'listSmall';
-  imageHeight?: number;
-  imageWidth?: number;
   limit?: number;
   bannerData?: any;
+  filterType?: 'tag' | 'category';
+  tagSlug?: string;
 }
 
 const SaleBannerWithProducts: React.FC<ProductsProps> = ({
   sectionHeading,
   categorySlug,
-  variant = 'default',
   className = 'mb-12 md:mb-14 xl:mb-16',
+  variant = 'default',
   productVariant = 'listSmall',
   limit = 4,
   bannerData = banner,
+  filterType = 'tag',
+  tagSlug,
 }) => {
-  const onSellingSettings = siteSettings?.homePageBlocks?.onSaleSettings;
 
-  const { data, isLoading, error } = useProducts({
-    limit,
-    tags: onSellingSettings?.slug,
-  });
+  const queryOptions: any = { limit };
+  if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+  // Use the passed categorySlug for filtering if type is category
+  if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
+
+  const { data, isLoading, error } = useProducts(queryOptions);
 
   return (
     <div className={className}>
@@ -49,11 +51,10 @@ const SaleBannerWithProducts: React.FC<ProductsProps> = ({
         <Alert message={error?.message} />
       ) : (
         <div
-          className={`grid grid-cols-1 ${
-            variant === 'fashion'
-              ? '2xl:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4'
-              : '2xl:grid-cols-4 2xl:grid-rows-2 md:grid-cols-2'
-          } gap-3 md:gap-6 lg:gap-5 xl:gap-7`}
+          className={`grid grid-cols-1 ${variant === 'fashion'
+            ? '2xl:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4'
+            : '2xl:grid-cols-4 2xl:grid-rows-2 md:grid-cols-2'
+            } gap-3 md:gap-6 lg:gap-5 xl:gap-7`}
         >
           {variant === 'fashion' ? (
             <div className="grid order-2 gap-5 col-span-full sm:col-span-full sm:grid-cols-4 2xl:col-span-2 2xl:row-span-2 md:gap-8 sm:gap-3">
@@ -85,23 +86,22 @@ const SaleBannerWithProducts: React.FC<ProductsProps> = ({
           )}
           {isLoading
             ? Array.from({ length: 2 }).map((_, idx) => (
-                <ProductCardListSmallLoader
-                  key={idx}
-                  uniqueKey={`on-selling-${idx}`}
-                />
-              ))
+              <ProductCardListSmallLoader
+                key={idx}
+                uniqueKey={`on-selling-${idx}`}
+              />
+            ))
             : data?.map((product: Product, index: number) => (
-                <div
-                  key={`product--key${product.id}`}
-                  className={`${
-                    variant === 'center' && index === 0
-                      ? '2xl:order-0'
-                      : '2xl:order-2'
+              <div
+                key={`product--key${product.id}`}
+                className={`${variant === 'center' && index === 0
+                  ? '2xl:order-0'
+                  : '2xl:order-2'
                   }`}
-                >
-                  <ProductCard product={product} variant={productVariant} />
-                </div>
-              ))}
+              >
+                <ProductCard product={product} variant={productVariant} />
+              </div>
+            ))}
         </div>
       )}
     </div>

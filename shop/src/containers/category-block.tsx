@@ -23,6 +23,7 @@ interface CategoriesProps {
   autoplaySpeed?: number;
   loop?: boolean;
   showArrows?: boolean;
+  visibleItems?: number;
 }
 
 const defaultBreakpoints = {
@@ -51,6 +52,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
   autoplaySpeed = 3500,
   loop = true,
   showArrows = true,
+  visibleItems = 6,
 }) => {
   const { t } = useTranslation();
 
@@ -63,12 +65,20 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
     parent: null,
   });
 
-  if (!loading && isEmpty(categories?.data)) {
+  if (!loading && isEmpty(categories)) {
     return <NotFoundItem text={t('text-no-categories-found')} />;
   }
 
-  // Select breakpoints based on variant
-  const breakpoints = variant === 'modern' || variant === 'elegant' ? modernBreakpoints : defaultBreakpoints;
+  // Select breakpoints based on variant and visibleItems
+  // NOTE: We override the desktop (1025+) breakpoints based on visibleItems
+  const baseBreakpoints = variant === 'modern' || variant === 'elegant' ? modernBreakpoints : defaultBreakpoints;
+
+  const breakpoints = {
+    ...baseBreakpoints,
+    '1025': { slidesPerView: visibleItems, spaceBetween: 28 },
+    '1400': { slidesPerView: visibleItems + 1, spaceBetween: 28 }, // Example scaling
+    '1720': { slidesPerView: visibleItems + 2, spaceBetween: 28 },
+  };
 
   return (
     <div className={className}>
@@ -84,7 +94,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
           prevActivateId="categoriesSlidePrev"
           nextActivateId="categoriesSlideNext"
         >
-          {loading && !categories?.data
+          {loading && !categories
             ? Array.from({ length: limit }).map((_, idx) => {
               if (variant === 'rounded') {
                 return (
@@ -105,7 +115,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
                 </SwiperSlide>
               );
             })
-            : categories?.data?.map((category: any) => (
+            : categories?.map((category: any) => (
               <SwiperSlide key={`category--key-${category.id}`}>
                 <Card
                   item={category}

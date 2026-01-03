@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   COUPONS_VERIFY: '/coupons/verify',
   PARENT_CATEGORIES: 'categories',
   FEATURED_CATEGORIES: 'featured-categories',
+  CMS_PAGES: 'cms-pages',
   TYPE: 'types',
   UPLOAD: 'attachments',
   ORDER: 'orders',

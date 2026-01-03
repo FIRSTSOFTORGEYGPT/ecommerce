@@ -36,3 +36,11 @@ export * from "./ExclusiveBlock.config";
 export * from "./CollectionBlock.config";
 export * from "./ProductsTopBlock.config";
 export * from "./CategoryGridBlock.config";
+
+// Homepage specific components
+export * from "./DownloadApps.config";
+export * from "./Support.config";
+export * from "./Instagram.config";
+export * from "./Subscription.config";
+export * from "./NewArrivalsProductFeed.config";
+export * from "./SingleBannerBlock.config";

@@ -7,7 +7,9 @@ import ProductsFlashSaleBlock from "../../containers/product-flash-sale-block";
 
 export interface ProductFlashSaleBlockProps {
     sectionHeading: string;
-    dataSource: string;
+    filterType: "tag" | "category";
+    tagSlug?: string;
+    categorySlug?: string;
     limit: number;
     gridColumns: number;
     gridGap: "none" | "small" | "medium" | "large";
@@ -20,9 +22,26 @@ export const ProductFlashSaleBlockConfig: ComponentConfig<ProductFlashSaleBlockP
             type: "text",
             label: "Section Heading",
         },
-        dataSource: {
-            type: "text",
-            label: "Data Source",
+        // Dynamic Data Source
+        filterType: {
+            type: "select",
+            label: "Filter By",
+            options: [
+                { label: "Tag", value: "tag" },
+                { label: "Category", value: "category" },
+            ],
+        },
+        // Dynamic Data Source: Tag
+        tagSlug: {
+            type: "select",
+            label: "Select Tag",
+            options: [], // Populated dynamically in client.tsx
+        },
+        // Dynamic Data Source: Category
+        categorySlug: {
+            type: "select",
+            label: "Select Category",
+            options: [], // Populated dynamically in client.tsx
         },
         limit: {
             type: "number",
@@ -31,10 +50,15 @@ export const ProductFlashSaleBlockConfig: ComponentConfig<ProductFlashSaleBlockP
             max: 20,
         },
         gridColumns: {
-            type: "number",
+            type: "select",
             label: "Grid Columns (Desktop)",
-            min: 2,
-            max: 6,
+            options: [
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+                { label: "5 Columns", value: 5 },
+                { label: "6 Columns", value: 6 },
+            ],
         },
         gridGap: {
             type: "select",
@@ -49,7 +73,9 @@ export const ProductFlashSaleBlockConfig: ComponentConfig<ProductFlashSaleBlockP
     },
     defaultProps: {
         sectionHeading: "Flash Sale",
-        dataSource: "Flash Sale Products",
+        filterType: "tag",
+        tagSlug: "flash-sale",
+        categorySlug: "",
         limit: 10,
         gridColumns: 5,
         gridGap: "medium",

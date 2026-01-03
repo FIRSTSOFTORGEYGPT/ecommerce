@@ -1,0 +1,214 @@
+{
+  "path": "/homepage",
+  "title": "Homepage",
+  "slug": "homepage",
+  "data": {
+    "root": {
+      "props": {
+        "title": "Home"
+      }
+    },
+    "content": [
+      {
+        "type": "BannerBlock",
+        "props": {
+          "banners": [
+            {
+              "id": 1,
+              "title": "Men's Collection",
+              "slug": "mens-collection",
+              "type": "medium",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-1.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-1.jpg"
+            },
+            {
+              "id": 2,
+              "title": "New Sports",
+              "slug": "new-sports",
+              "type": "small",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-2.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-2.jpg"
+            },
+            {
+              "id": 3,
+              "title": "Dress Women",
+              "slug": "womens-collection",
+              "type": "small",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-3.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-3.jpg"
+            },
+            {
+              "id": 4,
+              "title": "Exclusive Sunglasses",
+              "slug": "exclusive-sunglasses",
+              "type": "small",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-4.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-4.jpg"
+            },
+            {
+              "id": 5,
+              "title": "Product Coupons",
+              "slug": "product-coupons",
+              "type": "small",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-5.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-5.jpg"
+            },
+            {
+              "id": 6,
+              "title": "New Backpack",
+              "slug": "new-backpack",
+              "type": "medium",
+              "desktop_image_url": "/assets/images/banner/masonry/banner-6.jpg",
+              "mobile_image_url": "/assets/images/banner/masonry/banner-mobile-6.jpg"
+            }
+          ],
+          "id": "BannerBlock-homepage"
+        }
+      },
+      {
+        "type": "ProductFlashSaleBlock",
+        "props": {
+          "id": "FlashSale-homepage"
+        }
+      },
+      {
+        "type": "BannerSliderBlock",
+        "props": {
+          "banners": [
+            {
+              "id": 1,
+              "title": "Travel Baggage",
+              "slug": "new-backpack",
+              "desktop_image_url": "/assets/images/banner/slider/banner-1.jpg",
+              "mobile_image_url": "/assets/images/banner/slider/mobile/banner-1.jpg"
+            },
+            {
+              "id": 2,
+              "title": "Women's Collection",
+              "slug": "womens-collection",
+              "desktop_image_url": "/assets/images/banner/slider/banner-2.png",
+              "mobile_image_url": "/assets/images/banner/slider/mobile/banner-2.jpg"
+            },
+            {
+              "id": 3,
+              "title": "Winter Collection",
+              "slug": "winter-collection",
+              "desktop_image_url": "/assets/images/banner/slider/banner-3.jpg",
+              "mobile_image_url": "/assets/images/banner/slider/mobile/banner-3.jpg"
+            }
+          ],
+          "id": "BannerSlider-homepage"
+        }
+      },
+      {
+        "type": "CategoryBlock",
+        "props": {
+          "sectionHeading": "text-shop-by-category",
+          "variant": "rounded",
+          "id": "CategoryBlock-homepage"
+        }
+      },
+      {
+        "type": "ProductsFeatured",
+        "props": {
+          "sectionHeading": "text-featured-products",
+          "id": "ProductsFeatured-homepage"
+        }
+      },
+      {
+        "type": "SingleBannerBlock",
+        "props": {
+          "title": "Winter Collection of Kid Items",
+          "slug": "winter-collection",
+          "desktop_image_url": "/assets/images/banner/banner-3.jpg",
+          "mobile_image_url": "/assets/images/banner/banner-mobile-3.jpg",
+          "className": "mb-12 lg:mb-14 xl:mb-16 pb-0.5 lg:pb-1 xl:pb-0",
+          "classNameInner": "aspect-[3.15/1]",
+          "id": "SingleBanner-1-homepage"
+        }
+      },
+      {
+        "type": "BrandGridBlock",
+        "props": {
+          "sectionHeading": "text-top-brands",
+          "id": "BrandGridBlock-homepage"
+        }
+      },
+      {
+        "type": "SingleBannerBlock",
+        "props": {
+          "title": "Offer Off Everything",
+          "slug": "winter-offer",
+          "desktop_image_url": "/assets/images/banner/banner-4.jpg",
+          "mobile_image_url": "/assets/images/banner/banner-mobile-4.jpg",
+          "className": "mb-12 lg:mb-14 xl:mb-16 pb-0.5 lg:pb-1 xl:pb-0",
+          "classNameInner": "aspect-[4.3/1]",
+          "id": "SingleBanner-2-homepage"
+        }
+      },
+      {
+        "type": "BannerWithProducts",
+        "props": {
+          "sectionHeading": "text-on-selling-products",
+          "categorySlug": "/search",
+          "data": [
+            {
+              "id": 1,
+              "title": "Sale Offer",
+              "slug": "flash-sale",
+              "desktop_image_url": "/assets/images/banner/banner-sale-offer.jpg",
+              "mobile_image_url": "/assets/images/banner/banner-sale-offer.jpg"
+            },
+            {
+              "id": 2,
+              "title": "New Sports",
+              "slug": "new-sports",
+              "desktop_image_url": "/assets/images/banner/banner-sale-offer-reverse.jpg",
+              "mobile_image_url": "/assets/images/banner/banner-sale-offer-reverse.jpg"
+            }
+          ],
+          "id": "BannerWithProducts-homepage"
+        }
+      },
+      {
+        "type": "ExclusiveBlock",
+        "props": {
+          "id": "ExclusiveBlock-homepage"
+        }
+      },
+      {
+        "type": "NewArrivalsProductFeed",
+        "props": {
+          "id": "NewArrivals-homepage"
+        }
+      },
+      {
+        "type": "DownloadApps",
+        "props": {
+          "id": "DownloadApps-homepage"
+        }
+      },
+      {
+        "type": "Support",
+        "props": {
+          "id": "Support-homepage"
+        }
+      },
+      {
+        "type": "Instagram",
+        "props": {
+          "id": "Instagram-homepage"
+        }
+      },
+      {
+        "type": "Subscription",
+        "props": {
+          "className": "px-5 py-12 bg-opacity-0 sm:px-16 xl:px-0 md:py-14 xl:py-16",
+          "id": "Subscription-homepage"
+        }
+      }
+    ],
+    "zones": {}
+  },
+  "meta": {}
+}

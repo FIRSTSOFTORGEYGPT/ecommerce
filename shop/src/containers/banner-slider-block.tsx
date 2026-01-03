@@ -13,8 +13,21 @@ interface BannerProps {
 }
 
 const breakpoints = {
+  '1024': {
+    slidesPerView: 1.75,
+    spaceBetween: 24,
+  },
+  '768': {
+    slidesPerView: 1.5,
+    spaceBetween: 20,
+  },
+  '480': {
+    slidesPerView: 1.25,
+    spaceBetween: 16,
+  },
   '0': {
-    slidesPerView: 2,
+    slidesPerView: 1.1,
+    spaceBetween: 12,
   },
 };
 
@@ -25,9 +38,14 @@ const BannerSliderBlock: React.FC<BannerProps> = ({
   autoplaySpeed = 4000,
   loop = true,
 }) => {
+  // Swiper loop mode requires at least 2 * slidesPerView slides
+  // With slidesPerView ~1.75, we need at least 4 slides.
+  // We duplicate the data if we have fewer than 4 items to ensure smooth looping and centering.
+  const validData = data.length > 0 && data.length < 4 ? [...data, ...data] : data;
+
   return (
     <div className={`${className} mx-auto max-w-[1920px] overflow-hidden`}>
-      <div className="-mx-32 sm:-mx-44 lg:-mx-60 xl:-mx-72 2xl:-mx-80">
+      <div className="relative">
         <Carousel
           breakpoints={breakpoints}
           centeredSlides={true}
@@ -38,11 +56,13 @@ const BannerSliderBlock: React.FC<BannerProps> = ({
           }}
           paginationVariant="circle"
           buttonClassName="hidden"
+          className="mx-0"
         >
-          {data.map((banner: any) => (
+          {validData.map((banner: any, idx: number) => (
+            // @ts-ignore
             <SwiperSlide
-              key={`banner--key${banner.id}`}
-              className="px-1.5 md:px-2.5 xl:px-3.5"
+              key={`banner--key${banner.id}-${idx}`}
+              className="px-2"
             >
               <BannerCard
                 data={banner}

@@ -31,10 +31,15 @@ export const CategoryGridBlockConfig: ComponentConfig<CategoryGridBlockProps> = 
             max: 12,
         },
         gridColumns: {
-            type: "number",
+            type: "select",
             label: "Grid Columns (Desktop)",
-            min: 2,
-            max: 6,
+            options: [
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+                { label: "5 Columns", value: 5 },
+                { label: "6 Columns", value: 6 },
+            ],
         },
         gridGap: {
             type: "select",

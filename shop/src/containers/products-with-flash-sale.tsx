@@ -7,7 +7,6 @@ import ProductListFeedLoader from '@components/ui/loaders/product-list-feed-load
 import Alert from '@components/ui/alert';
 import NotFoundItem from '@components/404/not-found-item';
 import { useTranslation } from 'next-i18next';
-import { siteSettings } from '@settings/site.settings';
 import React from 'react';
 
 interface Props {
@@ -18,6 +17,11 @@ interface Props {
   limit?: number;
   sidebarPosition?: 'left' | 'right';
   gridGap?: 'none' | 'small' | 'medium' | 'large';
+
+  // Dynamic Data Source
+  filterType?: 'tag' | 'category';
+  tagSlug?: string;
+  categorySlug?: string;
 }
 
 const ProductsWithFlashSale: React.FC<Props> = ({
@@ -26,11 +30,12 @@ const ProductsWithFlashSale: React.FC<Props> = ({
   limit = 10,
   sidebarPosition = 'right',
   gridGap = 'medium',
+  filterType = 'tag',
+  tagSlug,
+  categorySlug,
 }) => {
   const { t } = useTranslation();
   const { width } = useWindowSize();
-
-  const flashSaleSettings = siteSettings?.homePageBlocks?.flashSale;
 
   const {
     data: topProducts,
@@ -40,11 +45,13 @@ const ProductsWithFlashSale: React.FC<Props> = ({
     limit: 4,
   });
 
+  // Construct dynamic query options
+  const queryOptions: any = { limit };
+  if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+  if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
+
   const { data: flashSellProduct, isLoading: flashSellProductLoading } =
-    useProducts({
-      limit,
-      tags: flashSaleSettings?.slug,
-    });
+    useProducts(queryOptions);
 
   // Gap classes
   const gapClasses: Record<string, string> = {

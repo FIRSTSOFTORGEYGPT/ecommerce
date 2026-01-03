@@ -22,11 +22,31 @@ const breakpoints = {
 interface BannerProps {
   data: StaticBanner[];
   className?: string;
+  gridColumns?: number;
+  gridGap?: "none" | "small" | "medium" | "large";
 }
+
+// Static column classes
+const columnClasses: Record<number, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-2 sm:grid-cols-3',
+  4: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+  5: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+};
+
+// Grid gap classes
+const gapClasses: Record<string, string> = {
+  none: 'gap-0',
+  small: 'gap-2 md:gap-3',
+  medium: 'gap-3 md:gap-5 xl:gap-7',
+  large: 'gap-5 md:gap-7 xl:gap-10',
+};
 
 const BannerGridBlock: React.FC<BannerProps> = ({
   data = [],
   className = 'mb-12 lg:mb-14 xl:mb-16 lg:pb-1 xl:pb-0',
+  gridColumns = 2,
+  gridGap = "medium",
 }) => {
   return (
     <div className={`${className}`}>
@@ -50,7 +70,7 @@ const BannerGridBlock: React.FC<BannerProps> = ({
         </Carousel>
       </div>
 
-      <div className="relative hidden md:grid md:grid-cols-2 md:gap-5 xl:gap-7">
+      <div className={`relative hidden md:grid ${columnClasses[gridColumns] || columnClasses[2]} ${gapClasses[gridGap]}`}>
         {data?.map((banner: any) => (
           <BannerCard
             key={`banner--key${banner.id}`}

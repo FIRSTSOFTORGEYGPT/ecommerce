@@ -49,7 +49,7 @@ export const useCategories = (options: CategoriesQueryOptionsType) => {
     ...options,
     language: locale,
   };
-  const { data, isLoading, error } = useQuery<Category[], Error>(
+  const { data, isLoading, error } = useQuery<{ data: Category[] }, Error>(
     [API_ENDPOINTS.CATEGORIES, formattedOptions],
     ({ queryKey, pageParam }) =>
       client.category.find(Object.assign({}, queryKey[1], pageParam)),
@@ -59,7 +59,7 @@ export const useCategories = (options: CategoriesQueryOptionsType) => {
   );
 
   return {
-    data: data ?? [],
+    data: data?.data ?? [],
     isLoading,
     error,
   };
@@ -89,7 +89,7 @@ export const useFeaturedCategories = (options: { limit: number }) => {
     ...options,
     language: locale,
   };
-  const { data, isLoading, error } = useQuery<Category[], Error>(
+  const { data, isLoading, error } = useQuery<{ data: Category[] }, Error>(
     [API_ENDPOINTS.FEATURED_CATEGORIES, formattedOptions],
     ({ queryKey, pageParam }) =>
       client.category.find(Object.assign({}, queryKey[1], pageParam)),
@@ -99,7 +99,7 @@ export const useFeaturedCategories = (options: { limit: number }) => {
   );
 
   return {
-    data: data ?? [],
+    data: data?.data ?? [],
     isLoading,
     error,
   };

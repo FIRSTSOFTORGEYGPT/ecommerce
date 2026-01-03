@@ -10,7 +10,9 @@ import { useProducts } from "@framework/products";
 export interface ProductsBlockProps {
     // Content Settings
     sectionHeading: string;
-    dataSource: string;
+    filterType: "tag" | "category";
+    tagSlug?: string;
+    categorySlug?: string;
 
     // Essential Settings
     limit: number;
@@ -19,11 +21,13 @@ export interface ProductsBlockProps {
 }
 
 const ProductsBlockWrapper: React.FC<ProductsBlockProps> = (props) => {
-    const { limit } = props;
-    const { data: products, isLoading, error } = useProducts({
-        limit,
-        // Using a general fetch or "featured" query if category slug is not passed (or defaulting)
-    });
+    const { limit, filterType, tagSlug, categorySlug } = props;
+
+    const queryOptions: any = { limit };
+    if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+    if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
+
+    const { data: products, isLoading, error } = useProducts(queryOptions);
 
     return (
         <ProductsBlock
@@ -43,9 +47,26 @@ export const ProductsBlockConfig: ComponentConfig<ProductsBlockProps> = {
             label: "Section Heading",
             placeholder: "e.g., Featured Products",
         },
-        dataSource: {
-            type: "text",
-            label: "Data Source",
+        // Dynamic Data Source
+        filterType: {
+            type: "select",
+            label: "Filter By",
+            options: [
+                { label: "Tag", value: "tag" },
+                { label: "Category", value: "category" },
+            ],
+        },
+        // Dynamic Data Source: Tag
+        tagSlug: {
+            type: "select",
+            label: "Select Tag",
+            options: [], // Populated dynamically in client.tsx
+        },
+        // Dynamic Data Source: Category
+        categorySlug: {
+            type: "select",
+            label: "Select Category",
+            options: [], // Populated dynamically in client.tsx
         },
         limit: {
             type: "number",
@@ -54,10 +75,15 @@ export const ProductsBlockConfig: ComponentConfig<ProductsBlockProps> = {
             max: 20,
         },
         gridColumns: {
-            type: "number",
+            type: "select",
             label: "Grid Columns (Desktop)",
-            min: 2,
-            max: 6,
+            options: [
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+                { label: "5 Columns", value: 5 },
+                { label: "6 Columns", value: 6 },
+            ],
         },
         gridGap: {
             type: "select",
@@ -72,7 +98,9 @@ export const ProductsBlockConfig: ComponentConfig<ProductsBlockProps> = {
     },
     defaultProps: {
         sectionHeading: "Products Grid",
-        dataSource: "Products",
+        filterType: "tag",
+        tagSlug: "",
+        categorySlug: "",
         limit: 10,
         gridColumns: 5,
         gridGap: "medium",
