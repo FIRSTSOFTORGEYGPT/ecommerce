@@ -1,6 +1,9 @@
 {
   "error-heading": "يبدو أنك تائه",
   "error-sub-heading": "لا يمكننا العثور على الصفحة التي تبحث عنها",
+  "error-forbidden-heading": "الوصول محظور",
+  "error-forbidden-sub-heading": "ليس لديك صلاحية للوصول إلى هذه الصفحة.",
+  "text-edit-this-page": "تعديل هذه الصفحة",
   "support-heading": "تحدث إلى شخص حقيقي",
   "support-sub-heading": "هل أنت على الحياد؟ لدي سؤال؟ بحاجة الى توصية؟ خدمات الأعضاء موجودة دائمًا للمساعدة. أرسل لنا رسالة.",
   "app-heading": "تطبيق شوك بازار",

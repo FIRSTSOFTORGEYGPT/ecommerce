@@ -8,7 +8,7 @@
  * This approach enables public pages to be statically rendered whilst the /puck route can
  * remain dynamic.
  *
- * NB this route is public, and you will need to add authentication
+ * Access is restricted to users with the "editor" role via EditorRoute.
  */
 
 import "@measured/puck/puck.css";
@@ -17,6 +17,7 @@ import { getPage } from "../../lib/get-page";
 import { GetServerSideProps } from "next";
 import type { Data } from "@measured/puck";
 import Head from "next/head";
+import EditorRoute from "@lib/editor-route";
 
 interface PuckEditorProps {
     path: string;
@@ -25,12 +26,12 @@ interface PuckEditorProps {
 
 export default function PuckEditor({ path, data }: PuckEditorProps) {
     return (
-        <>
+        <EditorRoute>
             <Head>
                 <title>Puck Editor: {path}</title>
             </Head>
             <Client path={path} data={data || {}} />
-        </>
+        </EditorRoute>
     );
 }
 

@@ -30,7 +30,7 @@ export default function Home() {
     <>
       <BannerBlock data={masonryBanner} />
       <Container>
-        <ProductsFlashSaleBlock />
+        <ProductsFlashSaleBlock sectionHeading='flash-sale-products' />
       </Container>
       <BannerSliderBlock data={promotionBanner} />
       <Container>

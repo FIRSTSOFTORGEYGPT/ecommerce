@@ -6,6 +6,9 @@ import { PaymentGateway } from '@type/index';
  *
  */
 export function isStripeAvailable(props: any) {
+  if (!props || !props.paymentGateway) {
+    return false;
+  }
   const { defaultPaymentGateway, paymentGateway } = props;
 
   let processPaymentGatewayName = [];

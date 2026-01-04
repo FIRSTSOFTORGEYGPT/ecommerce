@@ -467,6 +467,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  role?: 'customer' | 'editor'; // User role for access control
   wallet: {
     total_points: number;
     points_used: number;
@@ -596,8 +597,8 @@ export interface Wishlist {
   user_id: string;
 }
 
-export interface SettingsQueryOptions extends QueryOptions {}
-export interface AttributeQueryOptions extends QueryOptions {}
+export interface SettingsQueryOptions extends QueryOptions { }
+export interface AttributeQueryOptions extends QueryOptions { }
 export interface WishlistQueryOptions extends QueryOptions {
   sortedBy?: string;
   orderBy?: string;
@@ -635,16 +636,16 @@ export interface Coupon {
   is_valid?: boolean;
 }
 
-export interface TypePaginator extends PaginatorInfo<Type> {}
-export interface CategoryPaginator extends PaginatorInfo<Category> {}
-export interface CouponPaginator extends PaginatorInfo<Coupon> {}
-export interface OrderPaginator extends PaginatorInfo<Order> {}
-export interface ProductPaginator extends PaginatorInfo<Product> {}
-export interface ShopPaginator extends PaginatorInfo<Shop> {}
-export interface TagPaginator extends PaginatorInfo<Tag> {}
-export interface WishlistPaginator extends PaginatorInfo<Wishlist> {}
+export interface TypePaginator extends PaginatorInfo<Type> { }
+export interface CategoryPaginator extends PaginatorInfo<Category> { }
+export interface CouponPaginator extends PaginatorInfo<Coupon> { }
+export interface OrderPaginator extends PaginatorInfo<Order> { }
+export interface ProductPaginator extends PaginatorInfo<Product> { }
+export interface ShopPaginator extends PaginatorInfo<Shop> { }
+export interface TagPaginator extends PaginatorInfo<Tag> { }
+export interface WishlistPaginator extends PaginatorInfo<Wishlist> { }
 export interface TermsAndConditionsPaginator
-  extends PaginatorInfo<TermsAndConditions> {}
+  extends PaginatorInfo<TermsAndConditions> { }
 
 export interface FAQS {
   id: string;
@@ -661,7 +662,7 @@ export interface FAQS {
   updated_at: string;
 }
 
-export interface FaqsPaginator extends PaginatorInfo<FAQS> {}
+export interface FaqsPaginator extends PaginatorInfo<FAQS> { }
 
 export interface FaqsQueryOptions extends QueryOptions {
   faq_title?: string;
@@ -691,13 +692,13 @@ export interface DownloadableFile {
   updated_at: string;
 }
 export interface DownloadableFilePaginator
-  extends PaginatorInfo<DownloadableFile> {}
+  extends PaginatorInfo<DownloadableFile> { }
 
 export interface UpdateEmailUserInput {
   email: string;
 }
 
-export interface EmailChangeResponse extends Success {}
+export interface EmailChangeResponse extends Success { }
 
 export interface UpdateUserInput extends Partial<User> {
   id: string;
@@ -822,14 +823,14 @@ export interface Commission {
 export type AlertProps = {
   message: string | null;
   variant?:
-    | 'info'
-    | 'warning'
-    | 'error'
-    | 'success'
-    | 'infoOutline'
-    | 'warningOutline'
-    | 'errorOutline'
-    | 'successOutline';
+  | 'info'
+  | 'warning'
+  | 'error'
+  | 'success'
+  | 'infoOutline'
+  | 'warningOutline'
+  | 'errorOutline'
+  | 'successOutline';
   closeable?: boolean;
   onClose?: React.Dispatch<React.SetStateAction<any>>;
   className?: string;
