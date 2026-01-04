@@ -42,3 +42,6 @@ coverage/
 
 # Local custom install scripts or output
 install-output.log
+
+# Chawkbazar API
+chawkbazar-api
