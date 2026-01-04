@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 
 interface ItemProps {
-  icon: string;
+  icon: string | JSX.Element;
   title: string;
   description: string;
 }
@@ -23,12 +23,18 @@ const TextInformation: React.FC<Props> = ({ item, className }) => {
       )}
     >
       <div className="mb-3.5 md:mb-5 xl:mb-3.5 2xl:mb-5 w-14 md:w-auto mx-auto flex items-center justify-center">
-        <Image
-          src={item.icon}
-          alt={t(`${item.title}`)}
-          width="78"
-          height="78"
-        />
+        {typeof item.icon === 'string' ? (
+          <Image
+            src={item.icon}
+            alt={t(`${item.title}`)}
+            width="78"
+            height="78"
+          />
+        ) : (
+          <div className="flex items-center justify-center text-gray-400">
+            {item.icon}
+          </div>
+        )}
       </div>
       <div className="-mb-1">
         <h3 className="text-heading text-base md:text-lg font-semibold mb-1.5 md:mb-2">

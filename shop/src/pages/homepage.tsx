@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
     return {
         props: {
             data,
-            ...(await serverSideTranslations(context.locale!, ["common"])),
+            ...(await serverSideTranslations(context.locale!, ["common", "forms", "menu", "footer"])),
         },
     };
 };

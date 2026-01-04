@@ -1,5 +1,8 @@
 import TextInformation from "@components/common/text-information";
 import React from "react";
+import { FaShippingFast, FaRegCreditCard } from "react-icons/fa";
+import { FiRefreshCcw } from "react-icons/fi";
+import { RiSecurePaymentLine } from "react-icons/ri";
 
 interface Props {
   className?: string;
@@ -12,25 +15,25 @@ interface Props {
 const data = [
   {
     id: 1,
-    icon: "FaShippingFast",
+    icon: <FaShippingFast size={40} />,
     title: "feature-title-one",
     description: "feature-description-one",
   },
   {
     id: 2,
-    icon: "FiRefreshCcw",
+    icon: <FiRefreshCcw size={40} />,
     title: "feature-title-two",
     description: "feature-description-two",
   },
   {
     id: 3,
-    icon: "RiSecurePaymentLine",
+    icon: <RiSecurePaymentLine size={40} />,
     title: "feature-title-three",
     description: "feature-description-three",
   },
   {
     id: 4,
-    icon: "FaRegCreditCard",
+    icon: <FaRegCreditCard size={40} />,
     title: "feature-title-four",
     description: "feature-description-four",
   },
