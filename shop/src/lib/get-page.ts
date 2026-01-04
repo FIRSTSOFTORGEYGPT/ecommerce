@@ -24,8 +24,8 @@ export async function getPage(pagePath: string): Promise<Data | null> {
             `${API_ENDPOINTS.CMS_PAGES}/${slug}`
         );
 
-        if (!response) {
-            console.warn(`getPage: No response for slug ${slug}`);
+        if (!response || !response.id) {
+            console.warn(`getPage: No valid response for slug ${slug}`, response);
             return null;
         }
 

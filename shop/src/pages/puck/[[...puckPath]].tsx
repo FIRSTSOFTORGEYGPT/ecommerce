@@ -21,16 +21,36 @@ import EditorRoute from "@lib/editor-route";
 
 interface PuckEditorProps {
     path: string;
-    data: Partial<Data>;
+    data: Partial<Data> | null;
 }
 
 export default function PuckEditor({ path, data }: PuckEditorProps) {
+    if (!data) {
+        return (
+            <EditorRoute>
+                <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 text-center">
+                    <h1 className="text-6xl font-bold text-gray-200 mb-4">404</h1>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">Edit is not supported for this page</h2>
+                    <p className="text-gray-600 mb-6 max-w-md">
+                        The page you are trying to edit does not exist in the CMS or cannot be edited through this interface.
+                    </p>
+                    <a
+                        href="/"
+                        className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+                    >
+                        Go Home
+                    </a>
+                </div>
+            </EditorRoute>
+        );
+    }
+
     return (
         <EditorRoute>
             <Head>
                 <title>Puck Editor: {path}</title>
             </Head>
-            <Client path={path} data={data || {}} />
+            <Client path={path} data={data} />
         </EditorRoute>
     );
 }
@@ -47,7 +67,8 @@ export const getServerSideProps: GetServerSideProps<PuckEditorProps> = async (
     return {
         props: {
             path,
-            data: data || {},
+            // Pass null if data is missing, so the component can handle it
+            data: data || null,
             ...(await serverSideTranslations(context.locale!, ["common"])),
         },
     };
