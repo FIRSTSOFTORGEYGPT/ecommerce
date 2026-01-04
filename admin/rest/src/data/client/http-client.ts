@@ -2,6 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import invariant from 'tiny-invariant';
+import { Routes } from '@/config/routes';
 
 invariant(
   process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
@@ -15,12 +16,16 @@ const Axios = axios.create({
   },
 });
 // Change request data/error
-const AUTH_TOKEN_KEY = process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY ?? 'authToken';
+const AUTH_TOKEN_KEY = process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY ?? 'AUTH_CRED';
 Axios.interceptors.request.use((config) => {
   const cookies = Cookies.get(AUTH_TOKEN_KEY);
   let token = '';
   if (cookies) {
-    token = JSON.parse(cookies)['token'];
+    try {
+      token = JSON.parse(cookies)['token'];
+    } catch (e) {
+      token = cookies;
+    }
   }
   // @ts-ignore
   config.headers = {
@@ -41,7 +46,7 @@ Axios.interceptors.response.use(
         error.response.data.message === 'CHAWKBAZAR_ERROR.NOT_AUTHORIZED')
     ) {
       Cookies.remove(AUTH_TOKEN_KEY);
-      Router.reload();
+      Router.replace(Routes.login);
     }
     return Promise.reject(error);
   },
@@ -111,8 +116,8 @@ export class HttpClient {
         ].includes(k)
           ? `${k}.slug:${v}`
           : ['is_approved'].includes(k)
-          ? formatBooleanSearchParam(k, v as boolean)
-          : `${k}:${v}`,
+            ? formatBooleanSearchParam(k, v as boolean)
+            : `${k}:${v}`,
       )
       .join(';');
   }
