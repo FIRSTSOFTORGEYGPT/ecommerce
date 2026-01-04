@@ -108,6 +108,8 @@ export function useLogin() {
         setServerError(t('forms:error-credential-wrong'));
         return;
       }
+      console.log(data, "LOGIN_RESPONSE_DATA");
+
       setToken(data.token);
       setAuthCredentials(data.token, data.permissions);
       setAuthorized(true);

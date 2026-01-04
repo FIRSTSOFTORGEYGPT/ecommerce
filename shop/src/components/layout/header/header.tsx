@@ -34,6 +34,12 @@ const LoginButton = dynamic(
     ssr: false,
   },
 );
+const EditPageButton = dynamic(
+  () => import('@components/cms/edit-page-button'),
+  {
+    ssr: false,
+  },
+);
 interface Props {
   variant?: 'default' | 'modern';
 }
@@ -87,12 +93,12 @@ const Header: React.FC<Props> = ({ variant = 'default' }) => {
     <header
       id="siteHeader"
       ref={siteHeaderRef}
-      className={classNames("w-full relative z-20", !isAlertMessage? "h-16 sm:h-20 lg:h-24": "custom-height-control")}
+      className={classNames("w-full relative z-20", !isAlertMessage ? "h-16 sm:h-20 lg:h-24" : "custom-height-control")}
     >
       {width >= RESPONSIVE_WIDTH &&
-      underMaintenanceIsComing &&
-      !isScrolling &&
-      !shopUnderMaintenanceIsComing ? (
+        underMaintenanceIsComing &&
+        !isScrolling &&
+        !shopUnderMaintenanceIsComing ? (
         <Alert
           message={`Site ${t('text-maintenance-mode-title')}`}
           variant="info"
@@ -109,11 +115,11 @@ const Header: React.FC<Props> = ({ variant = 'default' }) => {
         ''
       )}
       {width >= RESPONSIVE_WIDTH &&
-      !underMaintenanceIsComing &&
-      !isScrolling &&
-      shopUnderMaintenanceIsComing &&
-      !isLoading &&
-      shopData ? (
+        !underMaintenanceIsComing &&
+        !isScrolling &&
+        shopUnderMaintenanceIsComing &&
+        !isLoading &&
+        shopData ? (
         <Alert
           message={`${shopData?.name} ${t('text-maintenance-mode-title')}`}
           variant="info"
@@ -144,11 +150,10 @@ const Header: React.FC<Props> = ({ variant = 'default' }) => {
         <div className="flex items-center justify-center mx-auto max-w-[1920px] h-full w-full">
           <button
             aria-label="Menu"
-            className={`menuBtn md:flex ${
-              variant !== 'modern'
+            className={`menuBtn md:flex ${variant !== 'modern'
                 ? 'hidden lg:hidden px-5 2xl:px-7'
                 : 'ltr:pr-7 rtl:pl-7 hidden md:block'
-            } flex-col items-center justify-center flex-shrink-0 h-full outline-none focus:outline-none`}
+              } flex-col items-center justify-center flex-shrink-0 h-full outline-none focus:outline-none`}
             onClick={handleMobileMenu}
           >
             <span className="menuIcon">
@@ -207,6 +212,7 @@ const Header: React.FC<Props> = ({ variant = 'default' }) => {
 							</AuthMenu>
 						</div> */}
 
+            <EditPageButton />
             <CartButton />
             <LoginButton />
           </div>
