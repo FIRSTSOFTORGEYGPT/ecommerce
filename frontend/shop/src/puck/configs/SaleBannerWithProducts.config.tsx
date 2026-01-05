@@ -13,7 +13,7 @@ export interface SaleBannerWithProductsProps {
         desktop_image_url: string;
         mobile_image_url: string;
     }[];
-    variant: "default" | "center" | "left" | "fashion";
+    variant: "default" | "left";
     limit: number;
 
     // Dynamic Data Source
@@ -45,9 +45,7 @@ export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProduct
             label: "Layout Variant",
             options: [
                 { label: "Default", value: "default" },
-                { label: "Center", value: "center" },
                 { label: "Left", value: "left" },
-                { label: "Fashion (Double Banner)", value: "fashion" },
             ],
         },
         limit: {

@@ -14,7 +14,7 @@ interface ProductsProps {
   sectionHeading: string;
   categorySlug?: string;
   className?: string;
-  variant?: 'default' | 'center' | 'left' | 'fashion';
+  variant?: 'default' | 'left';
   productVariant?: 'grid' | 'gridSlim' | 'list' | 'listSmall';
   limit?: number;
   bannerData?: any;
@@ -50,58 +50,42 @@ const SaleBannerWithProducts: React.FC<ProductsProps> = ({
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div
-          className={`grid grid-cols-1 ${variant === 'fashion'
-            ? '2xl:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4'
-            : '2xl:grid-cols-4 2xl:grid-rows-2 md:grid-cols-2'
-            } gap-3 md:gap-6 lg:gap-5 xl:gap-7`}
-        >
-          {variant === 'fashion' ? (
-            <div className="grid order-2 gap-5 col-span-full sm:col-span-full sm:grid-cols-4 2xl:col-span-2 2xl:row-span-2 md:gap-8 sm:gap-3">
-              <BannerCard
-                data={bannerData[0]}
-                href={`${ROUTES.COLLECTIONS}/${bannerData[0].slug}`}
-                effectActive={true}
-                className="sm:col-span-2 2xl:col-span-full"
-                classNameInner="md:aspect-[1.5/1] aspect-[1.8/1] md:h-full"
-              />
-              <BannerCard
-                data={bannerData[1]}
-                href={`${ROUTES.COLLECTIONS}/${bannerData[1].slug}`}
-                effectActive={true}
-                className="sm:col-span-2 2xl:col-span-full"
-                classNameInner="md:aspect-[1.5/1] aspect-[1.8/1] md:h-full"
-              />
-            </div>
-          ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6 lg:gap-5 xl:gap-7">
+          <div
+            className={cn(
+              'lg:col-span-4',
+              variant === 'left' ? 'lg:order-1' : 'lg:order-2'
+            )}
+          >
             <BannerCard
               data={bannerData[0]}
               href={`${ROUTES.COLLECTIONS}/${bannerData[0].slug}`}
               effectActive={true}
-              className="order-2 md:col-span-full 2xl:col-span-2 2xl:row-span-2"
-              classNameInner={cn({
-                'aspect-[2.28/1]': variant === 'center',
-              })}
+              className="w-full"
+              classNameInner="aspect-[430/600]"
             />
-          )}
-          {isLoading
-            ? Array.from({ length: 2 }).map((_, idx) => (
-              <ProductCardListSmallLoader
-                key={idx}
-                uniqueKey={`on-selling-${idx}`}
-              />
-            ))
-            : data?.map((product: Product, index: number) => (
-              <div
-                key={`product--key${product.id}`}
-                className={`${variant === 'center' && index === 0
-                  ? '2xl:order-0'
-                  : '2xl:order-2'
-                  }`}
-              >
-                <ProductCard product={product} variant={productVariant} />
-              </div>
-            ))}
+          </div>
+          <div
+            className={cn(
+              'grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 lg:gap-5 xl:gap-7 lg:col-span-8',
+              variant === 'left' ? 'lg:order-2' : 'lg:order-1'
+            )}
+          >
+            {isLoading
+              ? Array.from({ length: 2 }).map((_, idx) => (
+                <ProductCardListSmallLoader
+                  key={idx}
+                  uniqueKey={`on-selling-${idx}`}
+                />
+              ))
+              : data?.map((product: Product) => (
+                <ProductCard
+                  key={`product--key${product.id}`}
+                  product={product}
+                  variant={productVariant}
+                />
+              ))}
+          </div>
         </div>
       )}
     </div>

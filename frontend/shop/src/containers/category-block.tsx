@@ -91,6 +91,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
           buttonClassName={showArrows ? "-mt-8 md:-mt-10" : "hidden"}
           autoplay={autoplay ? { delay: autoplaySpeed } : false}
           loop={loop}
+          speed={1000}
           prevActivateId="categoriesSlidePrev"
           nextActivateId="categoriesSlideNext"
         >

@@ -25,6 +25,7 @@ type CarouselPropsType = {
   scrollbar?: {} | any;
   buttonPosition?: 'inside' | 'outside';
   showNavigation?: boolean;
+  speed?: number;
   children: React.ReactNode;
 };
 
@@ -41,6 +42,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
   autoplay = false,
   buttonPosition = 'outside',
   showNavigation = true,
+  speed,
   ...props
 }) => {
   const { locale } = useRouter();
@@ -49,9 +51,8 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
   const nextRef = useRef<HTMLDivElement>(null);
   return (
     <div
-      className={`carouselWrapper relative ${className} ${
-        paginationVariant === 'circle' ? 'dotsCircle' : ''
-      }`}
+      className={`carouselWrapper relative ${className} ${paginationVariant === 'circle' ? 'dotsCircle' : ''
+        }`}
     >
       <Swiper
         modules={[Autoplay, Pagination, Navigation, Scrollbar]}
@@ -59,6 +60,8 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
         autoplay={autoplay}
         breakpoints={breakpoints}
         dir={dir}
+        touchStartPreventDefault={false}
+        speed={speed}
         navigation={{
           prevEl: prevActivateId.length
             ? `#${prevActivateId}`
