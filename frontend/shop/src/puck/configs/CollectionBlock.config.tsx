@@ -21,6 +21,8 @@ export const CollectionBlockConfig: ComponentConfig<CollectionBlockProps> = {
         collections: {
             type: "array",
             label: "Collections (3 recommended)",
+            min: 1,
+            max: 3,
             getItemSummary: (item) => item.title || "Collection",
             arrayFields: {
                 title: { type: "text", label: "Title" },

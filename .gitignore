@@ -45,3 +45,7 @@ install-output.log
 
 # Chawkbazar API
 chawkbazar-api
+
+# CMS Audit
+cms-audit.md
+cms_analysis.md
