@@ -103,8 +103,8 @@ export const SaleBannerWithProductsConfig: ComponentConfig<SaleBannerWithProduct
                 limit={limit}
                 bannerData={mappedBanners}
                 filterType={filterType}
-                tagSlug={tagSlug}
-                categorySlug={categorySlug}
+                tagSlug={filterType === "tag" ? tagSlug : undefined}
+                categorySlug={filterType === "category" ? categorySlug : undefined}
             />
         );
     },

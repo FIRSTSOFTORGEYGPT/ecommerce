@@ -7,14 +7,17 @@ import BannerWithProducts from "../../containers/banner-with-products";
 
 export interface BannerWithProductsProps {
     sectionHeading: string;
-    data: {
-        title: string;
-        slug: string;
-        desktop_image_url: string;
-        mobile_image_url: string;
-    }[];
+    title: string;
+    slug: string;
+    desktop_image_url: string;
+    mobile_image_url: string;
     variant: "default" | "reverse";
     limit: number;
+
+    // Dynamic Data Source
+    filterType: "tag" | "category";
+    tagSlug?: string;
+    categorySlug?: string;
 }
 
 export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> = {
@@ -24,17 +27,10 @@ export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> 
             type: "text",
             label: "Section Heading",
         },
-        data: {
-            type: "array",
-            label: "Banners",
-            getItemSummary: (item) => item.title || "Banner",
-            arrayFields: {
-                title: { type: "text", label: "Title" },
-                slug: { type: "text", label: "Link Slug" },
-                desktop_image_url: { type: "text", label: "Desktop Image" },
-                mobile_image_url: { type: "text", label: "Mobile Image" },
-            },
-        },
+        title: { type: "text", label: "Banner Title" },
+        slug: { type: "text", label: "Banner Link Slug" },
+        desktop_image_url: { type: "text", label: "Banner Desktop Image" },
+        mobile_image_url: { type: "text", label: "Banner Mobile Image" },
         variant: {
             type: "select",
             label: "Layout",
@@ -49,29 +45,59 @@ export const BannerWithProductsConfig: ComponentConfig<BannerWithProductsProps> 
             min: 4,
             max: 12,
         },
+        // Dynamic Data Source
+        filterType: {
+            type: "select",
+            label: "Filter Products By",
+            options: [
+                { label: "Tag", value: "tag" },
+                { label: "Category", value: "category" },
+            ],
+        },
+        tagSlug: {
+            type: "select",
+            label: "Product Tag",
+            options: [],
+        },
+        categorySlug: {
+            type: "select",
+            label: "Product Category",
+            options: [],
+        },
     },
     defaultProps: {
         sectionHeading: "On Sale Now",
-        data: [{
-            title: "Sale Banner",
-            slug: "sale",
-            desktop_image_url: "/assets/images/banner/banner-sale-offer.jpg",
-            mobile_image_url: "/assets/images/banner/banner-sale-offer.jpg",
-        }],
+        title: "Sale Banner",
+        slug: "sale",
+        desktop_image_url: "/assets/images/banner/banner-sale-offer.jpg",
+        mobile_image_url: "/assets/images/banner/banner-sale-offer.jpg",
         variant: "default",
         limit: 9,
+        filterType: "tag",
+        tagSlug: "",
+        categorySlug: "",
     },
-    render: ({ data, sectionHeading, variant, limit }) => {
-        const mappedBanners = (data || []).map((b, i) => ({
-            id: i + 1,
-            title: b.title,
-            slug: b.slug,
+    render: ({ title, slug, desktop_image_url, mobile_image_url, sectionHeading, variant, limit, filterType, tagSlug, categorySlug }) => {
+        const mappedBanners = [{
+            id: 1,
+            title,
+            slug,
             image: {
-                mobile: { url: b.mobile_image_url, width: 480, height: 600 },
-                desktop: { url: b.desktop_image_url, width: 560, height: 700 },
+                mobile: { url: mobile_image_url, width: 480, height: 600 },
+                desktop: { url: desktop_image_url, width: 560, height: 700 },
             },
-        }));
+        }];
 
-        return <BannerWithProducts data={mappedBanners} sectionHeading={sectionHeading} variant={variant} limit={limit} />;
+        return (
+            <BannerWithProducts
+                data={mappedBanners}
+                sectionHeading={sectionHeading}
+                variant={variant}
+                limit={limit}
+                filterType={filterType}
+                tagSlug={filterType === "tag" ? tagSlug : undefined}
+                categorySlug={filterType === "category" ? categorySlug : undefined}
+            />
+        );
     },
 };

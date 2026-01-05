@@ -5,7 +5,6 @@ import ProductCardListSmallLoader from '@components/ui/loaders/product-card-smal
 import { useProducts } from '@framework/products';
 import Alert from '@components/ui/alert';
 import { ROUTES } from '@lib/routes';
-import { siteSettings } from '@settings/site.settings';
 import { useTranslation } from 'next-i18next';
 import isEmpty from 'lodash/isEmpty';
 import NotFoundItem from '@components/404/not-found-item';
@@ -17,8 +16,10 @@ interface ProductsProps {
   sectionHeading: string;
   categorySlug?: string;
   className?: string;
-  variant?: 'default' | 'reverse' | 'modern';
+  variant?: 'default' | 'reverse';
   limit?: number;
+  filterType?: 'tag' | 'category';
+  tagSlug?: string;
 }
 
 const BannerWithProducts: React.FC<ProductsProps> = ({
@@ -28,18 +29,20 @@ const BannerWithProducts: React.FC<ProductsProps> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   limit = 9,
   data,
+  filterType = 'tag',
+  tagSlug,
 }) => {
   const { t } = useTranslation();
 
-  const onSellingSettings = siteSettings?.homePageBlocks?.onSaleSettings;
+  const queryOptions: any = { limit };
+  if (filterType === 'tag' && tagSlug) queryOptions.tags = tagSlug;
+  if (filterType === 'category' && categorySlug) queryOptions.category = categorySlug;
+
   const {
     data: products,
     isLoading: loading,
     error,
-  } = useProducts({
-    limit,
-    tags: onSellingSettings?.slug,
-  });
+  } = useProducts(queryOptions);
 
   if (!loading && isEmpty(products)) {
     return <NotFoundItem text={t('text-no-on-selling-products-found')} />;
@@ -54,33 +57,22 @@ const BannerWithProducts: React.FC<ProductsProps> = ({
       {error ? (
         <Alert message={error?.message} />
       ) : (
-        <div className="grid grid-cols-4 gap-x-3 lg:gap-x-5 xl:gap-x-7">
-          {
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-x-5 xl:gap-x-7">
+          {data?.[0] ? (
             <BannerCard
-              data={variant === 'reverse' ? data[1] : data[0]}
-              href={
-                variant === 'reverse'
-                  ? `${ROUTES.COLLECTIONS}/${data[1].slug}`
-                  : `${ROUTES.COLLECTIONS}/${data[0].slug}`
-              }
-              className={classNames('hidden 3xl:block', {
-                '3xl:col-span-2 3xl:row-span-2': variant === 'modern',
-                'col-span-1': variant === 'default',
+              data={data[0]}
+              href={`${ROUTES.COLLECTIONS}/${data[0].slug}`}
+              className={classNames('md:col-span-1', {
+                'md:order-2': variant === 'reverse',
               })}
-              classNameInner={classNames({
-                'aspect-[2/2.78] h-full':
-                  variant === 'default' || variant === 'reverse',
-                'aspect-[2.3/1] h-full': variant === 'modern',
-              })}
+              classNameInner="aspect-[2/2.78] h-full"
               effectActive={true}
             />
-          }
+          ) : null}
           <div
-            className={`col-span-full ${
-              variant === 'modern'
-                ? 'xl:grid-cols-2 3xl:col-span-2'
-                : '3xl:col-span-3 xl:grid-cols-3'
-            } grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 xl:gap-7 ${
+            className={`${
+              variant === 'reverse' ? 'md:order-1' : ''
+            } md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 xl:gap-7 ${
               variant === 'reverse' ? 'row-span-full' : ''
             }`}
           >

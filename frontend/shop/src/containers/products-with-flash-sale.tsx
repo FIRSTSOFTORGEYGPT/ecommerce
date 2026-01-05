@@ -18,6 +18,13 @@ interface Props {
   sidebarPosition?: 'left' | 'right';
   gridGap?: 'none' | 'small' | 'medium' | 'large';
 
+  // Sidebar Settings
+  sidebarEnabled?: boolean;
+  sidebarSource?: 'popular' | 'filtered';
+  sidebarLimit?: number;
+  sidebarHeading?: string;
+  sidebarLinkSlug?: string;
+
   // Dynamic Data Source
   filterType?: 'tag' | 'category';
   tagSlug?: string;
@@ -30,6 +37,11 @@ const ProductsWithFlashSale: React.FC<Props> = ({
   limit = 10,
   sidebarPosition = 'right',
   gridGap = 'medium',
+  sidebarEnabled = true,
+  sidebarSource = 'popular',
+  sidebarLimit = 4,
+  sidebarHeading = 'Top Products',
+  sidebarLinkSlug = '/search',
   filterType = 'tag',
   tagSlug,
   categorySlug,
@@ -37,13 +49,30 @@ const ProductsWithFlashSale: React.FC<Props> = ({
   const { t } = useTranslation();
   const { width } = useWindowSize();
 
+  const sidebarHref = sidebarLinkSlug
+    ? sidebarLinkSlug.startsWith('/')
+      ? sidebarLinkSlug
+      : `/${sidebarLinkSlug}`
+    : undefined;
+
   const {
     data: topProducts,
     isLoading: topProductLoading,
     error,
   } = usePopularProducts({
-    limit: 4,
+    limit: sidebarLimit,
   });
+
+  const sidebarQueryOptions: any = { limit: sidebarLimit };
+  if (filterType === 'tag' && tagSlug) sidebarQueryOptions.tags = tagSlug;
+  if (filterType === 'category' && categorySlug)
+    sidebarQueryOptions.category = categorySlug;
+
+  const {
+    data: sidebarFilteredProducts,
+    isLoading: sidebarFilteredLoading,
+    error: sidebarFilteredError,
+  } = useProducts(sidebarQueryOptions);
 
   // Construct dynamic query options
   const queryOptions: any = { limit };
@@ -65,18 +94,33 @@ const ProductsWithFlashSale: React.FC<Props> = ({
     <div
       className={`grid grid-cols-1 ${gapClasses[gridGap]} xl:grid-cols-7 2xl:grid-cols-9 ${className}`}
     >
-      <div className={`px-4 pt-6 pb-5 border border-gray-300 rounded-lg xl:col-span-5 2xl:col-span-7 md:pt-7 lg:pt-9 xl:pt-7 2xl:pt-9 md:px-5 lg:px-7 lg:pb-7 ${sidebarPosition === 'left' ? 'xl:order-2' : ''}`}>
+      <div className={`px-4 pt-6 pb-5 border border-gray-300 rounded-lg ${sidebarEnabled ? 'xl:col-span-5 2xl:col-span-7' : 'xl:col-span-7 2xl:col-span-9'} md:pt-7 lg:pt-9 xl:pt-7 2xl:pt-9 md:px-5 lg:px-7 lg:pb-7 ${sidebarEnabled && sidebarPosition === 'left' ? 'xl:order-2' : ''}`}>
         <SectionHeader
-          sectionHeading="text-top-products"
-          categorySlug="/search"
+          sectionHeading={sidebarHeading}
+          categorySlug={sidebarHref}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 xl:gap-7 xl:-mt-1.5 2xl:mt-0">
-          {error ? (
-            <Alert message={error?.message} />
-          ) : topProductLoading && topProducts?.length ? (
-            <ProductListFeedLoader limit={topProducts?.length} />
+          {sidebarSource === 'popular' ? (
+            error ? (
+              <Alert message={error?.message} />
+            ) : topProductLoading && topProducts?.length ? (
+              <ProductListFeedLoader limit={topProducts?.length} />
+            ) : (
+              topProducts?.map((product: any) => (
+                <ProductCard
+                  key={`product--key${product.id}`}
+                  product={product}
+                  imageContentClassName="flex-shrink-0 w-32 sm:w-44 md:w-40 lg:w-52 2xl:w-56 3xl:w-64"
+                  contactClassName="ltr:pl-3.5 ltr:sm:pl-5 ltr:md:pl-4 ltr:xl:pl-5 ltr:2xl:pl-6 ltr:3xl:pl-10 rtl:pr-3.5 rtl:sm:pr-5 rtl:md:pr-4 rtl:xl:pr-5 rtl:2xl:pr-6 rtl:3xl:pr-10"
+                />
+              ))
+            )
+          ) : sidebarFilteredError ? (
+            <Alert message={sidebarFilteredError?.message} />
+          ) : sidebarFilteredLoading && sidebarFilteredProducts?.length ? (
+            <ProductListFeedLoader limit={sidebarFilteredProducts?.length} />
           ) : (
-            topProducts?.map((product: any) => (
+            sidebarFilteredProducts?.map((product: any) => (
               <ProductCard
                 key={`product--key${product.id}`}
                 product={product}
@@ -87,26 +131,29 @@ const ProductsWithFlashSale: React.FC<Props> = ({
           )}
         </div>
       </div>
-      {flashSellProduct?.length ? (
-        width < 1280 ? (
-          <SellWithProgress
-            carouselBreakpoint={carouselBreakpoint}
-            products={flashSellProduct}
-            loading={flashSellProductLoading}
-            className={`col-span-full xl:col-span-2 row-span-full xl:row-auto lg:mb-1 xl:mb-0 ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
-          />
+
+      {sidebarEnabled ? (
+        flashSellProduct?.length ? (
+          width < 1280 ? (
+            <SellWithProgress
+              carouselBreakpoint={carouselBreakpoint}
+              products={flashSellProduct}
+              loading={flashSellProductLoading}
+              className={`col-span-full xl:col-span-2 row-span-full xl:row-auto lg:mb-1 xl:mb-0 ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
+            />
+          ) : (
+            <SellWithProgress
+              carouselBreakpoint={carouselBreakpoint}
+              products={flashSellProduct}
+              loading={flashSellProductLoading}
+              productVariant="gridSlim"
+              className={`col-span-full xl:col-span-2 row-span-full xl:row-auto ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
+            />
+          )
         ) : (
-          <SellWithProgress
-            carouselBreakpoint={carouselBreakpoint}
-            products={flashSellProduct}
-            loading={flashSellProductLoading}
-            productVariant="gridSlim"
-            className={`col-span-full xl:col-span-2 row-span-full xl:row-auto ${sidebarPosition === 'left' ? 'xl:order-1' : ''}`}
-          />
+          <NotFoundItem text={t('text-no-flash-products-found')} />
         )
-      ) : (
-        <NotFoundItem text={t('text-no-flash-products-found')} />
-      )}
+      ) : null}
     </div>
   );
 };

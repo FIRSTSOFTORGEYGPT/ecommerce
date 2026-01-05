@@ -11,6 +11,13 @@ export interface ProductsWithFlashSaleProps {
     sidebarPosition: "left" | "right";
     gridGap: "none" | "small" | "medium" | "large";
 
+    // Sidebar Settings
+    sidebarEnabled: boolean;
+    sidebarSource: "popular" | "filtered";
+    sidebarLimit: number;
+    sidebarHeading: string;
+    sidebarLinkSlug: string;
+
     // Dynamic Data Source
     filterType: "tag" | "category";
     tagSlug?: string;
@@ -33,6 +40,36 @@ export const ProductsWithFlashSaleConfig: ComponentConfig<ProductsWithFlashSaleP
                 { label: "Left", value: "left" },
                 { label: "Right", value: "right" },
             ],
+        },
+        sidebarEnabled: {
+            type: "radio",
+            label: "Show Sidebar",
+            options: [
+                { label: "Yes", value: true },
+                { label: "No", value: false },
+            ],
+        },
+        sidebarSource: {
+            type: "select",
+            label: "Sidebar Source",
+            options: [
+                { label: "Popular", value: "popular" },
+                { label: "Filtered (Tag/Category)", value: "filtered" },
+            ],
+        },
+        sidebarLimit: {
+            type: "number",
+            label: "Sidebar Product Limit",
+            min: 2,
+            max: 12,
+        },
+        sidebarHeading: {
+            type: "text",
+            label: "Sidebar Heading",
+        },
+        sidebarLinkSlug: {
+            type: "text",
+            label: "Sidebar Link Slug (e.g. /search)",
         },
         // Dynamic Data Source
         filterType: {
@@ -68,9 +105,22 @@ export const ProductsWithFlashSaleConfig: ComponentConfig<ProductsWithFlashSaleP
         limit: 10,
         sidebarPosition: "right",
         gridGap: "medium",
+        sidebarEnabled: true,
+        sidebarSource: "popular",
+        sidebarLimit: 4,
+        sidebarHeading: "Top Products",
+        sidebarLinkSlug: "/search",
         filterType: "tag",
         tagSlug: "",
         categorySlug: "",
     },
-    render: (props) => <ProductsWithFlashSale {...props} />,
+    render: (props) => {
+        const safeProps = {
+            ...props,
+            tagSlug: props.filterType === "tag" ? props.tagSlug : undefined,
+            categorySlug: props.filterType === "category" ? props.categorySlug : undefined,
+        };
+
+        return <ProductsWithFlashSale {...safeProps} />;
+    },
 };
