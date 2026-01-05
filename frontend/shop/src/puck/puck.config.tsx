@@ -13,6 +13,8 @@ import {
   HeroBlockProps,
   ProductsBlockConfig,
   ProductsBlockProps,
+  ProductsSectionConfig,
+  ProductsSectionProps,
   CategoryBlockConfig,
   CategoryBlockProps,
   TestimonialCarouselConfig,
@@ -81,6 +83,7 @@ type Props = {
   BannerCarouselBlock: BannerCarouselBlockProps;
   HeroBlock: HeroBlockProps;
   ProductsBlock: ProductsBlockProps;
+  ProductsSection: ProductsSectionProps;
   CategoryBlock: CategoryBlockProps;
   TestimonialCarousel: TestimonialCarouselProps;
   Footer: FooterProps;
@@ -147,6 +150,7 @@ export const config: Config<Props> = {
       title: "Product Displays",
       components: [
         "ProductsBlock",
+        "ProductsSection",
         "ProductsFeatured",
         "ProductsTopBlock",
         "ProductFlashSaleBlock",
@@ -194,6 +198,7 @@ export const config: Config<Props> = {
     BannerCarouselBlock: BannerCarouselBlockConfig,
     HeroBlock: HeroBlockConfig,
     ProductsBlock: ProductsBlockConfig,
+    ProductsSection: ProductsSectionConfig,
     CategoryBlock: CategoryBlockConfig,
     TestimonialCarousel: TestimonialCarouselConfig,
     Footer: FooterConfig,
