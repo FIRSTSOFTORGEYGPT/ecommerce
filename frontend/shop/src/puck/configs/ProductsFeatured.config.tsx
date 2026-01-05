@@ -97,5 +97,13 @@ export const ProductsFeaturedConfig: ComponentConfig<ProductsFeaturedProps> = {
         gridColumns: 4,
         gridGap: "medium",
     },
-    render: (props) => <ProductsFeatured {...props} />,
+    render: (props) => {
+        const safeProps = {
+            ...props,
+            tagSlug: props.filterType === "tag" ? props.tagSlug : undefined,
+            categorySlug: props.filterType === "category" ? props.categorySlug : undefined,
+        };
+
+        return <ProductsFeatured {...safeProps} />;
+    },
 };

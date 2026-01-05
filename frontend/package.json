@@ -15,7 +15,7 @@
     "dev:admin-rest": "yarn workspace @chawkbazar/admin-rest dev",
     "build:admin-rest": "yarn workspace @chawkbazar/admin-rest build",
     "start:admin-rest": "yarn workspace @chawkbazar/admin-rest start",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install frontend/.husky"
   },
   "devDependencies": {
     "husky": "6.0.0",
