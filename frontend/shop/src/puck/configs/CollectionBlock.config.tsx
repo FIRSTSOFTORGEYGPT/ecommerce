@@ -13,6 +13,10 @@ export interface CollectionBlockProps {
         image_url: string;
     }[];
     variant: "default" | "modern";
+
+	columns?: 1 | 2 | 3 | 4;
+	gridGap?: "none" | "small" | "medium" | "large";
+	limit?: number;
 }
 
 export const CollectionBlockConfig: ComponentConfig<CollectionBlockProps> = {
@@ -22,7 +26,7 @@ export const CollectionBlockConfig: ComponentConfig<CollectionBlockProps> = {
             type: "array",
             label: "Collections (3 recommended)",
             min: 1,
-            max: 3,
+            max: 12,
             getItemSummary: (item) => item.title || "Collection",
             arrayFields: {
                 title: { type: "text", label: "Title" },
@@ -30,6 +34,32 @@ export const CollectionBlockConfig: ComponentConfig<CollectionBlockProps> = {
                 description: { type: "textarea", label: "Description" },
                 image_url: { type: "text", label: "Image URL (450×450)" },
             },
+        },
+        columns: {
+            type: "select",
+            label: "Columns (Desktop)",
+            options: [
+                { label: "1 Column", value: 1 },
+                { label: "2 Columns", value: 2 },
+                { label: "3 Columns", value: 3 },
+                { label: "4 Columns", value: 4 },
+            ],
+        },
+        gridGap: {
+            type: "select",
+            label: "Grid Gap",
+            options: [
+                { label: "None", value: "none" },
+                { label: "Small", value: "small" },
+                { label: "Medium", value: "medium" },
+                { label: "Large", value: "large" },
+            ],
+        },
+        limit: {
+            type: "number",
+            label: "Number of Items",
+            min: 1,
+            max: 12,
         },
         variant: {
             type: "select",
@@ -46,17 +76,28 @@ export const CollectionBlockConfig: ComponentConfig<CollectionBlockProps> = {
             { title: "Featured", slug: "featured", description: "Hand-picked items", image_url: "/assets/images/collection/2.jpg" },
             { title: "Best Sellers", slug: "best-sellers", description: "Top rated products", image_url: "/assets/images/collection/3.jpg" },
         ],
+        columns: 3,
+        gridGap: "medium",
+        limit: 3,
         variant: "default",
     },
-    render: ({ collections, variant }) => {
-        const mappedCollections = collections.map((c, i) => ({
+    render: ({ collections, variant, columns, gridGap, limit }) => {
+        const mappedCollections = (collections || []).map((c, i) => ({
             id: i + 1,
             title: c.title,
-            slug: c.slug,
+            slug: c.slug && c.slug.trim().length > 0 ? c.slug : "/#",
             description: c.description,
-            image: c.image_url,
+            image: c.image_url && c.image_url.trim().length > 0 ? c.image_url : "/assets/images/collection/1.jpg",
         }));
 
-        return <CollectionBlock data={mappedCollections} variant={variant} />;
+        return (
+            <CollectionBlock
+                data={mappedCollections}
+                variant={variant}
+                columns={columns}
+                gridGap={gridGap}
+                limit={limit}
+            />
+        );
     },
 };

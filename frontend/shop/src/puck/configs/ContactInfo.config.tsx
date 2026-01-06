@@ -8,7 +8,6 @@ import ContactInfoBlock from "../../containers/contact-info";
 export interface ContactInfoProps {
     // Layout Settings
     layout: "row" | "column";
-    columns: 2 | 3 | 4;
     gridGap: "none" | "small" | "medium" | "large";
     containerWidth: "full" | "container" | "narrow";
 
@@ -16,6 +15,7 @@ export interface ContactInfoProps {
     iconSize: "small" | "medium" | "large";
     textSize: "small" | "medium" | "large";
     alignment: "left" | "center" | "right";
+    contentAlignment: "start" | "center" | "end" | "between";
     showIcon: boolean;
 }
 
@@ -28,15 +28,6 @@ export const ContactInfoConfig: ComponentConfig<ContactInfoProps> = {
             options: [
                 { label: "Row (Horizontal)", value: "row" },
                 { label: "Column (Vertical)", value: "column" },
-            ],
-        },
-        columns: {
-            type: "select",
-            label: "Columns",
-            options: [
-                { label: "2 Columns", value: 2 },
-                { label: "3 Columns", value: 3 },
-                { label: "4 Columns", value: 4 },
             ],
         },
         gridGap: {
@@ -85,6 +76,16 @@ export const ContactInfoConfig: ComponentConfig<ContactInfoProps> = {
                 { label: "Right", value: "right" },
             ],
         },
+        contentAlignment: {
+            type: "select",
+            label: "Content Alignment",
+            options: [
+                { label: "Start", value: "start" },
+                { label: "Center", value: "center" },
+                { label: "End", value: "end" },
+                { label: "Space Between", value: "between" },
+            ],
+        },
         showIcon: {
             type: "radio",
             label: "Show Icons",
@@ -93,12 +94,12 @@ export const ContactInfoConfig: ComponentConfig<ContactInfoProps> = {
     },
     defaultProps: {
         layout: "column",
-        columns: 3,
         gridGap: "medium",
         containerWidth: "container",
         iconSize: "medium",
         textSize: "medium",
         alignment: "left",
+        contentAlignment: "start",
         showIcon: true,
     },
     render: (props) => <ContactInfoBlock {...props} />,

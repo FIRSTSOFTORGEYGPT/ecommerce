@@ -8,6 +8,7 @@
 export * from "./BannerCarouselBlock.config";
 export * from "./BannerSection.config";
 export * from "./HeroBlock.config";
+export * from "./HeroSection.config";
 export * from "./ProductsBlock.config";
 export * from "./ProductsSection.config";
 export * from "./CategoryBlock.config";

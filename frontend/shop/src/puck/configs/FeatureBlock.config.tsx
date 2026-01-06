@@ -8,11 +8,37 @@ import FeatureBlock from "../../containers/feature-block";
 export interface FeatureBlockProps {
     columns: 2 | 3 | 4;
     gridGap: "none" | "small" | "medium" | "large";
+    items?: {
+        icon: "shipping" | "refresh" | "secure" | "card";
+        title: string;
+        description: string;
+    }[];
 }
 
 export const FeatureBlockConfig: ComponentConfig<FeatureBlockProps> = {
     label: "Features Block",
     fields: {
+        items: {
+            type: "array",
+            label: "Features",
+            min: 1,
+            max: 6,
+            getItemSummary: (item) => item.title || "Feature",
+            arrayFields: {
+                icon: {
+                    type: "select",
+                    label: "Icon",
+                    options: [
+                        { label: "Shipping", value: "shipping" },
+                        { label: "Refresh", value: "refresh" },
+                        { label: "Secure Payment", value: "secure" },
+                        { label: "Card", value: "card" },
+                    ],
+                },
+                title: { type: "text", label: "Title Key" },
+                description: { type: "text", label: "Description Key" },
+            },
+        },
         columns: {
             type: "select",
             label: "Columns",
@@ -34,6 +60,12 @@ export const FeatureBlockConfig: ComponentConfig<FeatureBlockProps> = {
         },
     },
     defaultProps: {
+        items: [
+            { icon: "shipping", title: "feature-title-one", description: "feature-description-one" },
+            { icon: "refresh", title: "feature-title-two", description: "feature-description-two" },
+            { icon: "secure", title: "feature-title-three", description: "feature-description-three" },
+            { icon: "card", title: "feature-title-four", description: "feature-description-four" },
+        ],
         columns: 4,
         gridGap: "medium",
     },

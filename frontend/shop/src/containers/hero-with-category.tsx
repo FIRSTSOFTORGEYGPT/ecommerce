@@ -61,7 +61,7 @@ const HeroWithCategory: React.FC<Props> = ({
     parent: null,
   });
 
-  if (!loading && isEmpty(categories?.data)) {
+  if (!loading && isEmpty(categories)) {
     return <NotFoundItem text={t('text-no-categories-found')} />;
   }
 
@@ -81,7 +81,7 @@ const HeroWithCategory: React.FC<Props> = ({
               prevActivateId="heroCategoryPrev"
               nextActivateId="heroCategoryNext"
             >
-              {loading && !categories?.data?.length
+              {loading && !categories?.length
                 ? Array.from({ length: 8 }).map((_, idx) => (
                   <SwiperSlide key={`category-list-${idx}`}>
                     <CategoryListCardLoader
@@ -89,7 +89,7 @@ const HeroWithCategory: React.FC<Props> = ({
                     />
                   </SwiperSlide>
                 ))
-                : categories?.data?.map((category) => (
+                : categories?.map((category) => (
                   <SwiperSlide key={`category--key${category.id}`}>
                     <CategoryListCard category={category} />
                   </SwiperSlide>
@@ -97,10 +97,10 @@ const HeroWithCategory: React.FC<Props> = ({
             </Carousel>
           </div>
           <div className="hidden grid-cols-1 gap-3 2xl:grid ltr:2xl:-mr-14 rtl:2xl:-ml-14">
-            {loading && !categories?.data?.length ? (
+            {loading && !categories?.length ? (
               <CategoryListFeedLoader limit={8} />
             ) : (
-              categories?.data
+              categories
                 ?.slice(0, 8)
                 .map((category) => (
                   <CategoryListCard

@@ -11,7 +11,7 @@ const data = {
     {
       id: 1,
       slug: '/#',
-      altText: 'button-app-store',
+      altTextKey: 'button-app-store',
       appButton: '/assets/images/app-store.png',
       buttonWidth: 209,
       buttonHeight: 60,
@@ -19,7 +19,7 @@ const data = {
     {
       id: 2,
       slug: '/#',
-      altText: 'button-play-store',
+      altTextKey: 'button-play-store',
       appButton: '/assets/images/play-store.png',
       buttonWidth: 209,
       buttonHeight: 60,
@@ -29,10 +29,37 @@ const data = {
 
 interface Props {
   className?: string;
+  titleKey?: string;
+  subTitleKey?: string;
+  appImageUrl?: string;
+  appButtons?: {
+    id: number;
+    slug: string;
+    altTextKey: string;
+    appButton: string;
+    buttonWidth: number;
+    buttonHeight: number;
+  }[];
 }
 
-const DownloadApps: React.FC<Props> = ({ className }) => {
-  const { appButtons, title, subTitle, appImage } = data;
+const DownloadApps: React.FC<Props> = ({
+  className,
+  titleKey,
+  subTitleKey,
+  appImageUrl,
+  appButtons,
+}) => {
+  const {
+    appButtons: defaultButtons,
+    title: defaultTitle,
+    subTitle: defaultSubTitle,
+    appImage: defaultAppImage,
+  } = data;
+
+  const resolvedTitle = titleKey ?? defaultTitle;
+  const resolvedSubTitle = subTitleKey ?? defaultSubTitle;
+  const resolvedAppImage = appImageUrl ?? defaultAppImage;
+  const resolvedButtons = appButtons && appButtons.length > 0 ? appButtons : defaultButtons;
   const { t } = useTranslation('common');
   return (
     <div
@@ -47,24 +74,25 @@ const DownloadApps: React.FC<Props> = ({ className }) => {
             variant="mediumHeading"
             className="-mt-1 mb-2 md:mb-3 lg:mb-3.5 xl:mb-4"
           >
-            {t(`${title}`)}
+            {t(`${resolvedTitle}`)}
           </Text>
           <h2
             className="mb-6 font-normal leading-7 text-heading text-md sm:text-xl md:text-3xl xl:text-4xl 2xl:text-5xl sm:leading-8 md:leading-snug xl:leading-relaxed 2xl:leading-snug md:mb-8 lg:mb-9 xl:mb-12 2xl:mb-14 ltr:lg:pr-20 ltr:2xl:pr-0 rtl:lg:pl-20 rtl:2xl:pl-0"
             dangerouslySetInnerHTML={{
-              __html: t(`${subTitle}`),
+              __html: t(`${resolvedSubTitle}`),
             }}
           />
           <div className="flex justify-center px-6 space-x-2 sm:justify-start md:space-x-3 rtl:space-x-reverse sm:px-0">
-            {appButtons?.map((item) => (
+            {resolvedButtons?.map((item) => (
+              
               <Link
                 key={item.id}
-                href={item.slug}
+                href={item.slug && item.slug.trim().length > 0 ? item.slug : '/#'}
                 className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80"
               >
                 <Image
                   src={item.appButton}
-                  alt={t(`${item.altText}`)}
+                  alt={t(`${item.altTextKey}`)}
                   className="w-36 lg:w-44 xl:w-auto"
                   width={item.buttonWidth}
                   height={item.buttonHeight}
@@ -77,7 +105,7 @@ const DownloadApps: React.FC<Props> = ({ className }) => {
       </div>
       <div className="hidden sm:flex items-end ltr:pl-4 rtl:pr-4 ltr:-mr-0.5 ltr:2xl:-mr-1.5 rtl:-ml-0.5 rtl:2xl:-ml-1.5 w-60 md:w-72 lg:w-96 xl:w-auto">
         <Image
-          src={appImage}
+          src={resolvedAppImage}
           alt={t('text-app-thumbnail')}
           width={375}
           height={430}
