@@ -12,24 +12,24 @@ interface Props {
   image?: HTMLImageElement;
   // Layout Settings
   layout?: "row" | "column";
-  columns?: 2 | 3 | 4;
   gridGap?: "none" | "small" | "medium" | "large";
   containerWidth?: "full" | "container" | "narrow";
   // Content Settings
   iconSize?: "small" | "medium" | "large";
   textSize?: "small" | "medium" | "large";
   alignment?: "left" | "center" | "right";
+  contentAlignment?: "start" | "center" | "end" | "between";
   showIcon?: boolean;
 }
 
 const ContactInfoBlock: FC<Props> = ({
   layout = 'column',
-  columns = 3,
   gridGap = 'medium',
   containerWidth = 'container',
   iconSize = 'medium',
   textSize = 'medium',
   alignment = 'left',
+  contentAlignment = 'start',
   showIcon = true,
 }) => {
   const settings = useSettings();
@@ -37,8 +37,8 @@ const ContactInfoBlock: FC<Props> = ({
 
   // Container width classes
   const containerClasses = {
-    full: 'w-full',
-    container: 'container mx-auto',
+    full: 'w-full px-4 sm:px-6 lg:px-8',
+    container: 'container mx-auto px-4',
     narrow: 'max-w-4xl mx-auto',
   };
 
@@ -64,6 +64,34 @@ const ContactInfoBlock: FC<Props> = ({
     large: 'text-lg',
   };
 
+  const headingSizeClasses = {
+    small: 'text-xl md:text-base',
+    medium: 'text-2xl md:text-lg',
+    large: 'text-3xl md:text-xl',
+  };
+
+  const contentAlignClasses = {
+    start: { row: 'justify-start', column: 'items-stretch' },
+    center: { row: 'justify-center', column: 'items-stretch' },
+    end: { row: 'justify-end', column: 'items-stretch' },
+    between: { row: 'justify-between', column: 'items-stretch' },
+  };
+
+  const itemJustifyClassName =
+    layout === 'column'
+      ? {
+          start: 'justify-start',
+          center: 'justify-center',
+          end: 'justify-end',
+          between: 'justify-between',
+        }[contentAlignment]
+      : undefined;
+
+  const itemWidthClassName = layout === 'column' ? 'w-full' : undefined;
+  const itemContainerClassName = [itemWidthClassName, itemJustifyClassName]
+    .filter(Boolean)
+    .join(' ');
+
   // Alignment classes
   const alignmentClasses = {
     left: 'text-left',
@@ -73,11 +101,13 @@ const ContactInfoBlock: FC<Props> = ({
 
   return (
     <div className={`${containerClasses[containerWidth]} mb-6 lg:border lg:rounded-md border-gray-300 lg:p-7`}>
-      <h4 className={`text-2xl md:text-lg font-bold text-heading pb-7 md:pb-10 lg:pb-6 -mt-1 ${alignmentClasses[alignment]}`}>
+      <h4 className={`${headingSizeClasses[textSize]} font-bold text-heading pb-7 md:pb-10 lg:pb-6 -mt-1 ${alignmentClasses[alignment]}`}>
         {t('text-find-us-here')}
       </h4>
 
-      <div className={`flex ${layout === 'row' ? 'flex-row' : 'flex-col'} ${gapClasses[gridGap]}`}>
+      <div
+        className={`flex ${layout === 'row' ? 'flex-row' : 'flex-col'} ${gapClasses[gridGap]} ${contentAlignClasses[contentAlignment][layout]}`}
+      >
         {/* Address */}
         <ContactInfoItem
           title={t('text-address')}
@@ -86,6 +116,8 @@ const ContactInfoBlock: FC<Props> = ({
               ? formatAddress(settings?.contactDetails?.location)
               : t('text-no-address')
           }
+          containerClassName={itemContainerClassName}
+          textClassName={textSizeClasses[textSize]}
         >
           {showIcon && <IoLocationSharp className={iconSizeClasses[iconSize]} />}
         </ContactInfoItem>
@@ -98,6 +130,8 @@ const ContactInfoBlock: FC<Props> = ({
               ? settings?.contactDetails?.emailAddress
               : t('text-no-email')
           }
+          containerClassName={itemContainerClassName}
+          textClassName={textSizeClasses[textSize]}
         >
           {showIcon && <IoMail className={iconSizeClasses[iconSize]} />}
         </ContactInfoItem>
@@ -112,13 +146,18 @@ const ContactInfoBlock: FC<Props> = ({
               <p className="text-red-500">{t('text-no-phone')}</p>
             )
           }
+          containerClassName={itemContainerClassName}
+          textClassName={textSizeClasses[textSize]}
         >
           {showIcon && <IoCallSharp className={iconSizeClasses[iconSize]} />}
         </ContactInfoItem>
       </div>
 
       {!isEmpty(settings?.contactDetails?.socials) ? (
-        <HorizontalSocialLink socials={settings?.contactDetails?.socials} />
+        <HorizontalSocialLink
+          socials={settings?.contactDetails?.socials}
+          className={contentAlignment === 'center' ? 'justify-center w-full' : undefined}
+        />
       ) : (
         ''
       )}

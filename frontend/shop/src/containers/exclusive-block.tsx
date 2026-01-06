@@ -31,8 +31,8 @@ const ExclusiveBlock: React.FC<Props> = ({
 
   // Container width classes
   const containerClasses = {
-    full: 'w-full',
-    container: 'container mx-auto',
+    full: 'w-full px-4 sm:px-6 lg:px-8',
+    container: 'container mx-auto px-4',
     narrow: 'max-w-4xl mx-auto',
   };
 
@@ -87,7 +87,7 @@ const ExclusiveBlock: React.FC<Props> = ({
                 />
               </div>
               <Link
-                href={item.slug}
+                href={item?.slug && item.slug.trim().length > 0 ? item.slug : '/#'}
                 className={`absolute z-10 bottom-3 sm:bottom-5 xl:bottom-7 inline-block bg-white shadow-product rounded-md text-heading lowercase text-sm xl:text-xl 2xl:text-xl sm:uppercase px-3 sm:px-5 xl:px-6 2xl:px-8 py-2.5 sm:py-4 xl:py-5 2xl:py-7  transform transition duration-300 ease-in-out hover:bg-heading hover:text-white ${item.id === 2
                     ? 'ltr:left-3 ltr:sm:left-5 ltr:xl:left-7 rtl:right-3 rtl:sm:right-5 rtl:xl:right-7'
                     : 'ltr:right-3 ltr:sm:right-5 ltr:xl:right-7 rtl:left-3 rtl:sm:left-5 rtl:xl:left-7'

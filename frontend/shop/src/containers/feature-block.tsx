@@ -10,6 +10,12 @@ interface Props {
   // Essential Settings
   columns?: 2 | 3 | 4;
   gridGap?: 'none' | 'small' | 'medium' | 'large';
+
+  items?: {
+    icon: 'shipping' | 'refresh' | 'secure' | 'card';
+    title: string;
+    description: string;
+  }[];
 }
 
 const data = [
@@ -39,10 +45,18 @@ const data = [
   },
 ];
 
+const iconMap = {
+  shipping: <FaShippingFast size={40} />,
+  refresh: <FiRefreshCcw size={40} />,
+  secure: <RiSecurePaymentLine size={40} />,
+  card: <FaRegCreditCard size={40} />,
+} as const;
+
 const FeatureBlock: React.FC<Props> = ({
   className = "mb-12 md:mb-14 xl:mb-16",
   columns = 4,
   gridGap = 'medium',
+  items,
 }) => {
 
   // Grid gap classes
@@ -63,12 +77,29 @@ const FeatureBlock: React.FC<Props> = ({
     }
   };
 
+  const isGapped = gridGap !== 'none';
+
+  const resolvedItems =
+    Array.isArray(items) && items.length > 0
+      ? items.map((item, index) => ({
+          id: index + 1,
+          icon: iconMap[item.icon] ?? iconMap.shipping,
+          title: item.title,
+          description: item.description,
+        }))
+      : data;
+
   return (
     <div
-      className={`${className} bg-gray-200 feature-block-wrapper border border-gray-300 rounded-md grid ${getColumnClasses()} ${gapClasses[gridGap]} overflow-hidden py-12 xl:py-0 sm:px-4 md:px-8 lg:px-16 xl:px-0`}
+      className={`${className} ${isGapped ? '' : 'bg-gray-200 border border-gray-300 rounded-md overflow-hidden'} feature-block-wrapper grid ${getColumnClasses()} ${gapClasses[gridGap]} ${isGapped ? '' : 'py-12 xl:py-0 sm:px-4 md:px-8 lg:px-16 xl:px-0'}`}
     >
-      {data?.map((item) => (
-        <TextInformation key={item.id} item={item} />
+      {resolvedItems?.map((item) => (
+        <TextInformation
+          key={item.id}
+          item={item}
+          withDividers={!isGapped}
+          className={isGapped ? 'bg-gray-200 border border-gray-300 rounded-md py-8 xl:py-10' : undefined}
+        />
       ))}
     </div>
   );

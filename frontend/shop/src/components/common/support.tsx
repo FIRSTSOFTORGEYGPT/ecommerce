@@ -17,10 +17,26 @@ const data = {
 
 interface Props {
   className?: string;
+  titleKey?: string;
+  descriptionKey?: string;
+  buttonTextKey?: string;
+  supportImageUrl?: string;
+  buttonUrlOverride?: string;
 }
 
-const Support: React.FC<Props> = ({ className }) => {
+const Support: React.FC<Props> = ({
+  className,
+  titleKey,
+  descriptionKey,
+  buttonTextKey,
+  supportImageUrl,
+  buttonUrlOverride,
+}) => {
   const { title, description, supportImage, buttonText } = data;
+  const resolvedTitle = titleKey ?? title;
+  const resolvedDescription = descriptionKey ?? description;
+  const resolvedButtonText = buttonTextKey ?? buttonText;
+  const resolvedSupportImage = supportImageUrl ?? supportImage;
   const { t } = useTranslation('common');
   const { push } = useRouter();
   return (
@@ -32,16 +48,16 @@ const Support: React.FC<Props> = ({ className }) => {
     >
       <div className="max-w-md mx-auto mb-4 md:mb-5 xl:mb-8 2xl:mb-10 3xl:mb-12">
         <Text variant="mediumHeading" className="mb-2 md:mb-3 lg:mb-3.5">
-          {t(`${title}`)}
+          {t(`${resolvedTitle}`)}
         </Text>
         <p className="text-xs leading-6 text-body md:text-sm md:leading-7">
-          {t(`${description}`)}
+          {t(`${resolvedDescription}`)}
         </p>
       </div>
       <div className="flex justify-center">
         <div className="mb-2.5 md:mb-0 xl:mb-2 2xl:mb-4 3xl:mb-6 md:px-20 lg:px-40 xl:px-0 px-a">
           <Image
-            src={supportImage}
+            src={resolvedSupportImage}
             alt={t('text-support-thumbnail')}
             width={870}
             height={300}
@@ -51,14 +67,16 @@ const Support: React.FC<Props> = ({ className }) => {
       <Button
         onClick={() =>
           push(
-            siteSettings?.chatButtonUrl
-              ? siteSettings?.chatButtonUrl
-              : ROUTES.HOME
+            buttonUrlOverride
+              ? buttonUrlOverride
+              : siteSettings?.chatButtonUrl
+                ? siteSettings?.chatButtonUrl
+                : ROUTES.HOME
           )
         }
       >
         <span className="flex">
-          {t(`${buttonText}`)}
+          {t(`${resolvedButtonText}`)}
           <IoChatbubbleEllipsesOutline className="text-lg ltr:ml-2 rtl:mr-2 md:text-xl" />
         </span>
       </Button>

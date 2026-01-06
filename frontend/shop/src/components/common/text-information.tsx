@@ -11,14 +11,15 @@ interface ItemProps {
 interface Props {
   className?: string;
   item: ItemProps;
+  withDividers?: boolean;
 }
 
-const TextInformation: React.FC<Props> = ({ item, className }) => {
+const TextInformation: React.FC<Props> = ({ item, className, withDividers = true }) => {
   const { t } = useTranslation('common');
   return (
     <div
       className={classNames(
-        `text-center border-gray-300 xl:border-l ltr:xl:first:border-l-0 rtl:ltr:xl:first:border-r-0 px-4 sm:px-2.5 2xl:px-8 3xl:px-12 xl:py-12`,
+        `text-center border-gray-300 ${withDividers ? 'xl:border-l ltr:xl:first:border-l-0 rtl:ltr:xl:first:border-r-0' : ''} px-4 sm:px-2.5 2xl:px-8 3xl:px-12 xl:py-12`,
         className
       )}
     >

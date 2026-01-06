@@ -5,13 +5,14 @@ import TestimonialCard from '@components/common/testimonial-card';
 
 interface TestimonialProps {
 	className?: string;
+	data?: any[];
 	autoplay?: boolean;
 	autoplaySpeed?: number;
 	loop?: boolean;
 	showArrows?: boolean;
 }
 
-const testimonials = [
+const defaultTestimonials = [
 	{
 		id: 1,
 		name: 'John Doe',
@@ -58,12 +59,14 @@ const breakpoints = {
 
 const TestimonialCarousel: React.FC<TestimonialProps> = ({
 	className = 'mb-12 md:mb-14 xl:mb-16',
+	data,
 	autoplay = true,
 	autoplaySpeed = 5000,
 	loop = true,
 	showArrows = true,
 }) => {
-	const { t } = useTranslation();
+	useTranslation();
+	const testimonials = Array.isArray(data) && data.length > 0 ? data : defaultTestimonials;
 
 	return (
 		<div className={className}>

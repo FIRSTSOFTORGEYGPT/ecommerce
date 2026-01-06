@@ -29,7 +29,7 @@ const TestimonialCard: React.FC<Props> = ({ item }) => {
 			</div>
 			<Text className="text-sm sm:leading-7 lg:text-base lg:leading-[1.625rem] mt-5 xl:mt-7">
 				<QuoteIcon className="mb-3 xl:mb-4" />
-				{item.text}
+				{item.content}
 			</Text>
 		</div>
 	);

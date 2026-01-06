@@ -13,6 +13,8 @@ import {
   BannerSectionProps,
   HeroBlockConfig,
   HeroBlockProps,
+  HeroSectionConfig,
+  HeroSectionProps,
   ProductsBlockConfig,
   ProductsBlockProps,
   ProductsSectionConfig,
@@ -89,6 +91,7 @@ type Props = {
   BannerCarouselBlock: BannerCarouselBlockProps;
   BannerSection: BannerSectionProps;
   HeroBlock: HeroBlockProps;
+  HeroSection: HeroSectionProps;
   ProductsBlock: ProductsBlockProps;
   ProductsSection: ProductsSectionProps;
   CategoryBlock: CategoryBlockProps;
@@ -139,11 +142,11 @@ export const config: Config<Props> = {
     heroes: {
       title: "Hero Sections",
       components: [
-        "HeroBlock",
-        "HeroSlider",
-        "HeroWithCategory",
-        "HeroWithCategoryFlash",
+        "HeroSection",
       ],
+    },
+    other: {
+      visible: false,
     },
     banners: {
       title: "Banners",
@@ -187,7 +190,6 @@ export const config: Config<Props> = {
         "Support",
         "Instagram",
         "Subscription",
-        "NewArrivalsProductFeed",
       ],
     },
   },
@@ -196,6 +198,7 @@ export const config: Config<Props> = {
     BannerCarouselBlock: BannerCarouselBlockConfig,
     BannerSection: BannerSectionConfig,
     HeroBlock: HeroBlockConfig,
+    HeroSection: HeroSectionConfig,
     ProductsBlock: ProductsBlockConfig,
     ProductsSection: ProductsSectionConfig,
     CategoryBlock: CategoryBlockConfig,

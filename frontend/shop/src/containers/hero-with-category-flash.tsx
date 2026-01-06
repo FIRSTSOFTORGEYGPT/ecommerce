@@ -17,6 +17,8 @@ import { StaticBanner } from '@type/index';
 interface Props {
   data: StaticBanner[];
   className?: string;
+  categoryLimit?: number;
+  flashSaleLimit?: number;
 }
 
 const categoryResponsive = {
@@ -37,12 +39,14 @@ const categoryResponsive = {
 const HeroWithCategoryFlash: React.FC<Props> = ({
   className = 'mb-12 md:mb-14 xl:mb-16',
   data,
+  categoryLimit = 10,
+  flashSaleLimit = 10,
 }) => {
   return (
     <div
       className={`grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-9 gap-5 xl:gap-7 lg:gap-y-14 ${className}`}
     >
-      <CategoryListCardSection />
+      <CategoryListCardSection categoryLimit={categoryLimit} />
 
       <div className="col-span-full lg:col-span-5 xl:col-span-5 row-span-full lg:row-auto grid grid-cols-2 gap-2 md:gap-3.5 lg:gap-5 xl:gap-7">
         {data.map((banner: any) => (
@@ -60,24 +64,28 @@ const HeroWithCategoryFlash: React.FC<Props> = ({
         ))}
       </div>
 
-      <SellWithProgressCardSection />
+      <SellWithProgressCardSection flashSaleLimit={flashSaleLimit} />
     </div>
   );
 };
 
 // CategoryList section
-export function CategoryListCardSection() {
+export function CategoryListCardSection({
+  categoryLimit = 10,
+}: {
+  categoryLimit?: number;
+}) {
   const { t } = useTranslation();
   const {
     data: categories,
     isLoading: loading,
     error,
   } = useCategories({
-    limit: 10,
+    limit: categoryLimit,
     parent: null,
   });
 
-  if (!loading && isEmpty(categories?.data)) {
+  if (!loading && isEmpty(categories)) {
     return <NotFoundItem text={t('text-no-categories-found')} />;
   }
   return (
@@ -104,7 +112,7 @@ export function CategoryListCardSection() {
                       />
                     </SwiperSlide>
                   ))
-                : categories?.data?.map((category: any) => (
+                : categories?.map((category: any) => (
                     <SwiperSlide key={`sm-category--key${category.id}`}>
                       <CategoryListCard category={category} />
                     </SwiperSlide>
@@ -119,7 +127,7 @@ export function CategoryListCardSection() {
                     uniqueKey={`category-list-${idx}`}
                   />
                 ))
-              : categories?.data
+              : categories
                   .slice(0, 7)
                   .map((category: any) => (
                     <CategoryListCard
@@ -135,14 +143,18 @@ export function CategoryListCardSection() {
 }
 
 // ProgressCard section
-export function SellWithProgressCardSection() {
+export function SellWithProgressCardSection({
+  flashSaleLimit = 10,
+}: {
+  flashSaleLimit?: number;
+}) {
   const { t } = useTranslation();
   const {
     data: products,
     isLoading: loading,
     error,
   } = useProducts({
-    limit: 10,
+    limit: flashSaleLimit,
   });
 
   if (!loading && isEmpty(products)) {
