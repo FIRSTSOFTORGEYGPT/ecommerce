@@ -87,7 +87,7 @@ const CategoryGridBlock: React.FC<CategoriesProps> = ({
                     <CategoryCardLoader uniqueKey={`featured-category-${idx}`} />
                   </SwiperSlide>
                 ))
-                : categories?.data?.map((category: any) => (
+                : categories?.map((category: any) => (
                   <SwiperSlide key={`category--key${category.id}`}>
                     <CategoryCard category={category} />
                   </SwiperSlide>
@@ -100,7 +100,7 @@ const CategoryGridBlock: React.FC<CategoriesProps> = ({
               ? Array.from({ length: limit }).map((_, idx) => (
                 <CategoryCardLoader key={idx} uniqueKey={`featured-category-${idx}`} />
               ))
-              : categories?.data?.map((category: any) => (
+              : categories?.map((category: any) => (
                 <CategoryCard key={`category--key${category.id}`} category={category} />
               ))}
           </div>

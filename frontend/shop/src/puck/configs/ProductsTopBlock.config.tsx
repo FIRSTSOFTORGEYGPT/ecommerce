@@ -7,7 +7,6 @@ import ProductsTopBlock from "../../containers/products-top-block";
 
 export interface ProductsTopBlockProps {
     sectionHeading: string;
-    dataSource: string;
     limit: number;
     gridColumns: number;
     gridGap: "none" | "small" | "medium" | "large";
@@ -19,10 +18,6 @@ export const ProductsTopBlockConfig: ComponentConfig<ProductsTopBlockProps> = {
         sectionHeading: {
             type: "text",
             label: "Section Heading",
-        },
-        dataSource: {
-            type: "text",
-            label: "Data Source",
         },
         limit: {
             type: "number",
@@ -49,7 +44,6 @@ export const ProductsTopBlockConfig: ComponentConfig<ProductsTopBlockProps> = {
     },
     defaultProps: {
         sectionHeading: "Popular Products",
-        dataSource: "Popular Products",
         limit: 6,
         gridColumns: 4,
         gridGap: "medium",
