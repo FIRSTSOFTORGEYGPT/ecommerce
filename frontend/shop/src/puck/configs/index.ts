@@ -6,10 +6,12 @@
 
 // Phase 2: Core Components
 export * from "./BannerCarouselBlock.config";
+export * from "./BannerSection.config";
 export * from "./HeroBlock.config";
 export * from "./ProductsBlock.config";
 export * from "./ProductsSection.config";
 export * from "./CategoryBlock.config";
+export * from "./CategorySection.config";
 export * from "./TestimonialCarousel.config";
 export * from "./Footer.config";
 
@@ -18,6 +20,7 @@ export * from "./BannerBlock.config";
 export * from "./BannerGridBlock.config";
 export * from "./BannerSliderBlock.config";
 export * from "./BrandBlock.config";
+export * from "./BrandSection.config";
 export * from "./BrandGridBlock.config";
 export * from "./FeatureBlock.config";
 export * from "./ProductsFeatured.config";

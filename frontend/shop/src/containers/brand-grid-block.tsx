@@ -42,7 +42,7 @@ const BrandGridBlock: React.FC<BrandProps> = ({
     isLoading: loading,
     error,
   } = useBrands({
-    limit: 16,
+    limit,
   });
 
   if (!loading && isEmpty(brands)) {

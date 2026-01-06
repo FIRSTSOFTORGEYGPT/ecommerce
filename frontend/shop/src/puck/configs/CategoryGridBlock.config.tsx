@@ -7,7 +7,6 @@ import CategoryGridBlock from "../../containers/category-grid-block";
 
 export interface CategoryGridBlockProps {
     sectionHeading: string;
-    dataSource: string;
     limit: number;
     gridColumns: number;
     gridGap: "none" | "small" | "medium" | "large";
@@ -19,10 +18,6 @@ export const CategoryGridBlockConfig: ComponentConfig<CategoryGridBlockProps> = 
         sectionHeading: {
             type: "text",
             label: "Section Heading",
-        },
-        dataSource: {
-            type: "text",
-            label: "Data Source",
         },
         limit: {
             type: "number",
@@ -54,7 +49,6 @@ export const CategoryGridBlockConfig: ComponentConfig<CategoryGridBlockProps> = 
     },
     defaultProps: {
         sectionHeading: "Featured Categories",
-        dataSource: "Featured Categories",
         limit: 6,
         gridColumns: 4,
         gridGap: "medium",

@@ -9,6 +9,8 @@ import {
   // Phase 2: Core Components
   BannerCarouselBlockConfig,
   BannerCarouselBlockProps,
+  BannerSectionConfig,
+  BannerSectionProps,
   HeroBlockConfig,
   HeroBlockProps,
   ProductsBlockConfig,
@@ -17,6 +19,8 @@ import {
   ProductsSectionProps,
   CategoryBlockConfig,
   CategoryBlockProps,
+  CategorySectionConfig,
+  CategorySectionProps,
   TestimonialCarouselConfig,
   TestimonialCarouselProps,
   FooterConfig,
@@ -30,6 +34,8 @@ import {
   BannerSliderBlockProps,
   BrandBlockConfig,
   BrandBlockProps,
+  BrandSectionConfig,
+  BrandSectionProps,
   BrandGridBlockConfig,
   BrandGridBlockProps,
   FeatureBlockConfig,
@@ -81,10 +87,12 @@ import {
 type Props = {
   // Phase 2
   BannerCarouselBlock: BannerCarouselBlockProps;
+  BannerSection: BannerSectionProps;
   HeroBlock: HeroBlockProps;
   ProductsBlock: ProductsBlockProps;
   ProductsSection: ProductsSectionProps;
   CategoryBlock: CategoryBlockProps;
+  CategorySection: CategorySectionProps;
   TestimonialCarousel: TestimonialCarouselProps;
   Footer: FooterProps;
   // Phase 3
@@ -92,6 +100,7 @@ type Props = {
   BannerGridBlock: BannerGridBlockProps;
   BannerSliderBlock: BannerSliderBlockProps;
   BrandBlock: BrandBlockProps;
+  BrandSection: BrandSectionProps;
   BrandGridBlock: BrandGridBlockProps;
   FeatureBlock: FeatureBlockProps;
   ProductsFeatured: ProductsFeaturedProps;
@@ -139,32 +148,22 @@ export const config: Config<Props> = {
     banners: {
       title: "Banners",
       components: [
-        "BannerCarouselBlock",
-        "BannerBlock",
-        "BannerGridBlock",
-        "BannerSliderBlock",
-        "BannerWithProducts",
+        "BannerSection",
       ],
     },
     products: {
       title: "Product Displays",
       components: [
-        "ProductsBlock",
         "ProductsSection",
-        "ProductsFeatured",
-        "ProductsTopBlock",
-        "ProductFlashSaleBlock",
-        "ProductsWithFlashSale",
-        "SaleBannerWithProducts",
+        // "ProductsTopBlock",
+        // "ProductFlashSaleBlock",
       ],
     },
     categories: {
       title: "Categories & Brands",
       components: [
-        "CategoryBlock",
-        "CategoryGridBlock",
-        "BrandBlock",
-        "BrandGridBlock",
+        "CategorySection",
+        "BrandSection",
       ],
     },
     content: {
@@ -189,17 +188,18 @@ export const config: Config<Props> = {
         "Instagram",
         "Subscription",
         "NewArrivalsProductFeed",
-        "SingleBannerBlock",
       ],
     },
   },
   components: {
     // Phase 2: Core Components
     BannerCarouselBlock: BannerCarouselBlockConfig,
+    BannerSection: BannerSectionConfig,
     HeroBlock: HeroBlockConfig,
     ProductsBlock: ProductsBlockConfig,
     ProductsSection: ProductsSectionConfig,
     CategoryBlock: CategoryBlockConfig,
+    CategorySection: CategorySectionConfig,
     TestimonialCarousel: TestimonialCarouselConfig,
     Footer: FooterConfig,
     // Phase 3: Additional Components
@@ -207,6 +207,7 @@ export const config: Config<Props> = {
     BannerGridBlock: BannerGridBlockConfig,
     BannerSliderBlock: BannerSliderBlockConfig,
     BrandBlock: BrandBlockConfig,
+    BrandSection: BrandSectionConfig,
     BrandGridBlock: BrandGridBlockConfig,
     FeatureBlock: FeatureBlockConfig,
     ProductsFeatured: ProductsFeaturedConfig,
