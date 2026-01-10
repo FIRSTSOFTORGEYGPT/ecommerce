@@ -264,9 +264,12 @@ export const BannerSectionConfig: ComponentConfig<BannerSectionProps> = {
     ],
   },
   render: ({ layout, banners, masonryBanners, gridSettings, carouselSettings, sliderSettings, singleSettings }) => {
+    const standardBanners =
+      banners && banners.length > 0 ? banners : masonryBanners || [];
+
     if (layout === "single") {
       const single = singleSettings?.[0];
-      const fallback = banners?.[0];
+      const fallback = standardBanners?.[0];
       if (!single && !fallback) return <></>;
 
       const classNameInner =
@@ -335,7 +338,7 @@ export const BannerSectionConfig: ComponentConfig<BannerSectionProps> = {
     }
 
     if (layout === "grid") {
-      const mappedBanners = banners.map((b, i) => ({
+      const mappedBanners = standardBanners.map((b, i) => ({
         id: i + 1,
         title: b.title,
         slug: b.slug,
@@ -353,7 +356,7 @@ export const BannerSectionConfig: ComponentConfig<BannerSectionProps> = {
     }
 
     if (layout === "slider") {
-      const mappedBanners = banners.map((b, i) => ({
+      const mappedBanners = standardBanners.map((b, i) => ({
         id: i + 1,
         title: b.title,
         slug: b.slug,
@@ -375,7 +378,7 @@ export const BannerSectionConfig: ComponentConfig<BannerSectionProps> = {
       );
     }
 
-    const mappedBanners = banners.map((b, i) => ({
+    const mappedBanners = standardBanners.map((b, i) => ({
       id: i + 1,
       title: b.title,
       slug: b.slug,
