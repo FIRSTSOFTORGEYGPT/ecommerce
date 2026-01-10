@@ -24,21 +24,19 @@ const EditPageButton: React.FC = () => {
         return null;
     }
 
-    const handleEdit = () => {
-        // Remove any trailing slash and add /edit
-        const currentPath = router.asPath.replace(/\/$/, '');
-        router.push(`${currentPath}/edit`);
-    };
+    const editUrl = `${router.asPath.replace(/\/$/, '')}/edit`;
 
     return (
-        <button
-            onClick={handleEdit}
+        <a
+            href={editUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-black hover:bg-black/80 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
             aria-label={t('text-edit-this-page')}
         >
             <MdEdit className="w-4 h-4" />
             <span className="hidden sm:inline">{t('text-edit-this-page')}</span>
-        </button>
+        </a>
     );
 };
 

@@ -151,8 +151,8 @@ const Header: React.FC<Props> = ({ variant = 'default' }) => {
           <button
             aria-label="Menu"
             className={`menuBtn md:flex ${variant !== 'modern'
-                ? 'hidden lg:hidden px-5 2xl:px-7'
-                : 'ltr:pr-7 rtl:pl-7 hidden md:block'
+              ? 'hidden lg:hidden px-5 2xl:px-7'
+              : 'ltr:pr-7 rtl:pl-7 hidden md:block'
               } flex-col items-center justify-center flex-shrink-0 h-full outline-none focus:outline-none`}
             onClick={handleMobileMenu}
           >

@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps<PuckEditorProps> = async (
             path,
             // Pass null if data is missing, so the component can handle it
             data: data || null,
-            ...(await serverSideTranslations(context.locale!, ["common"])),
+            ...(await serverSideTranslations(context.locale!, ["common", "forms"])),
         },
     };
 };
