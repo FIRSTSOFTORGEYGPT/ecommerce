@@ -23,7 +23,7 @@ import { AnonymousIcon } from '@components/icons/anonymous-icon';
 interface LoginInputType {
   email: string;
   password: string;
-  remember_me: boolean;
+  remember_me?: boolean;
 }
 
 const loginFormSchema = yup.object().shape({
@@ -32,11 +32,13 @@ const loginFormSchema = yup.object().shape({
     .email('forms:email-error')
     .required('forms:email-required'),
   password: yup.string().required('forms:password-required'),
+  remember_me: yup.boolean(),
 });
 
 const defaultValues = {
   email: '',
   password: '',
+  remember_me: false,
 };
 
 type Props = {
@@ -46,7 +48,7 @@ type Props = {
 const LoginForm: React.FC<Props> = ({ layout = 'modal' }) => {
   const router = useRouter();
   const { setModalView, openModal, closeModal } = useUI();
-  const { data, isLoading: isSettingLoading } = useSettings();
+  const { data } = useSettings();
   const isCheckout = router.pathname.includes('checkout');
   const { t } = useTranslation();
   const { mutate: login, isLoading: loading, serverError } = useLogin();
@@ -211,7 +213,7 @@ const LoginForm: React.FC<Props> = ({ layout = 'modal' }) => {
           onClick={handleOtpLogin}
         >
           <MobileIcon className="h-5 ltr:mr-2 rtl:ml-2 text-light" />
-          {t('text-login-mobile')}
+          {t('common:text-login-mobile')}
         </Button>
         {isCheckout && guestCheckout && (
           <Button
@@ -220,7 +222,7 @@ const LoginForm: React.FC<Props> = ({ layout = 'modal' }) => {
             onClick={() => router.push(ROUTES.checkoutGuest)}
           >
             <AnonymousIcon className="h-5 ltr:mr-2 rtl:ml-2 text-light" />
-            {t('text-guest-checkout')}
+            {t('common:text-guest-checkout')}
           </Button>
         )}
       </div>

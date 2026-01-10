@@ -356,5 +356,7 @@
   "text-title-seconds": "ثواني",
   "text-title-change-language": "تغيير اللغة",
   "text-title-language": "لغة",
-  "text-maintenance-mode-title": "يبدأ وضع الصيانة في"
+  "text-maintenance-mode-title": "يبدأ وضع الصيانة في",
+  "text-login-mobile": "تسجيل الدخول عبر الهاتف",
+  "text-guest-checkout": "الدفع كضيف"
 }

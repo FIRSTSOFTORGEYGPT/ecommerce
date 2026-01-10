@@ -72,9 +72,8 @@ export default function LanguageSwitcher() {
                     <span className="flex items-center">
                       <span className="text-xl">{option.icon}</span>
                       <span
-                        className={`${
-                          selected ? 'font-medium' : 'font-normal'
-                        } block truncate ltr:ml-1.5 rtl:mr-1.5`}
+                        className={`${selected ? 'font-medium' : 'font-normal'
+                          } block truncate ltr:ml-1.5 rtl:mr-1.5`}
                       >
                         {t(option.name)}
                       </span>
