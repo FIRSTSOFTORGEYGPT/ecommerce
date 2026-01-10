@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Input from '@components/ui/formatted-input';
+import Input from '@components/ui/input';
 import Button from '@components/ui/button';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
@@ -70,8 +70,7 @@ const Coupon = ({ subtotal }: { subtotal: number }) => {
         placeholder={t('text-enter-coupon')}
         variant="outline"
         className="mb-4 sm:mb-0 ltr:sm:mr-2.5 ltr:lg:mr-4 rtl:sm:ml-2.5 rtl:lg:ml-4 flex-1 w-full"
-        dimension="small"
-        error={t(formError?.code!)}
+        errorKey={formError?.code}
       />
       <Button
         loading={loading}

@@ -36,7 +36,7 @@ export const useOrders = (options: OrdersQueryOptionsType) => {
   return {
     orders: {
       data,
-      paginatorInfo: mapPaginatorData({ ...data }),
+      paginatorInfo: mapPaginatorData({ ...data } as any),
     },
     isLoading,
     error,
@@ -53,7 +53,7 @@ export const useOrder = ({ tracking_number }: { tracking_number: string }) => {
 
   return {
     data,
-    paginatorInfo: mapPaginatorData({ ...data }),
+    paginatorInfo: mapPaginatorData({ ...data } as any),
     isLoading,
     isFetching,
     refetch,

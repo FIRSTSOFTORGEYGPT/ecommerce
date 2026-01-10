@@ -83,8 +83,8 @@ const LoginForm: React.FC<Props> = ({ layout = 'modal' }) => {
             }
           }
         },
-        onError: (error: any) => {
-          console.log(error.message);
+        onError: () => {
+          // Error is already handled by serverError state in useLogin hook
         },
       }
     );

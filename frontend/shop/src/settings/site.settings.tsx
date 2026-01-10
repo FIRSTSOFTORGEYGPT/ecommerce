@@ -17,17 +17,17 @@ import { WishlistIcon } from '@components/icons/my-account/wishlist';
 import { DownloadsIcon } from '@components/icons/my-account/downloads';
 
 export const siteSettings = {
-  name: 'ChawkBazar',
+  name: 'Meem Market',
   description:
-    'Fastest E-commerce template built with React, NextJS, TypeScript, React-Query and Tailwind CSS.',
+    'Your one-stop shop for quality products at competitive prices.',
   author: {
     name: 'RedQ',
     websiteUrl: 'https://redq.io',
     address: '',
   },
   logo: {
-    url: '/assets/images/logo.svg',
-    alt: 'ChawkBazar',
+    url: '/assets/meem.svg',
+    alt: 'Meem Market',
     href: '/',
     width: 95,
     height: 30,

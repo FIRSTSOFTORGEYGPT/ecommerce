@@ -7,6 +7,7 @@ import ContactInfoBlock from "@containers/contact-info";
 import { useContact } from '@framework/contact';
 import { ContactFormValues } from '@type/index';
 import { useTranslation } from "next-i18next";
+import { NextSeo } from 'next-seo';
 export { getStaticProps } from '@framework/common.ssr';
 
 export default function ContactUsPage() {
@@ -18,6 +19,15 @@ export default function ContactUsPage() {
   }
   return (
     <>
+      <NextSeo
+        title={t('seo-contact-title')}
+        description={t('seo-contact-description')}
+        openGraph={{
+          title: t('seo-contact-title'),
+          description: t('seo-contact-description'),
+          type: 'website',
+        }}
+      />
       <PageHeader pageHeader="text-page-contact-us" />
       <Container>
         <div className="my-14 lg:my-16 xl:my-20 px-0 pb-2 lg: xl:max-w-screen-xl mx-auto flex flex-col md:flex-row w-full">

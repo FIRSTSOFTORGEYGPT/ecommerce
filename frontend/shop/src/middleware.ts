@@ -12,14 +12,12 @@ export async function middleware(req: NextRequest) {
                 req.nextUrl.pathname.length - 5
             );
             const pathWithEditPrefix = `/puck${pathWithoutEdit}`;
-
-            console.log(`Rewriting ${req.nextUrl.pathname} to ${pathWithEditPrefix}`);
             return NextResponse.rewrite(new URL(pathWithEditPrefix, req.url));
         }
 
         // Disable direct access to "/puck/[...path]" (only accessible via /edit)
         if (req.nextUrl.pathname.startsWith("/puck")) {
-            console.log(`Redirecting direct puck access: ${req.nextUrl.pathname}`);
+            // TODO: Add proper authentication check here before allowing access
             // return NextResponse.redirect(new URL("/", req.url));
         }
     }

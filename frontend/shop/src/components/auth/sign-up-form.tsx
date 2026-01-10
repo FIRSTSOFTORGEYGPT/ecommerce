@@ -6,7 +6,6 @@ import Logo from "@components/ui/logo";
 import { useUI } from "@contexts/ui.context";
 /* @ts-ignore */
 import { ImGoogle2 } from "react-icons/im";
-// import { ImFacebook2 } from "react-icons/im/ImFacebook2";
 import Link from "@components/ui/link";
 import { ROUTES } from "@lib/routes";
 import { useTranslation } from "next-i18next";
@@ -15,11 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Alert from "@components/ui/alert";
 import React, { useState } from "react";
 import { useRegister } from "@framework/auth";
-import { AUTH_TOKEN } from "@lib/constants";
-import { useAtom } from "jotai";
-import { authorizationAtom } from "@store/authorization-atom";
-import Cookies from "js-cookie";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 interface SignUpInputType {
   email: string;
@@ -49,8 +44,7 @@ type Props = {
 const SignUpForm: React.FC<Props> = ({ layout = "modal" }) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [_, authorize] = useAtom(authorizationAtom);
+  const [errorMessage] = useState("");
   const { mutate: signUp, isLoading }: any = useRegister();
   const { setModalView, openModal, closeModal } = useUI();
 
@@ -65,10 +59,10 @@ const SignUpForm: React.FC<Props> = ({ layout = "modal" }) => {
   });
 
   function handleSignIn() {
-    if (layout === "modal"){
+    if (layout === "modal") {
       setModalView("LOGIN_VIEW");
       return openModal();
-    }else {
+    } else {
       router.push(`${ROUTES.LOGIN}`);
     }
   }
@@ -83,7 +77,7 @@ const SignUpForm: React.FC<Props> = ({ layout = "modal" }) => {
       {
         onSuccess: (data: any) => {
           if (data?.token && data?.permissions?.length) {
-            if (layout === "page"){
+            if (layout === "page") {
               // Redirect to the my-account page
               return router.push(ROUTES.ACCOUNT);
             } else {

@@ -77,7 +77,7 @@ export function useResendVerificationEmail() {
   const { mutate, isLoading } = useMutation(
     client.auth.resendVerificationEmail,
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         if (data?.success) {
           toast.success(t('PICKBAZAR_MESSAGE.EMAIL_SENT_SUCCESSFUL'));
         }
@@ -108,15 +108,13 @@ export function useLogin() {
         setServerError(t('forms:error-credential-wrong'));
         return;
       }
-      console.log(data, "LOGIN_RESPONSE_DATA");
-
       setToken(data.token);
       setAuthCredentials(data.token, data.permissions);
       setAuthorized(true);
       closeModal();
     },
     onError: (error: Error) => {
-      console.log(error.message);
+      setServerError(error?.message || t('forms:error-credential-wrong'));
     },
   });
 
@@ -260,7 +258,7 @@ export function useSendOtpCode({
       });
     },
     onError: (error: Error) => {
-      console.log(error.message);
+      setServerError(error?.message || 'An error occurred');
     },
   });
 
@@ -327,7 +325,7 @@ export function useSocialLogin() {
       }
     },
     onError: (error: Error) => {
-      console.log(error.message);
+      toast.error(error?.message || t('error-credential-wrong'));
     },
     onSettled: () => {
       queryClient.clear();

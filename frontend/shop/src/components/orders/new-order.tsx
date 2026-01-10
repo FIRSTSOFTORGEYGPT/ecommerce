@@ -20,7 +20,7 @@ export default function NewOrder() {
 
   useEffect(() => {
     resetCart();
-    resetCheckout();
+    resetCheckout(null);
   }, [resetCart, resetCheckout]);
 
   if (isLoading) {

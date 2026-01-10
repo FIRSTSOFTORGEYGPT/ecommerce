@@ -42,8 +42,8 @@ export default function GuestCheckoutPage() {
   const [shippingAddress] = useAtom(shippingAddressAtom);
   const router = useRouter();
   const { data, isLoading } = useSettings();
-  const settings = data?.options!;
-  const { guestCheckout } = settings;
+  const settings = data?.options;
+  const guestCheckout = settings?.guestCheckout;
   useEffect(() => {
     //@ts-ignore
     resetCheckout();

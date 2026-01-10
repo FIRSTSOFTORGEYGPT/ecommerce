@@ -1,15 +1,7 @@
-import { useEffect } from 'react';
 import { useUI } from "@contexts/ui.context";
 import { useDefaultPaymentMethod } from '@framework/card';
 import Button from '@components/ui/button';
 import { useTranslation } from 'next-i18next';
-import {
-  offset,
-  flip,
-  autoUpdate,
-  useFloating,
-  shift,
-} from '@floating-ui/react-dom-interactions';
 import PopOver from '@components/ui/popover';
 
 interface ActionProps {
@@ -25,7 +17,7 @@ const Action = ({ card = {}, payments = [] }: ActionProps) => {
 
   function deleteCard(id: string) {
     setModalData({
-        card_id: id,
+      card_id: id,
     });
     setModalView("DELETE_CARD_MODAL");
     return openModal();
@@ -36,19 +28,6 @@ const Action = ({ card = {}, payments = [] }: ActionProps) => {
       method_id: id,
     });
   };
-  const { x, y, reference, floating, strategy, update, refs } = useFloating({
-    strategy: 'fixed',
-    placement: 'bottom',
-    middleware: [offset(0), flip(), shift()],
-  });
-
-  // This one is for recalculating the position of the floating element if no space is left on the given placement
-  useEffect(() => {
-    if (!refs.reference.current || !refs.floating.current) {
-      return;
-    }
-    return autoUpdate(refs.reference.current, refs.floating.current, update);
-  }, [refs.reference, refs.floating, update]);
 
   return (
     <>

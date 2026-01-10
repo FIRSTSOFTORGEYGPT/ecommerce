@@ -74,12 +74,9 @@ export function Client({ path, data }: { path: string; data: Partial<Data> }) {
             config={appConfig}
             data={data}
             onPublish={async (data) => {
-                console.log("Puck Publish Data:", data);
-                console.log("Root Props:", data.root.props);
                 const { pageId, title, slug } = data.root.props as any;
 
                 if (!pageId) {
-                    console.error("Missing Page ID (pageId), cannot save. Root props:", data.root.props);
                     alert("Error: Missing Page ID. Cannot save changes.");
                     return;
                 }
@@ -95,8 +92,7 @@ export function Client({ path, data }: { path: string; data: Partial<Data> }) {
 
                     alert(`Page published successfully!`);
                 } catch (error) {
-                    console.error("Failed to publish page:", error);
-                    alert("Failed to publish page. Check console for details.");
+                    alert("Failed to publish page. Please try again.");
                 }
             }}
         />

@@ -22,12 +22,25 @@ import {
   modernDemoBanner as banner,
   modernDemoProductBanner as productBanner,
 } from '@data/static/banners';
+import { NextSeo } from 'next-seo';
+import { useTranslation } from 'next-i18next';
 
 export { getStaticProps } from '@framework/homepage/modern';
 
 export default function Home() {
+  const { t } = useTranslation('common');
+
   return (
     <>
+      <NextSeo
+        title={t('seo-home-title')}
+        description={t('seo-home-description')}
+        openGraph={{
+          title: t('seo-home-title'),
+          description: t('seo-home-description'),
+          type: 'website',
+        }}
+      />
       <BannerBlock data={masonryBanner} />
       <Container>
         <ProductsFlashSaleBlock sectionHeading='flash-sale-products' />

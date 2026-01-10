@@ -17,8 +17,6 @@ export const OTPLoginForm = () => {
   const {
     mutate: sendOtpCode,
     isLoading: loading,
-    serverError,
-    setServerError,
   } = useSendOtpCode();
 
   const {
