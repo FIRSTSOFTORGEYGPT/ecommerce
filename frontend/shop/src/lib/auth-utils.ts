@@ -16,6 +16,11 @@ export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
 export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
+export const editorOnly = ['editor'];
+
+export function isEditor(role: string | null | undefined) {
+  return role === 'editor';
+}
 
 export function setAuthCredentials(token: string, permissions: any) {
   Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions }));
@@ -27,7 +32,7 @@ export function getEmailVerified(): {
   emailVerified: boolean;
 } {
   const emailVerified = Cookie.get(EMAIL_VERIFIED);
-  return emailVerified ? JSON.parse(emailVerified) : false;
+  return emailVerified ? JSON.parse(emailVerified) : { emailVerified: false };
 }
 
 export function getAuthCredentials(context?: any): {

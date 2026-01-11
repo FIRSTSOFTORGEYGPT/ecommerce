@@ -15,12 +15,12 @@ interface ProductProps {
   gridClassName?: string;
   variables?: string;
   variant?:
-    | 'grid'
-    | 'gridSmall'
-    | 'gridSlim'
-    | 'list'
-    | 'listSmall'
-    | 'gridSlimLarge';
+  | 'grid'
+  | 'gridSmall'
+  | 'gridSlim'
+  | 'list'
+  | 'listSmall'
+  | 'gridSlimLarge';
   imgLoading?: 'eager' | 'lazy';
 }
 
@@ -140,11 +140,10 @@ const ProductCard: FC<ProductProps> = ({
           </p>
         )}
         <div
-          className={`text-heading font-semibold text-sm sm:text-base mt-1.5 space-x-1 rtl:space-x-reverse ${
-            variant === 'grid' || variant === 'gridSmall'
+          className={`text-heading font-semibold text-sm sm:text-base mt-1.5 space-x-1 rtl:space-x-reverse ${variant === 'grid' || variant === 'gridSmall'
               ? '3xl:text-lg lg:mt-2.5'
               : 'sm:text-lg md:text-base 3xl:text-xl md:mt-2.5 2xl:mt-3'
-          }`}
+            }`}
         >
           {product_type.toLocaleLowerCase() === 'variable' ? (
             <>

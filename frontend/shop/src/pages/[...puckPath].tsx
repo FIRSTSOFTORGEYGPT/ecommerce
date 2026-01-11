@@ -9,7 +9,13 @@ interface PageProps {
     path: string;
 }
 
+import { useUser } from "@framework/auth";
+import { isEditor } from "@lib/auth-utils";
+
 export default function PuckPage({ data, path }: PageProps) {
+    const { me, isAuthorized } = useUser();
+    const canEdit = isAuthorized && isEditor(me?.role);
+
     if (!data) {
         return (
             <div style={{ padding: "2rem", textAlign: "center" }}>
@@ -17,11 +23,13 @@ export default function PuckPage({ data, path }: PageProps) {
                 <p>
                     No content found for <strong>{path}</strong>
                 </p>
-                <p>
-                    <a href={`${path}/edit`} style={{ color: "blue", textDecoration: "underline" }}>
-                        Create this page in the editor
-                    </a>
-                </p>
+                {canEdit && (
+                    <p>
+                        <a href={`${path}/edit`} style={{ color: "blue", textDecoration: "underline" }}>
+                            Create this page in the editor
+                        </a>
+                    </p>
+                )}
             </div>
         );
     }

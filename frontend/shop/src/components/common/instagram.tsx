@@ -3,6 +3,7 @@ import { FaInstagram } from "react-icons/fa";
 import cn from "classnames";
 import { useTranslation } from "next-i18next";
 import { useInstagram } from "@framework/instagram";
+import Image from "next/image";
 
 interface Props {
   className?: string;
@@ -76,34 +77,36 @@ const Instagram: React.FC<Props> = ({
     >
       {showPlaceholders
         ? Array.from({ length: placeholderCount }).map((_, idx) => (
-            <div
-              key={`instagram-placeholder-${idx}`}
-              className="relative w-full bg-gray-200 aspect-square"
-            />
-          ))
+          <div
+            key={`instagram-placeholder-${idx}`}
+            className="relative w-full bg-gray-200 aspect-square"
+          />
+        ))
         : items.map((item) => (
-            <a
-              className="group flex justify-center text-center relative w-full aspect-square"
-              href={item?.permalink}
-              key={`instagram--key${item?.id}`}
-              target={openInNewTab ? "_blank" : undefined}
-              rel={openInNewTab ? "noreferrer" : undefined}
-            >
-              <img
-                src={item?.media_url ?? "/assets/placeholder/instagram.svg"}
-                alt={t(`${item?.caption}`) || t("text-instagram-thumbnail")}
-                className="bg-gray-300 object-cover w-full h-full"
-              />
-              {showOverlayIcon && (
-                <>
-                  <div className="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-50" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <FaInstagram className="text-white text-base sm:text-xl md:text-3xl lg:text-5xl xl:text-6xl transform opacity-0 scale-400 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100" />
-                  </div>
-                </>
-              )}
-            </a>
-          ))}
+          <a
+            className="group flex justify-center text-center relative w-full aspect-square"
+            href={item?.permalink}
+            key={`instagram--key${item?.id}`}
+            target={openInNewTab ? "_blank" : undefined}
+            rel={openInNewTab ? "noreferrer" : undefined}
+          >
+            <Image
+              src={item?.media_url ?? "/assets/placeholder/instagram.svg"}
+              alt={t(`${item?.caption}`) || t("text-instagram-thumbnail")}
+              width={400}
+              height={400}
+              className="bg-gray-300 object-cover w-full h-full"
+            />
+            {showOverlayIcon && (
+              <>
+                <div className="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 group-hover:opacity-50" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <FaInstagram className="text-white text-base sm:text-xl md:text-3xl lg:text-5xl xl:text-6xl transform opacity-0 scale-400 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:scale-100" />
+                </div>
+              </>
+            )}
+          </a>
+        ))}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { useHasMounted } from './use-has-mounted';
 import dynamic from 'next/dynamic';
 
 import { useEffect, useState } from 'react';
+import { isEditor } from '@lib/auth-utils';
 
 const Spinner = dynamic(
     () => import('@components/ui/loaders/spinner/spinner'),
@@ -35,7 +36,7 @@ const EditorRoute: React.FC<{ children?: React.ReactNode }> = ({
 
     // Handle redirect for non-editor users
     useEffect(() => {
-        if (!loading && isAuthorized && me && me.role !== 'editor' && !isRedirecting) {
+        if (!loading && isAuthorized && me && !isEditor(me.role) && !isRedirecting) {
             setIsRedirecting(true);
             router.replace('/403');
         }
@@ -68,7 +69,7 @@ const EditorRoute: React.FC<{ children?: React.ReactNode }> = ({
     }
 
     // Authenticated editor - render children
-    if (isUser && isAuthorized && me?.role === 'editor') {
+    if (isUser && isAuthorized && isEditor(me?.role)) {
         return <>{children}</>;
     }
 
