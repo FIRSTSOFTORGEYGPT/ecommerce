@@ -30,9 +30,9 @@ interface CardViewProps {
 }
 
 const CardsView = ({
-  view = 'normal',
+  view: _view = 'normal',
   payments = [],
-  showContinuePayment = false,
+  showContinuePayment: _showContinuePayment = false,
 }: CardViewProps) => {
   const { t } = useTranslation('common');
 
@@ -152,7 +152,7 @@ const CardsView = ({
       data={payments}
       className="w-full shadow-none card-view-table"
       scroll={{ x: 330, y: 500 }}
-      rowClassName={(record, i) =>
+      rowClassName={(record, _i) =>
         record?.default_card ? 'row-highlight' : ''
       }
       emptyText={t('text-no-card-found')}

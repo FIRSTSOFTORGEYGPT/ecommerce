@@ -1,14 +1,13 @@
 import { AUTH_TOKEN } from '@lib/constants';
 import axios from 'axios';
-import type { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import pickBy from 'lodash/pickBy';
 import Router from 'next/router';
 import { getToken } from './get-token';
 
 const request = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT, // TODO: take this api URL from env
-  timeout: 300000000,
+  baseURL: process.env.NEXT_PUBLIC_REST_API_ENDPOINT,
+  timeout: 15000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -19,10 +18,7 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     const token = getToken();
-    config.headers = {
-      ...config.headers,
-      Authorization: `Bearer ${token ? token : ''}`,
-    };
+    config.headers.set('Authorization', `Bearer ${token || ''}`);
     return config;
   },
   (error) => {
@@ -39,35 +35,11 @@ request.interceptors.request.use(
   }
 );
 
-function buildFullUrl(config: AxiosRequestConfig): string {
-  const base = config.baseURL ?? '';
-  const url = config.url ?? '';
-  try {
-    const fullUrl = new URL(url, base || undefined);
-    const params = (config.params || {}) as Record<string, unknown>;
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === undefined || value === null) return;
-      fullUrl.searchParams.append(key, String(value));
-    });
-    return fullUrl.toString();
-  } catch {
-    return `${base}${url}`;
-  }
-}
-
 request.interceptors.response.use(
   (response) => {
-    const fullUrl = buildFullUrl(response.config as AxiosRequestConfig);
-    console.log('HTTP URL:', fullUrl);
-    console.log('HTTP RESPONSE:', response.data);
     return response;
   },
   (error) => {
-    if (error && error.response && error.response.config) {
-      const fullUrl = buildFullUrl(error.response.config as AxiosRequestConfig);
-      console.log('HTTP URL (ERROR):', fullUrl);
-      console.log('HTTP RESPONSE (ERROR):', error.response.data);
-    }
     return Promise.reject(error);
   }
 );

@@ -5,7 +5,7 @@ import type {
   Path,
   FieldValues,
 } from 'react-hook-form';
-import type { SchemaOf } from 'yup';
+import type { Schema } from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
@@ -16,7 +16,7 @@ type FormProps<TFormValues extends FieldValues> = {
   onSubmit: SubmitHandler<TFormValues>;
   children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
   useFormProps?: UseFormProps<TFormValues>;
-  validationSchema?: SchemaOf<TFormValues>;
+  validationSchema?: Schema<TFormValues>;
   serverError?: ServerErrors<Partial<TFormValues>> | null;
   resetValues?: any | null;
   className?: string;
@@ -35,9 +35,9 @@ export const Form = <
   ...props
 }: FormProps<TFormValues>) => {
   const methods = useForm<TFormValues>({
-    ...(!!validationSchema && { resolver: yupResolver(validationSchema) }),
+    ...(!!validationSchema && { resolver: yupResolver(validationSchema as any) }),
     ...(!!useFormProps && useFormProps),
-  });
+  } as any);
   useEffect(() => {
     if (serverError) {
       Object.entries(serverError).forEach(([key, value]) => {

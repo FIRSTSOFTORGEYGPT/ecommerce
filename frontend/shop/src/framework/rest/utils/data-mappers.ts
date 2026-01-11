@@ -34,7 +34,7 @@ interface Paginator {
 }
 export const mapPaginatorData = (obj: Paginator | undefined) => {
   if (!obj) return null;
-  const { data, ...formattedValues } = camelCaseKeys(obj);
+  const { data, ...formattedValues } = camelCaseKeys(obj as any) as any;
   return {
     ...formattedValues,
     hasMorePages: formattedValues.lastPage !== formattedValues.currentPage,

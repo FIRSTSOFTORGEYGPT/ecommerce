@@ -22,7 +22,7 @@ module.exports = {
   i18n: {
     defaultLocale: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE ?? 'en',
     locales: generateLocales(),
-    localeDetection: isMultiLangEnable,
+    localeDetection: false,
   },
   react: { useSuspense: false },
   localePath: path.resolve('./public/locales'),

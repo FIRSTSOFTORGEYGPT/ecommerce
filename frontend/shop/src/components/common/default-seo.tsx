@@ -1,7 +1,7 @@
 import { DefaultSeo as NextDefaultSeo } from 'next-seo';
 import { useSettings } from "@contexts/settings.context";
 
-const DefaultSeo = ({ ...props } : any) => {
+const DefaultSeo = ({ ...props }: any) => {
   const settings = useSettings();
   return (
     <NextDefaultSeo
@@ -21,6 +21,11 @@ const DefaultSeo = ({ ...props } : any) => {
       ]}
       additionalLinkTags={[
         {
+          rel: 'icon',
+          href: '/assets/meem-5050.jpeg',
+          type: 'image/jpeg',
+        },
+        {
           rel: 'apple-touch-icon',
           href: 'icons/apple-icon-180.png',
         },
@@ -30,7 +35,7 @@ const DefaultSeo = ({ ...props } : any) => {
         },
       ]}
       title={settings?.seo?.metaTitle || settings?.siteTitle || 'E-Commerce'}
-      defaultTitle="ChawkBazar"
+      defaultTitle="Meem Market"
       description={settings?.seo?.metaDescription || settings?.siteSubtitle}
       canonical={settings?.seo?.canonicalUrl}
       openGraph={{
@@ -53,7 +58,7 @@ const DefaultSeo = ({ ...props } : any) => {
         site: settings?.siteTitle,
         cardType: settings?.seo?.twitterCardType,
       }}
-      { ...props }
+      {...props}
     />
   );
 };

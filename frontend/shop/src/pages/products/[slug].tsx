@@ -7,6 +7,7 @@ import Breadcrumb from '@components/common/breadcrumb';
 import { useRouter } from 'next/router';
 import Spinner from '@components/ui/loaders/spinner/spinner';
 import dynamic from 'next/dynamic';
+import { NextSeo } from 'next-seo';
 
 export { getStaticPaths, getStaticProps } from '@framework/product.ssr';
 
@@ -21,8 +22,22 @@ export default function ProductPage({ product }: any) {
     return <Spinner />;
   }
 
+  const productTitle = `${product?.name} | Meem Market`;
+  const productDescription = product?.description?.replace(/<[^>]*>/g, '')?.substring(0, 160) || `Buy ${product?.name} at Meem Market`;
+  const productImage = product?.image?.original || product?.gallery?.[0]?.original;
+
   return (
     <>
+      <NextSeo
+        title={productTitle}
+        description={productDescription}
+        openGraph={{
+          title: productTitle,
+          description: productDescription,
+          type: 'product',
+          images: productImage ? [{ url: productImage, alt: product?.name }] : undefined,
+        }}
+      />
       <Divider className="mb-0" />
       <Container>
         <div className="pt-8">

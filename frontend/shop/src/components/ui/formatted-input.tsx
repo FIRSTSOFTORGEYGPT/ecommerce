@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import cn from "classnames";
 import Cleave from "cleave.js/react";
 
-interface FormattedInputProps {
+interface FormattedInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   options: any;
@@ -11,8 +11,7 @@ interface FormattedInputProps {
   className?: string;
   inputClassName?: string;
   shadow?: boolean;
-
-  [key: string]: unknown;
+  dimension?: string;
 }
 
 const variantClasses = {

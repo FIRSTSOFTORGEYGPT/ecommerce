@@ -9,8 +9,11 @@ import client from '@framework/utils/index';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { QueryClient } from 'react-query';
+import { NextSeo } from 'next-seo';
+import { useTranslation } from 'next-i18next';
 
 export default function TermsPage() {
+  const { t } = useTranslation('common');
   const {
     termsAndConditions,
     isLoading,
@@ -27,6 +30,15 @@ export default function TermsPage() {
   if (error) return <ErrorMessage message={error?.message} />;
   return (
     <>
+      <NextSeo
+        title={t('seo-terms-title')}
+        description={t('seo-terms-description')}
+        openGraph={{
+          title: t('seo-terms-title'),
+          description: t('seo-terms-description'),
+          type: 'website',
+        }}
+      />
       <PageHeader pageHeader="text-page-terms-of-service" />
       <div className="mt-12 lg:mt-14 xl:mt-16 lg:py-1 xl:py-0 border-b border-gray-300 px-4 md:px-10 lg:px-7 xl:px-16 2xl:px-24 3xl:px-32 pb-9 md:pb-14 lg:pb-16 2xl:pb-20 3xl:pb-24">
         <Container>

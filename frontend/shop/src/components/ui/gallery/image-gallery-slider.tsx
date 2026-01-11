@@ -84,7 +84,7 @@ export default function ImageGallerySlider({
                   effect="fade"
                   speed={600}
                   initialSlide={initialSlide}
-                  onSlideChange={({ realIndex }) => setInitialSlide(realIndex)}
+                  onSlideChange={(swiper: any) => setInitialSlide(swiper.realIndex)}
                   navigation={{
                     nextEl: '.gallery-right',
                     prevEl: '.gallery-left',

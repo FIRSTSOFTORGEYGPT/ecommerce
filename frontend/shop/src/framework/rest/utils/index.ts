@@ -499,7 +499,6 @@ class Client {
       language?: string;
       variation_option_id?: number;
     }) => {
-      console.log(input);
       return HttpClient.post<{ in_wishlist: boolean }>(
         API_ENDPOINTS.USERS_WISHLIST_TOGGLE,
         input,

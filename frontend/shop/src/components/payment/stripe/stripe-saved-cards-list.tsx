@@ -191,7 +191,7 @@ const StripeSavedCardsList = ({
         }
         emptyText={t('text-no-card-found')}
         onRow={(record) => ({
-          onClick: onClickRow.bind(null, record, columns),
+          onClick: onClickRow.bind(null, record),
         })}
       />
       <div className="flex justify-end mt-8">

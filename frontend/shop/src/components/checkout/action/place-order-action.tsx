@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useCreateOrder } from '@framework/orders';
-import { API_ENDPOINTS } from '@framework/utils/endpoints';
 
 import ValidationError from '@components/ui/validation-error';
 import Button from '@components/ui/button';
@@ -15,20 +13,15 @@ import {
   calculateTotal,
 } from '@store/quick-cart/cart.utils';
 import { useTranslation } from 'next-i18next';
-import { useUser } from '@framework/auth';
 // import { useSettings } from "@contexts/settings.context";
 
 export const PlaceOrderAction: React.FC<{ children: React.ReactNode }> = (
   props
 ) => {
-  const router = useRouter();
   const { t } = useTranslation('common');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { createOrder, isLoading } = useCreateOrder();
-  const [placeOrderLoading, setPlaceOrderLoading] = useState(isLoading);
-  const { locale }: any = useRouter();
   const { items } = useCart();
-  const { me } = useUser();
 
   const [
     {
@@ -41,7 +34,6 @@ export const PlaceOrderAction: React.FC<{ children: React.ReactNode }> = (
       customer_name,
       customer_email,
       payment_gateway,
-      token,
       note
     },
   ] = useAtom(checkoutAtom);

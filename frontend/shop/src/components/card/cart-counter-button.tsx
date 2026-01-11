@@ -15,7 +15,7 @@ const CartCounterButton = () => {
     amount: total,
   });
   function handleCartSidebar() {
-    setDisplayCart({ display: true, view: 'cart' });
+    setDisplayCart({ display: true, view: 'DISPLAY_CART' });
   }
   return (
     <button

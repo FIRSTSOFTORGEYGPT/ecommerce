@@ -9,6 +9,7 @@ import { ROUTES } from '@lib/routes';
 import { useTranslation } from 'next-i18next';
 import Divider from '@components/ui/divider';
 import ProductSearchBlock from '@components/product/product-search-block';
+import { NextSeo } from 'next-seo';
 
 export { getStaticProps } from '@framework/products-filter.ssr';
 
@@ -17,6 +18,15 @@ export default function Shop() {
 
   return (
     <>
+      <NextSeo
+        title={t('seo-search-title')}
+        description={t('seo-search-description')}
+        openGraph={{
+          title: t('seo-search-title'),
+          description: t('seo-search-description'),
+          type: 'website',
+        }}
+      />
       <Divider className="mb-2" />
       <Container>
         <div className={`flex pt-8 pb-16 lg:pb-20`}>

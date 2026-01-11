@@ -133,4 +133,4 @@ function CustomApp({
   );
 }
 
-export default appWithTranslation(CustomApp);
+export default appWithTranslation(CustomApp as any);

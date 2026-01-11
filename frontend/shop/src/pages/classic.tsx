@@ -47,7 +47,7 @@ export default function Home() {
       </Container>
       <BannerSliderBlock data={promotionBanner} />
       <Container>
-        <ProductsFlashSaleBlock date={'2023-03-01T01:02:03'} />
+        <ProductsFlashSaleBlock sectionHeading="text-flash-sale" />
       </Container>
       <BannerBlock data={bannerTwo} />
       <Container>

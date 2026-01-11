@@ -29,15 +29,13 @@ export default function Home() {
         <CategoryBlock
           sectionHeading="text-featured-categories"
           variant="modern"
-          effectPosition="fullBody"
-          type="vector"
         />
         <ProductsFeatured
           sectionHeading="text-featured-products"
           variant="combined"
           limit={4}
         />
-        <ProductsFlashSaleBlock date={'2023-03-01T01:02:03'} variant="slider" />
+        <ProductsFlashSaleBlock sectionHeading="text-flash-sale" />
         <BannerCard
           data={coupons[0]}
           href={`${ROUTES.COLLECTIONS}/${coupons[0].slug}`}
@@ -49,15 +47,14 @@ export default function Home() {
           sectionHeading="text-on-selling-products"
           categorySlug="/search"
           data={productWithBanner}
-          variant="modern"
+          // variant="modern"
           limit={4}
         />
         <BrandGridBlock
           sectionHeading="text-top-brands"
           limit={12}
-          variant="6column"
         />
-        <TestimonialCarousel sectionHeading="text-testimonial" />
+        <TestimonialCarousel />
         <Subscription
           className="relative px-5 overflow-hidden sm:px-8 md:px-16 2xl:px-24 sm:items-center lg:items-start"
           variant="modern"

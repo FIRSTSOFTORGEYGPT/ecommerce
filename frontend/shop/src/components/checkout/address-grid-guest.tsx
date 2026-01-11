@@ -33,12 +33,6 @@ export const GuestAddressGrid: React.FC<AddressesProps> = ({
     openModal();
   }
 
-  function onEdit(address: any) {
-    setModalData({ type, atom, address });
-    setModalView('ADD_OR_UPDATE_GUEST_ADDRESS');
-    openModal();
-  }
-
   return (
     <div className={className}>
       <AddressHeader onAdd={onAdd} count={count} label={label} />

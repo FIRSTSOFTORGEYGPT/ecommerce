@@ -6,8 +6,8 @@ import { CollectionBanner } from "@type/index";
 import cn from "classnames";
 
 interface Props {
-	imgWidth?: number | string;
-	imgHeight?: number | string;
+	imgWidth?: number;
+	imgHeight?: number;
 	contactClassName?: string;
 	collection: CollectionBanner;
 	variant?: "default" | "modern";

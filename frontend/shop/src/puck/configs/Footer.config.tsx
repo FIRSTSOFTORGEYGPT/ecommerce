@@ -91,5 +91,5 @@ export const FooterConfig: ComponentConfig<FooterProps> = {
         backgroundColor: "#f8f8f8",
         textColor: "#333333",
     },
-    render: (props) => <Footer {...props} />,
+    render: (props) => <Footer {...(props as any)} />,
 };

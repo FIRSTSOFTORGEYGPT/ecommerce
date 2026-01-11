@@ -57,7 +57,7 @@ export default function Home() {
           className="mb-11 md:mb-12 lg:mb-14 2xl:mb-16"
           classNameInner="aspect-[2.65/1] md:aspect-[3.15/1]"
         />
-        <ProductsFlashSaleBlock date={'2023-03-01T01:02:03'} />
+        <ProductsFlashSaleBlock sectionHeading="text-flash-sale" />
         <BrandBlock sectionHeading="text-top-brands" />
         <ExclusiveBlock />
         <NewArrivalsProductFeed />

@@ -7,7 +7,7 @@ import {
   checkIsShopMaintenanceModeStart,
 } from '@lib/constants';
 import { productPlaceholder } from '@lib/placeholders';
-import { data } from '@type/index';
+import { Shop } from '@type/index';
 import { eachMinuteOfInterval, isBefore } from 'date-fns';
 import { useAtom } from 'jotai';
 import { useTranslation } from 'next-i18next';
@@ -26,7 +26,7 @@ const CartCounterButton = dynamic(
 );
 
 type Props = {
-  data: data;
+  data: Shop;
   children: React.ReactNode;
 };
 
@@ -169,9 +169,9 @@ const ShopsSingleDetails: React.FC<Props> = ({ data, children }) => {
                           new Date(
                             data?.settings?.shopMaintenance?.start
                               ? (data?.settings?.shopMaintenance
-                                  ?.until as string)
+                                ?.until as string)
                               : (data?.settings?.shopMaintenance
-                                  ?.start as string),
+                                ?.start as string),
                           )
                         }
                         onComplete={() =>
@@ -201,7 +201,7 @@ const ShopsSingleDetails: React.FC<Props> = ({ data, children }) => {
                     )}
                   </div>
                   {data?.settings?.shopMaintenance?.image &&
-                  data?.settings?.shopMaintenance?.image?.original ? (
+                    data?.settings?.shopMaintenance?.image?.original ? (
                     <div className="absolute top-0 left-0 z-10 h-full w-full bg-no-repeat">
                       <Image
                         src={data?.settings?.shopMaintenance?.image?.original}

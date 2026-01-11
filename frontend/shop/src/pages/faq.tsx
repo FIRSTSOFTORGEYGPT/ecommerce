@@ -10,8 +10,11 @@ import client from '@framework/utils/index';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { QueryClient } from 'react-query';
+import { NextSeo } from 'next-seo';
+import { useTranslation } from 'next-i18next';
 
 export default function FAQ() {
+  const { t } = useTranslation('common');
   const { faqs, isLoading, error, loadMore, hasNextPage, isLoadingMore } =
     useFAQs({
       faq_type: 'global',
@@ -23,6 +26,15 @@ export default function FAQ() {
   if (error) return <ErrorMessage message={error?.message} />;
   return (
     <>
+      <NextSeo
+        title={t('seo-faq-title')}
+        description={t('seo-faq-description')}
+        openGraph={{
+          title: t('seo-faq-title'),
+          description: t('seo-faq-description'),
+          type: 'website',
+        }}
+      />
       <PageHeader pageHeader="text-page-faq" />
       <Container>
         <FAQAccordion

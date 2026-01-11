@@ -40,8 +40,6 @@ export default function Home() {
         <CategoryBlock
           sectionHeading="text-browse-categories"
           variant="elegant"
-          effectPosition="fullBody"
-          type="vector"
         />
 
         <ProductsFeatured
@@ -60,7 +58,7 @@ export default function Home() {
         <SaleBannerWithProducts
           sectionHeading="text-on-selling-products"
           categorySlug="/search"
-          variant="fashion"
+          // variant="fashion"
           productVariant="gridSlim"
           limit={8}
           bannerData={fashionSaleBannerWithProducts}
@@ -69,10 +67,9 @@ export default function Home() {
         <BrandGridBlock
           sectionHeading="text-top-brands"
           limit={12}
-          variant="6column"
         />
 
-        <ProductsFlashSaleBlock date={'2023-03-01T01:02:03'} variant="slider" />
+        <ProductsFlashSaleBlock sectionHeading="text-flash-sale" />
 
         <BannerCarouselBlock
           banners={fashionSaleBannerDataGallery}
@@ -90,7 +87,7 @@ export default function Home() {
 
         <CollectionBlock variant="modern" data={modernDemoCollectionData} />
 
-        <TestimonialCarousel sectionHeading="text-testimonial" />
+        <TestimonialCarousel />
 
         <Instagram className="mb-12 md:mb-14 xl:mb-16" />
 

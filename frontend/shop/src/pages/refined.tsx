@@ -40,7 +40,7 @@ export default function Home() {
         <SaleBannerWithProducts
           sectionHeading="text-on-selling-products"
           categorySlug="/search"
-          variant="center"
+        // variant="center"
         />
 
         <ProductsFeatured
@@ -70,7 +70,7 @@ export default function Home() {
           classNameInner="aspect-[2.1/1] md:aspect-[2.9/1]"
         />
 
-        <ProductsFlashSaleBlock date={'2023-05-01T01:02:03'} variant="slider" />
+        <ProductsFlashSaleBlock sectionHeading="text-flash-sale" />
 
         <ProductsTopBlock sectionHeading="text-top-products" />
 
@@ -83,7 +83,7 @@ export default function Home() {
           classNameInner="md:aspect-[3.75/1] aspect-[3.2/1]"
         />
 
-        <TestimonialCarousel sectionHeading="text-testimonial" />
+        <TestimonialCarousel />
 
         <Instagram className="mb-12 md:mb-14 xl:mb-16" />
 

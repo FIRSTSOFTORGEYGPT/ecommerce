@@ -24,8 +24,7 @@ const CARDS_FORM_COMPONENTS: any = {
   },
 };
 
-const AddNewCardModal = ({ data }: any) => {
-  const { paymentGateway } = data;
+const AddNewCardModal = ({ data: _data }: any) => {
 
   const { data: settings } = useSettings();
 

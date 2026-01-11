@@ -44,7 +44,7 @@ export default function Search() {
     }
   }
 
-  function handleOnLoadMore(){
+  function handleOnLoadMore() {
     // Clear Search
     setSearchText("");
     closeSearch();
@@ -93,7 +93,7 @@ export default function Search() {
                 name="search"
                 value={searchText}
                 onClear={clear}
-                ref={(input) => input && input.focus()}
+                ref={(input) => { if (input) input.focus(); }}
               />
             </div>
             {searchText && (

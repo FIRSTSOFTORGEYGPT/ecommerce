@@ -6,9 +6,10 @@ import { Link, Element } from "react-scroll";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import {QueryClient} from "react-query";
-import {API_ENDPOINTS} from "@framework/utils/endpoints";
-import client from '@framework/utils/index'
+import { QueryClient } from "react-query";
+import { API_ENDPOINTS } from "@framework/utils/endpoints";
+import client from '@framework/utils/index';
+import { NextSeo } from 'next-seo';
 
 function makeTitleToDOMId(title: string) {
   return title.toLowerCase().split(" ").join("_");
@@ -16,8 +17,18 @@ function makeTitleToDOMId(title: string) {
 
 export default function PrivacyPage() {
   const { t } = useTranslation("privacy");
+  const { t: tCommon } = useTranslation("common");
   return (
     <>
+      <NextSeo
+        title={tCommon('seo-privacy-title')}
+        description={tCommon('seo-privacy-description')}
+        openGraph={{
+          title: tCommon('seo-privacy-title'),
+          description: tCommon('seo-privacy-description'),
+          type: 'website',
+        }}
+      />
       <PageHeader pageHeader="text-page-privacy-policy" />
       <div className="mt-12 lg:mt-14 xl:mt-16 lg:py-1 xl:py-0 border-b border-gray-300 px-4 md:px-10 lg:px-7 xl:px-16 2xl:px-24 3xl:px-32 pb-9 md:pb-14 lg:pb-16 2xl:pb-20 3xl:pb-24">
         <Container>
