@@ -38,12 +38,22 @@ function writeDatabase(database: Database): void {
     }
 }
 
+import { getAuthCredentials } from "@lib/auth-utils";
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    // Check authorization
+    const { permissions } = getAuthCredentials({ req });
+    const isAuthorized = permissions?.includes("editor");
+
+    if (!isAuthorized) {
+        return res.status(403).json({ error: "Unauthorized access to CMS API" });
     }
 
     try {

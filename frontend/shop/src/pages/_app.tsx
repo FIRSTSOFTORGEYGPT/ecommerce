@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import NProgress from 'nprogress';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { appWithTranslation } from 'next-i18next';
 import DefaultSeo from '@components/common/default-seo';
@@ -36,6 +36,7 @@ import PrivateRoute from '@lib/private-route';
 import SocialLoginProvider from '@providers/social-login-provider';
 import { SessionProvider } from 'next-auth/react';
 import Maintenance from '@components/maintenance/layout';
+import ErrorBoundary from '@components/common/error-boundary';
 function handleExitComplete() {
   if (typeof window !== 'undefined') {
     window.scrollTo({ top: 0 });
@@ -102,29 +103,58 @@ function CustomApp({
     };
   }, [router.events]);
 
+  // Global error handling for unhandled promise rejections and errors
+  useEffect(() => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error('Unhandled promise rejection:', event.reason);
+      toast.error('An unexpected error occurred. Please try again.', {
+        toastId: 'global-unhandled-rejection',
+        autoClose: 5000,
+      });
+    };
+
+    const handleError = (event: ErrorEvent) => {
+      console.error('Global error:', event.error);
+      toast.error('Something went wrong. Please refresh the page.', {
+        toastId: 'global-error',
+        autoClose: 5000,
+      });
+    };
+
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+    window.addEventListener('error', handleError);
+
+    return () => {
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener('error', handleError);
+    };
+  }, []);
+
   return (
     <AnimatePresence initial={false} onExitComplete={handleExitComplete}>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
-            <AppSettings>
-              <ManagedUIContext>
-                <DefaultSeo />
-                <Maintenance>
-                  {Boolean(authProps) ? (
-                    <PrivateRoute>
-                      {getLayout(<Component {...pageProps} />)}
-                    </PrivateRoute>
-                  ) : (
-                    getLayout(<Component {...pageProps} />)
-                  )}
-                </Maintenance>
-                <ToastContainer autoClose={2000} theme="colored" />
-                <SocialLoginProvider />
-                <ManagedModal />
-                <ManagedDrawer />
-              </ManagedUIContext>
-            </AppSettings>
+            <ErrorBoundary>
+              <AppSettings>
+                <ManagedUIContext>
+                  <DefaultSeo />
+                  <Maintenance>
+                    {Boolean(authProps) ? (
+                      <PrivateRoute>
+                        {getLayout(<Component {...pageProps} />)}
+                      </PrivateRoute>
+                    ) : (
+                      getLayout(<Component {...pageProps} />)
+                    )}
+                  </Maintenance>
+                  <ToastContainer autoClose={2000} theme="colored" />
+                  <SocialLoginProvider />
+                  <ManagedModal />
+                  <ManagedDrawer />
+                </ManagedUIContext>
+              </AppSettings>
+            </ErrorBoundary>
           </Hydrate>
           {/* <ReactQueryDevtools /> */}
         </QueryClientProvider>

@@ -1,0 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /my-account/
+Disallow: /checkout/
+Disallow: /puck/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://yoursite.com/sitemap.xml

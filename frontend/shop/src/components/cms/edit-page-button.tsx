@@ -1,4 +1,5 @@
 import { useUser } from '@framework/auth';
+import { isEditor } from '@lib/auth-utils';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { MdEdit } from 'react-icons/md';
@@ -15,7 +16,7 @@ const EditPageButton: React.FC = () => {
     const router = useRouter();
 
     // Only show for authenticated editors
-    if (!isAuthorized || me?.role !== 'editor') {
+    if (!isAuthorized || !isEditor(me?.role)) {
         return null;
     }
 

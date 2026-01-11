@@ -33,13 +33,15 @@ const BrandCard: React.FC<{ brand: Type }> = ({ brand }) => {
       />
       <div className="absolute w-full h-full transition-opacity duration-500 bg-black opacity-50 top left group-hover:opacity-80" />
       <div className="absolute flex items-center justify-center w-full h-full p-8 top left">
-        <img
+        <Image
           src={
             filterImages?.image?.[1]?.original ??
             '/assets/placeholder/brand-bg.svg'
           }
           alt={name || t('text-brand-thumbnail')}
-          className="flex-shrink-0"
+          width={150}
+          height={50}
+          className="flex-shrink-0 object-contain"
         />
       </div>
     </Link>

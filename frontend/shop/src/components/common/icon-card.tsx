@@ -3,6 +3,7 @@ import Text from "@components/ui/text";
 import { FaLink } from "react-icons/fa";
 import { useTranslation } from "next-i18next";
 import cn from "classnames";
+import Image from "next/image";
 
 interface Props {
 	item: any;
@@ -37,10 +38,12 @@ const IconCard: React.FC<Props> = ({
 						variant === "circle",
 				})}
 			>
-				<img
+				<Image
 					src={icon}
 					alt={name || t("text-card-thumbnail")}
-					className={cn("mb-0", {
+					width={120}
+					height={120}
+					className={cn("mb-0 object-contain", {
 						"mx-auto mb-4 sm:mb-6 w-2/4 sm:w-2/3 md:w-8/12 3xl:w-full":
 							variant === "default",
 						"mb-4 sm:mb-6 w-2/4": variant === "modern",
