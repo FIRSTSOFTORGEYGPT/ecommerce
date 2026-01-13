@@ -1,10 +1,7 @@
-const invariant = require('tiny-invariant');
 const path = require('path');
 
-invariant(
-  process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE,
-  'NEXT_PUBLIC_DEFAULT_LANGUAGE is required, but not set, check your .env file'
-);
+// Default language fallback for production builds
+const defaultLanguage = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE || 'en';
 
 const isMultiLangEnable =
   process.env.NEXT_PUBLIC_ENABLE_MULTI_LANG === 'true' &&
@@ -15,12 +12,12 @@ function generateLocales() {
     return process.env.NEXT_PUBLIC_AVAILABLE_LANGUAGES.split(',');
   }
 
-  return [process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE];
+  return [defaultLanguage];
 }
 
 module.exports = {
   i18n: {
-    defaultLocale: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE ?? 'en',
+    defaultLocale: defaultLanguage,
     locales: generateLocales(),
     localeDetection: false,
   },
