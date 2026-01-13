@@ -1,34 +1,29 @@
 {
-  "env": {
-    "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "Stripe Payment Key",
-    "NEXT_PUBLIC_GOOGLE_MAP_API_KEY": "Google Map Key",
-    "NEXT_PUBLIC_SITE_URL": "Shop Frontend URL",
-    "NEXTAUTH_URL": "Shop Frontend URL",
-    "SECRET": "Random 32 Hash Key",
-    "GOOGLE_CLIENT_ID": "Google Client Key",
-    "GOOGLE_CLIENT_SECRET": "Google Client Secret",
-    "REVALIDATE_DURATION": "120",
-    "NEXT_PUBLIC_DEFAULT_LANGUAGE": "en",
-    "NEXT_PUBLIC_ENABLE_MULTI_LANG": "false",
-    "NEXT_PUBLIC_AVAILABLE_LANGUAGES": "en",
-    "NEXT_PUBLIC_PAYPAL_CLIENT_TOKEN": "Paypal Payment Key"
-  },
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_REST_API_ENDPOINT": "Add your REST API",
-      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "Stripe Payment Key",
-      "NEXT_PUBLIC_GOOGLE_MAP_API_KEY": "Google Map Key",
-      "NEXT_PUBLIC_SITE_URL": "Shop Frontend URL",
-      "NEXTAUTH_URL": "Shop Frontend URL",
-      "SECRET": "Random 32 Hash Key",
-      "GOOGLE_CLIENT_ID": "Google Client Key",
-      "GOOGLE_CLIENT_SECRET": "Google Client Secret",
-      "REVALIDATE_DURATION": "120",
-      "NEXT_PUBLIC_DEFAULT_LANGUAGE": "en",
-      "NEXT_PUBLIC_ENABLE_MULTI_LANG": "false",
-      "NEXT_PUBLIC_AVAILABLE_LANGUAGES": "en",
-      "NEXT_PUBLIC_PAYPAL_CLIENT_TOKEN": "Paypal Payment Key"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "yarn install",
+  "buildCommand": "yarn build",
+  "outputDirectory": ".next",
+  "regions": [
+    "fra1"
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
     }
-  }
+  ]
 }
