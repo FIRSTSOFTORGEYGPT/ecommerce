@@ -8,15 +8,18 @@ import { FaqsQueryOptions, SettingsQueryOptions } from '@type/index';
 
 // This function gets called at build time
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  const { data } = await client.shop.find({ is_active: '1' });
+  try {
+    const { data } = await client.shop.find({ is_active: '1' });
 
-  const paths = data?.flatMap((shop: any) =>
-    locales?.map((locale) => ({ params: { slug: shop.slug }, locale }))
-  );
+    const paths = data?.flatMap((shop: any) =>
+      locales?.map((locale) => ({ params: { slug: shop.slug }, locale }))
+    ) || [];
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: 'blocking' };
+    return { paths, fallback: 'blocking' };
+  } catch (error) {
+    // API unavailable during build - pages will be generated on-demand
+    return { paths: [], fallback: 'blocking' };
+  }
 }
 
 // This also gets called at build time

@@ -8,17 +8,25 @@ import client from '@framework/utils/index'
 
 // This function gets called at build time
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  // @ts-ignore
-  const { data } = await client.category.find({ limit: 100, parent: null });
+  try {
+    // @ts-ignore
+    const { data } = await client.category.find({ limit: 100, parent: null });
 
-  const paths = data?.flatMap((category: Category) =>
-    locales?.map((locale) => ({ params: { slug: category.slug }, locale }))
-  );
+    const paths = data?.flatMap((category: Category) =>
+      locales?.map((locale) => ({ params: { slug: category.slug }, locale }))
+    ) || [];
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    // API unavailable during build - pages will be generated on-demand
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
