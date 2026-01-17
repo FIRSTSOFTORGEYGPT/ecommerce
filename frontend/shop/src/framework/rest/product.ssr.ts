@@ -9,16 +9,23 @@ import { SettingsQueryOptions } from "@type/index";
 
 // This function gets called at build time
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  invariant(locales, 'locales is not defined');
-  const products = await client.product.find({ limit: 100 })
-  // @ts-ignore
-  const paths = products?.data?.flatMap(({ slug }) =>
-    locales?.map((locale) => ({ params: { slug: slug }, locale }))
-  );
-  return {
-    paths,
-    fallback: "blocking",
-  };
+  try {
+    const products = await client.product.find({ limit: 100 })
+    // @ts-ignore
+    const paths = products?.data?.flatMap(({ slug }: { slug: string }) =>
+      locales?.map((locale) => ({ params: { slug: slug }, locale }))
+    ) || [];
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    // API unavailable during build - pages will be generated on-demand
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {

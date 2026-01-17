@@ -10,16 +10,24 @@ import { SettingsQueryOptions } from "@type/index";
 
 // This function gets called at build time
 export async function getStaticPaths({ locales }: GetStaticPathsContext) {
-  const tags = await client.tag.all({ limit: 100 });
+  try {
+    const tags = await client.tag.all({ limit: 100 });
 
-  const paths = tags?.data?.flatMap((tag: Tag) =>
-    locales?.map((locale) => ({ params: { tags: tag.slug }, locale }))
-  );
+    const paths = tags?.data?.flatMap((tag: Tag) =>
+      locales?.map((locale) => ({ params: { tags: tag.slug }, locale }))
+    ) || [];
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    // API unavailable during build - pages will be generated on-demand
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
